@@ -55,7 +55,7 @@
             </blockquote>
         </div>
         <div class="container-fluid" style="background-color: #f7ecb5; margin: 70px">
-
+               Hello, the current day is <?php echo date("l"); ?>
         </div>
 
 
