@@ -1,0 +1,22 @@
+/*
+
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Shadows+Into+Light);
+[class*="col-"].gris {
+    background-color: grey;
+    border:solid 1px white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.temoignage{
+    font-family: 'Shadows Into Light', cursive;
+    font-size: x-large;
+    text-align: left
+}
+
+.author {
+    color: #555;
+    text-align: left
+}
