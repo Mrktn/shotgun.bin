@@ -11,7 +11,7 @@ class utilisateur {
 
     public static function insererUtilisateur($dbh, $mail, $active, $code_secret, $mdp, $admin) {
         if (!getUtilisateur($dbh, $mail)) {
-            $sth = $dbh->prepare("INSERT INTO `utilisateur` (`mail`, `active`, `code_secret`, `mdp`, `admin`) VALUES(?,?,?,SHA1(?),?)");
+            $sth = $dbh->prepare("INSERT INTO `utilisateur` (`mail`, `active`, `code_secret`, `mdp`, `admin`) VALUES(?,?,?,MD5(?),?)");
             $sth->execute(array($mail, $active, $code_secret, $mdp, $admin));
         } else {
             echo("L'utilisateur existe deja");
