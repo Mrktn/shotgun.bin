@@ -49,8 +49,8 @@ if (isset($_GET['activePage']))
     if(!array_key_exists($_GET['activePage'], $title))
     {
         // Recharge la page mais avec activePage=index
-        ///echo "ça n'existe pas, " . $_GET['activePage'];
-        header('Location: index.php?activePage=index');
+        echo "ça n'existe pas, " . $_GET['activePage'];
+        //header('Location: index.php?activePage=index');
     }
 
     // Sinon, c'est une page qui existe

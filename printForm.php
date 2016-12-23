@@ -3,27 +3,27 @@
 require('globalvar.php');
 
 // Affiche un formulaire de connexion
-function printLoginForm($askedPage)
+function printLoginForm()
 {
     echo <<<END
-                    <form class="navbar-form navbar-right" action="index.php?name=$askedPage&todo=login" method="post">
+                    <form class="navbar-form navbar-right" action="index.php?activePage=index&todo=login" method="post">
                         <div class="form-group">
                             <input type="text" class="form-control" name="mail" placeholder="E-mail" required>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control" name="password"  placeholder="Mot de passe" required>
                         </div>
-                        <button class="btn btn-default" name="logAdmin" type="submit">Login</button>
-                        <button name="logFrankiz" type="submit" class="btn btn-default">Login Frankiz</button>
+                        <button class="btn btn-default" name="login" type="submit">Login</button>
+                        <button  class="btn btn-default">Login Frankizzz</button>
                     </form>
 END;
 }
 
 // Affuche un formulaire de déconnexion
-function printLogoutForm($askedpage)
+function printLogoutForm()
 {
     echo <<<FIN
-    <form class="navbar-form navbar-right" action="index.php?name=$askedpage&todo=logout" method="post">
+    <form class="navbar-form navbar-right" action="index.php?name=index&todo=logout" method="post">
     <button name="logout" type="submit" class="btn btn-default">Déconnexion</button>
     </form>
 FIN;
@@ -46,7 +46,7 @@ function generateNavBarLoggedOut($activePage)
             <div class="nav navbar-nav navbar-right">
 END;
 
-    printLoginForm($activePage);
+    printLoginForm();
 }
 
 // Génère la navbar quand on est logged in
@@ -66,7 +66,7 @@ function generateNavbarLoggedIn($activePage)
             <div class="nav navbar-nav navbar-right">
 END;
 
-    printLogoutForm($activePage);
+    printLogoutForm();
 }
 
 // $loggedin est un booléen qui dit si on est logué

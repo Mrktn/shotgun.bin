@@ -11,12 +11,11 @@ function logIn($dbh)
     if ($test)
     {
         $_SESSION['loggedIn'] = true; // la variable va persister au fur et à mesure de la navigation
-        echo('ok');
     }
     else
     {
         unset($_SESSION['loggedIn']); // on ne veut même pas set cette variable
-        echo("nom d'utilisateur ou mot de passe incorrect");
+        header('Location: index.php?activePage=error&msg=Votre adresse mail ou votre mot de passe est invalide');
     };
 }
 
