@@ -10,7 +10,7 @@ function logIn($dbh) { // Test si le nom de compte et mot de passe sont corrects
         echo('ok');
     }
     else {
-        $_SESSION['loggedIn'] = false;
+        unset($_SESSION['loggedIn']); // on ne veut même pas set cette variable
         echo("nom d'utilisateur ou mot de passe incorrect");
     };
 }

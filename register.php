@@ -19,8 +19,8 @@ if (isset($_POST['submitted'])) {
     if (($_POST["inputPassword"] != $_POST["inputPasswordConfirm"]) || !preg_match("/.+@polytechnique\.edu/", $_POST["inputEmail"])) {
         echo "Merci de ne pas essayer de nous hacker";
     } else {
-        $password = mysql_real_escape_string($_POST['inputPassword']);
-        $email = mysql_real_escape_string($_POST['inputEmail']);
+        $password = /*mysqli_real_escape_string(*/$_POST['inputPassword'];//);
+        $email = /*mysqli_real_escape_string(*/$_POST['inputEmail'];//);
 
         //mail_utf8("antoine.balestrat@gmail.com", "kikoo@lol.com", "kikoo@lol.com", $subject = '(No subject)', $message = 'TG');
         // Clé secrète de l'utilisateur

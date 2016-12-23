@@ -1,6 +1,5 @@
 <?php
 
-include 'fkz_auth.php';
 $logged_in = false;
 $auth = NULL;
 
