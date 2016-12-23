@@ -4,7 +4,8 @@ require('database.php');
 generateHTMLHeader("S'enregistrer");
 generateMenu("register.php");
 
-function mail_utf8($to, $from_user, $from_email, $subject = '(No subject)', $message = '') {
+function mail_utf8($to, $from_user, $from_email, $subject = '(No subject)', $message = '')
+{
     $from_user = "=?UTF-8?B?" . base64_encode($from_user) . "?=";
     $subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
 
@@ -15,13 +16,16 @@ function mail_utf8($to, $from_user, $from_email, $subject = '(No subject)', $mes
     return mail($to, $subject, $message, $headers);
 }
 
-if (isset($_POST['submitted'])) {
-    if (($_POST["inputPassword"] != $_POST["inputPasswordConfirm"]) || !preg_match("/.+@polytechnique\.edu/", $_POST["inputEmail"])) {
+if (isset($_POST['submitted']))
+{
+    if (($_POST["inputPassword"] != $_POST["inputPasswordConfirm"]) || !preg_match("/.+@polytechnique\.edu/", $_POST["inputEmail"]))
+    {
         echo "Merci de ne pas essayer de nous hacker";
-    } else {
-        $password = /*mysqli_real_escape_string(*/$_POST['inputPassword'];//);
-        $email = /*mysqli_real_escape_string(*/$_POST['inputEmail'];//);
-
+    }
+    else
+    {
+        $password = /* mysqli_real_escape_string( */$_POST['inputPassword']; //);
+        $email = /* mysqli_real_escape_string( */$_POST['inputEmail']; //);
         //mail_utf8("antoine.balestrat@gmail.com", "kikoo@lol.com", "kikoo@lol.com", $subject = '(No subject)', $message = 'TG');
         // Clé secrète de l'utilisateur
         $key = md5($password . $email . date('mY'));
@@ -31,22 +35,10 @@ if (isset($_POST['submitted'])) {
 
         $query = 'INSERT INTO `utilisateur` (`mail`, `active`, `code_secret`, `mdp`) VALUES ("' . $email . '",1,"' . $key . '", "' . md5($password) . '")';
         $sth = $dbh->prepare($query);
-        if (!$sth->execute()) {
+        if (!$sth->execute())
+        {
             echo 'Impossible de vous ajouter à la base de données !';
         }
-
-        /*$message = "yo";
-        // Envoi du mail
-
-        echo "Email: " . $email . "<br/>";
-        echo $message;
-
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'From: shotgun <postmaster@localhost>' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-        //mail($email, 'Confirmez votre inscription sur shotgun.bin', $message, $headers);
-        mail_utf8("antoine.balestrat@polytechnique.edu", "kikoo@lol.com", "kikoo@lol.com", $subject = '(No subject)', $message = 'TG');*/
     }
 }
 ?>

@@ -3,7 +3,8 @@
 session_name("thesess"); // Session : pour la persistance : cookies qui perdure savoir si on est co ou pas
 // ne pas mettre d'espace dans le nom de session !
 session_start();
-if (!isset($_SESSION['initiated'])) {
+if (!isset($_SESSION['initiated']))
+{
     session_regenerate_id();
     $_SESSION['initiated'] = true;
 }
@@ -18,7 +19,6 @@ if (!isset($_SESSION['initiated'])) {
 require('database.php');
 $dbh = Database::connect();
 require('logInOut.php');
-require('utils.php');
 require('printForm.php');
 require('globalvar.php');
 ?>
@@ -27,11 +27,13 @@ require('globalvar.php');
 
 //traitement des contenus de formulaires
 //on regarde s'il y a quelque chose à faire 'todo' , si oui on regarde si c'est un login ou un loggout et on execute le cas échéant
-if (isset($_GET['todo']) && ($_GET['todo'] == 'login')) {
+if (isset($_GET['todo']) && ($_GET['todo'] == 'login'))
+{
     //tentative de connexion , on a alors accès à ce qui a été entré via POST
     logIn($dbh);
 }
-if (isset($_GET['todo']) && $_GET['todo'] == 'logout') {
+if (isset($_GET['todo']) && $_GET['todo'] == 'logout')
+{
     //tentative de déconnexion
     logOut();
 }
@@ -40,42 +42,49 @@ if (isset($_GET['todo']) && $_GET['todo'] == 'logout') {
 <?php
 
 // Si on a un truc dans l'URL qui dit ce qu'on doit afficher, on le fait
-if (isset($_GET['activePage'])) {
+if (isset($_GET['activePage']))
+{
     // Si ça n'est pas une clé du tableau title, c'est que ce n'est pas une page qui existe (l'utilisateur a pu mettre activePage=blblbl),
     // on va simplement le renvoyer sur l'index pour le punir
-    if (!array_key_exists($_GET['activePage'], $title)) {
+    if (!array_key_exists($_GET['activePage'], $title))
+    {
         // Recharge la page mais avec activePage=index
         ///echo "ça n'existe pas, " . $_GET['activePage'];
         header('Location: index.php?activePage=index');
     }
 
     // Sinon, c'est une page qui existe
-    else {
+    else
+    {
         //echo "La clé existe <br/>";
         // Si l'utilisateur est logué et la page est accessible aux utilisateur logués
         // ou si l'utilisateur n'est pas logué et la page est accessible aux utilisateur non logués
         // Alors on le renvoie effectivement sur cette page
-        if ((isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedIn)) || (!isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedOut))) {
+        if ((isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedIn)) || (!isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedOut)))
+        {
             //echo "Et tout est ras <br/>";
-
             // Les rageux diront que c'est pas sécurisé. Les vrais sauront.
             generateHTMLHeader($title[$_GET['activePage']]);
             generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
 
             require("content_" . $_GET['activePage'] . ".php");
         }
-        
-        else {
-            if (isset($_SESSION['loggedIn'])) {
+        else
+        {
+            if (isset($_SESSION['loggedIn']))
+            {
                 header('Location: index.php?activePage=error&msg=Cette page ne vous est pas accessible en étant connecté');
-            } else {
+            }
+            else
+            {
                 header('Location: index.php?activePage=error&msg=Vous devez être connecté pour voir cette page');
             }
         }
     }
 }
 // Pas d'activePage ? On renvoie sur l'index
-else {
+else
+{
     header('Location: index.php?activePage=index');
 }
 
