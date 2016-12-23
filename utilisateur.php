@@ -3,7 +3,6 @@
 // Sert à implémenter la classe utilisateur reliée à la base de donnée ainsi que toutes les fonctions utilisant la classe
 class utilisateur
 {
-
     public $mail;
     public $active;
     public $code_secret;

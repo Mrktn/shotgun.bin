@@ -46,7 +46,7 @@ if (isset($_GET['activePage']))
 {
     // Si ça n'est pas une clé du tableau title, c'est que ce n'est pas une page qui existe (l'utilisateur a pu mettre activePage=blblbl),
     // on va simplement le renvoyer sur l'index pour le punir
-    if (!array_key_exists($_GET['activePage'], $title))
+    if(!array_key_exists($_GET['activePage'], $title))
     {
         // Recharge la page mais avec activePage=index
         ///echo "ça n'existe pas, " . $_GET['activePage'];
@@ -56,13 +56,20 @@ if (isset($_GET['activePage']))
     // Sinon, c'est une page qui existe
     else
     {
+        // C'est là qu'on gère les erreurs
+        if($_GET['activePage'] == 'error')
+        {
+            generateHTMLHeader("Erreur");
+            generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
+            
+            require('content_error.php');
+        }
         //echo "La clé existe <br/>";
         // Si l'utilisateur est logué et la page est accessible aux utilisateur logués
         // ou si l'utilisateur n'est pas logué et la page est accessible aux utilisateur non logués
         // Alors on le renvoie effectivement sur cette page
-        if ((isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedIn)) || (!isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $pagesLoggedOut)))
+        else if ((isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $authorizedLoggedIn)) || (!isset($_SESSION['loggedIn']) && in_array($_GET['activePage'], $authorizedLoggedOut)))
         {
-            //echo "Et tout est ras <br/>";
             // Les rageux diront que c'est pas sécurisé. Les vrais sauront.
             generateHTMLHeader($title[$_GET['activePage']]);
             generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));

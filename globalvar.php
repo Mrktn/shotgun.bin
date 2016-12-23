@@ -1,5 +1,6 @@
 <?php
 
+
 // Quel est le titre à afficher dans la barre de navigation ?
 $title = array("index" => "shotgun.bin", "register" => "S'enregistrer", "error" => "Erreur");
 
@@ -8,9 +9,16 @@ $titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "place
 //
 
 // Quelles sont les pages dans la navbar quand je suis pas logged in ?
-$pagesLoggedOut = array("index", "register");
+$navbarLoggedOut = array("index", "register");
 
-$pagesLoggedIn = array("index", "placeholderloggedin");
+// Quelles sont les pages dans la navbar quand je suis logged in ?
+$navbarLoggedIn = array("index", "placeholderloggedin");
+
+// Quelles sont les pages que je suis autorisé à voir en étant logged out ?
+$authorizedLoggedOut = array("index", "register", "error");
+
+// Quelles sont les pages que je suis autorisé à voir en étant logged in ?
+$authorizedLoggedIn = array("index", "error", "placeholerloggedin");
 
 // $accessibleSimpleUser['une page d'admin'] = false
 $accessibleSimpleUser = array("index" => true, "register" => true, "error" => true);
