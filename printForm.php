@@ -83,11 +83,11 @@ END;
     // Contestable, on peut aussi ne pas mettre de focus.
     if($loggedin)
     {
-        generateNavBarLoggedIn($activePage == 'error' ? 'index' : $activePage);
+        generateNavBarLoggedIn($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
     }
     else
     {
-        generateNavBarLoggedOut($activePage == 'error' ? 'index' : $activePage);
+        generateNavBarLoggedOut($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
     }
 
     echo <<<END

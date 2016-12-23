@@ -9,44 +9,46 @@ class utilisateur
     public $mdp;
     public $admin;
 
-    public static function insererUtilisateur($dbh, $mail, $active, $code_secret, $mdp, $admin)
+    public static function getUtilisateur($mysqli, $mail)
     {
-        if (!getUtilisateur($dbh, $mail))
+        $query = "SELECT * FROM `utilisateur` WHERE mail = \"" . $mail . "\";";
+
+        $result = $mysqli->query($query);
+        $object = $result->fetch_object('utilisateur');
+        
+        return $object;
+    }
+    public static function insererUtilisateur($mysqli, $mail, $active, $code_secret, $mdp, $admin)
+    {
+        if(!utilisateur::getUtilisateur($mysqli, $mail))
         {
-            $sth = $dbh->prepare("INSERT INTO `utilisateur` (`mail`, `active`, `code_secret`, `mdp`, `admin`) VALUES(?,?,?,MD5(?),?)");
-            $sth->execute(array($mail, $active, $code_secret, $mdp, $admin));
+            $stmt = $mysqli->prepare("INSERT INTO `utilisateur` (`mail`, `active`, `code_secret`, `mdp`, `admin`) VALUES(?,?,?,MD5(?),?)");
+            $stmt->bind_param('sissi', $mail, $active, $code_secret, $mdp, $admin);
+            return ($stmt->execute());
         }
+
         else
         {
-            echo("L'utilisateur existe deja");
+            header('Location: index.php?activePage=error&msg=Il y a déjà un utilisateur enregitré avec cette adresse mail !');
         }
     }
 
-    public static function getUtilisateur($dbh, $mail)
-    { // renvoie l'utilisateur sous la classe utilisateur s'il existe et false sinon
-        $query = "SELECT * FROM `utilisateur` WHERE mail = ?;";
-        $sth = $dbh->prepare($query);
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'utilisateur');
-        $sth->execute(array($mail));
-        $user = $sth->fetch(); // renvoi false si l'uilisateur n'existe pas
-        $sth->closeCursor();
-        return $user;
-    }
+    
 
-    public static function testerMdp($dbh, $user, $mdp)
+    public static function testerMdp($mysqli, $user, $mdp)
     {
         return ($user && (md5($mdp) == $user->mdp));
     }
 
-    public static function getShotgun($dbh, $mail)
+    /*public static function getShotgun($mysqli, $mail)
     { // Donne la liste des shotguns auxquels participe l'utilisateur
         $query = "SELECT shotgun_event.* FROM inscription,shotgun_event WHERE mail_user =? AND shotgun_event.id = id_shotgun ";
-        $sth = $dbh->prepare($query);
+        $sth = $mysqli->prepare($query);
         $sth->setFetchMode(PDO::FETCH_CLASS, 'utilisateur');
         $sth->execute(array($mail));
         $user = $sth->fetchAll();
         $sth->closeCursor();
         return $user;
-    }
+    }*/
 
 }

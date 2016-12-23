@@ -17,7 +17,7 @@ if (!isset($_SESSION['initiated']))
 <?php
 
 require('database.php');
-$dbh = Database::connect();
+$mysqli = Database::connect();
 require('logInOut.php');
 require('printForm.php');
 require('globalvar.php');
@@ -30,7 +30,7 @@ require('globalvar.php');
 if (isset($_GET['todo']) && ($_GET['todo'] == 'login'))
 {
     //tentative de connexion , on a alors accès à ce qui a été entré via POST
-    logIn($dbh);
+    logIn($mysqli);
 }
 if (isset($_GET['todo']) && $_GET['todo'] == 'logout')
 {
@@ -49,8 +49,8 @@ if (isset($_GET['activePage']))
     if(!array_key_exists($_GET['activePage'], $title))
     {
         // Recharge la page mais avec activePage=index
-        echo "ça n'existe pas, " . $_GET['activePage'];
-        //header('Location: index.php?activePage=index');
+        //echo "ça n'existe pas, " . $_GET['activePage'];
+        header('Location: index.php?activePage=index');
     }
 
     // Sinon, c'est une page qui existe
@@ -63,6 +63,15 @@ if (isset($_GET['activePage']))
             generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
             
             require('content_error.php');
+        }
+        
+        // Ici on gère les informations à l'utilisateur
+        else if($_GET['activePage'] == 'info')
+        {
+            generateHTMLHeader("Information");
+            generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
+            
+            require('content_info.php');
         }
         //echo "La clé existe <br/>";
         // Si l'utilisateur est logué et la page est accessible aux utilisateur logués
