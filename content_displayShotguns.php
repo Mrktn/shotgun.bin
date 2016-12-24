@@ -13,7 +13,7 @@ require('shotgun_event.php');
 
 // SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi
 
-$shotguns = shotgun_event::getOpenShotguns($mysqli);
+$shotguns = shotgun_event::getVisibleShotguns($mysqli);
 
 echo '<div class="container">';
 foreach($shotguns as $currShotgun)

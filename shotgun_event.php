@@ -12,6 +12,11 @@ class shotgun_event
     public $mail_crea;
     public $au_nom_de;
     public $anonymous;
+    public $link_thumbnail;
+    public $ouvert;
+    public $contacte;
+    public $active;
+    public $date_crea;
 
     /* public static function insererShotgun($dbh, $id, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de)
       { // créer un nouveau shotgun
@@ -37,12 +42,37 @@ class shotgun_event
       return $shotgun;
       } */
 
-    public static function getOpenShotguns($mysqli)
+    // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
+    public static function getVisibleShotguns($mysqli)
     {
         $a = array();
-        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi;";
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 ORDER BY ev.date_crea DESC;";
 
         $result = $mysqli->query($query);
+        
+        if(!$result)
+            die($mysqli->error);
+
+        while(($row = $result->fetch_object('shotgun_event')))
+        {
+            $a[] = $row;
+        }
+        
+        return $a;
+    }
+    
+    public static function getInactiveShotguns($mysqli)
+    {
+        $a = array();
+        
+        // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND ev.active=0 ORDER BY ev.date_crea ASC;";
+
+        $result = $mysqli->query($query);
+        
+        if(!$result)
+            die($mysqli->error);
+
         while(($row = $result->fetch_object('shotgun_event')))
         {
             $a[] = $row;
@@ -68,6 +98,26 @@ class shotgun_event
             echo "wow it didn't work as expected";
             return 0;
         }
+    }
+    
+    public static function getActiveAVenirShotguns($mysqli)
+    {
+        $a = array();
+        
+        // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_publi AND ev.active=1 ORDER BY ev.date_crea ASC;";
+
+        $result = $mysqli->query($query);
+        
+        if(!$result)
+            die($mysqli->error);
+
+        while(($row = $result->fetch_object('shotgun_event')))
+        {
+            $a[] = $row;
+        }
+        
+        return $a;
     }
 
     /*

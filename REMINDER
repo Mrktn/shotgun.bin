@@ -1,0 +1,3 @@
+Dans shotgun_event:
+  * open est un booléen qui manifeste la volonté de l'auteur de voir son shotgun apparaître dans la liste
+  * active est un booléen qui vaut true ssi un admin l'a autorisé
