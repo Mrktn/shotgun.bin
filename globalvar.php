@@ -18,7 +18,7 @@ $adminPages = array("manageShotguns");
 $navbarLoggedIn = array("index", "displayShotguns");
 
 // Quelles sont les pages dans la navbar quand je suis logged in en tant qu'admin ?
-$navbarLoggedIn = array("index", "displayShotguns", "manageShotguns");
+//$navbarLoggedInAdmin = array("index", "displayShotguns", "manageShotguns");
 
 // Quelles sont les pages que je suis autorisé à voir en étant logged out ?
 $authorizedLoggedOut = array("index", "register", "error", "info");

@@ -49,7 +49,6 @@ if(isset($_GET['activePage']))
     if(!array_key_exists($_GET['activePage'], $title))
     {
         // Recharge la page mais avec activePage=index
-        //echo "ça n'existe pas, " . $_GET['activePage'];
         header('Location: index.php?activePage=index');
     }
 
@@ -91,6 +90,7 @@ if(isset($_GET['activePage']))
         }
         else
         {
+            
             if(isset($_SESSION['loggedIn']))
             {
                 header('Location: index.php?activePage=error&msg=Cette page ne vous est pas accessible en étant connecté');

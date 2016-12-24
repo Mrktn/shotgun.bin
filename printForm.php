@@ -23,7 +23,7 @@ END;
 function printLogoutForm()
 {
     echo <<<FIN
-    <form class="navbar-form navbar-right" action="index.php?name=index&todo=logout" method="post">
+    <form class="navbar-form navbar-right" action="index.php?activePage=index&todo=logout" method="post">
     <button name="logout" type="submit" class="btn btn-default">Déconnexion</button>
     </form>
 FIN;
@@ -69,6 +69,28 @@ END;
     printLogoutForm();
 }
 
+// Génère la navbar quand on est logged in
+function generateNavbarLoggedInAdmin($activePage)
+{
+    global $navbarLoggedIn;
+    global $titleNavbar;
+
+    foreach($navbarLoggedIn as $p)
+    {
+        $t = $titleNavbar[$p];
+        echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
+    }
+
+    echo <<<END
+            </ul>
+            
+            <div class="nav navbar-nav navbar-right"><form class="navbar-form navbar-right" action="index.php" method="get">
+    <a href="index.php?activePage=manageShotguns" class="btn btn-danger" role="button">Administrer</a>
+    </form>
+END;
+    printLogoutForm();
+}
+
 // $loggedin est un booléen qui dit si on est logué
 // $activePage est la page sur laquelle on est actuellement (codage des noms de page défini dans globalvar.php : index, register, etc
 function generateNavBar($activePage, $loggedin)
@@ -83,7 +105,14 @@ END;
     // Contestable, on peut aussi ne pas mettre de focus.
     if($loggedin)
     {
-        generateNavBarLoggedIn($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+        if($_SESSION['isAdmin'])
+        {
+            generateNavBarLoggedInAdmin($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+        }
+        else
+        {
+            generateNavBarLoggedIn($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+        }
     }
     else
     {
