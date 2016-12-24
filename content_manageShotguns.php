@@ -108,5 +108,5 @@ else
     }
 }
 
-echo '</div>';
+echo '</div></div></div></div></div>';
 
