@@ -15,7 +15,7 @@ require('shotgun_event.php');
 
 $shotguns = shotgun_event::getOpenShotguns($mysqli);
 
-echo '<div class="container" style="margin-left:30px; margin-top:40px">';
+echo '<div class="container">';
 foreach($shotguns as $currShotgun)
 {
     // Maintenant on claque une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
@@ -29,7 +29,7 @@ foreach($shotguns as $currShotgun)
 
     $perc = floor(100 * ($k / (float) $n));
 
-    echo '<div class="panel panel-default" style="align:center">
+    echo '<div class="panel panel-default center-block" style="align:center">
   <div class="panel-heading">
     <h3 class="panel-title">' . utf8_encode($currShotgun->titre) . ' par ' . utf8_encode($currShotgun->au_nom_de) .  ' </h3>
   </div>
@@ -43,13 +43,6 @@ foreach($shotguns as $currShotgun)
     
     echo '</div></div>';
     
-    
-    /*echo "<div style='width: 30%' class='progress'>
-  <div class='progress-bar' role='progressbar' aria-valuenow='70'
-  aria-valuemin='0' aria-valuemax='100' style='width:$perc%'>
-    $k / $n
-  </div>
-</div>";*/
 }
 
 echo '</div>';

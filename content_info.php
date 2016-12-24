@@ -1,6 +1,6 @@
 <?php
-echo '
-<div class="alert alert-success">
-  <strong>Succès</strong> ' . (isset($_GET['msg']) ? htmlentities($_GET['msg']) : "Rien à afficher !") .
-'</div>';
+echo '<div class="container">
+<div class="alert alert-success center-block">
+  <strong>[Succès]</strong> '. (isset($_GET['msg']) ? htmlentities($_GET['msg']) : "Opération réalisée avec succès !") .
+'</div></div>';
 ?>
