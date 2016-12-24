@@ -87,6 +87,11 @@ if(isset($_GET['activePage']))
 
                 require("content_" . $_GET['activePage'] . ".php");
             }
+            
+            else
+            {
+                header('Location: index.php?activePage=error&msg=Il faut être administrateur pour voir cette page !');
+            }
         }
         else
         {
