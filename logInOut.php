@@ -8,9 +8,11 @@ function logIn($mysqli)
     //print_r($_POST);
     $user = utilisateur::getUtilisateur($mysqli, $_POST['mail']);
     $test = utilisateur::testerMdp($mysqli, $user, $_POST['password']);
+    
     if($test)
     {
         $_SESSION['loggedIn'] = true; // la variable va persister au fur et à mesure de la navigation
+        $_SESSION['isAdmin'] = $user->admin;
         header('Location: index.php?activePage=info&msg=Vous êtes maintenant connecté !');
     }
     else
