@@ -139,12 +139,14 @@ function generateHTMLHeader($title)
         <title>$title</title>
 
         <link href="css/bootstrap.css" rel="stylesheet">
+            <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
          <link href="css/perso.css" rel="stylesheet">
 
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
+        <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>

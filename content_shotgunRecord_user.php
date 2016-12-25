@@ -24,7 +24,7 @@ echo '
 <div>
     <header class="page-header">
     <h1 class="page-title">' . utf8_encode($shotgun->titre) . '</h1>
-    <small> <i class="fa fa-clock-o"></i> Posté le <time>' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</time> par ' . stripTheMail($shotgun->mail_crea) . '</small>
+    <small> <i class="fa fa-clock-o"></i> Ajouté le <time>' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</time> par ' . stripTheMail($shotgun->mail_crea) . '</small>
   </header>
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-offset-10 col-md-5 col-lg-offset-0 col-lg-12">
