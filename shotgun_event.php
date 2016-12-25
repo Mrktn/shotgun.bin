@@ -42,6 +42,48 @@ class shotgun_event
       return $shotgun;
       } */
 
+    public function shotgunIsInDB($mysqli, $id)
+    {
+        // They see me checkin', they hatin'
+        if(!ctype_digit($id))
+            return false;
+
+        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id LIMIT 1;";
+        $result = $mysqli->query($query);
+        
+        if(!$result)
+            die($mysqli->error);
+
+        return ($result->num_rows != 0);
+    }
+    
+    public function shotgunIsVisible($mysqli, $id)
+    {
+        if(!ctype_digit($id))
+            return false;
+
+        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND ev.ouvert=1 AND ev.active=1 AND NOW() > ev.date_publi LIMIT 1;";
+        $result = $mysqli->query($query);
+        
+        if(!$result)
+            die($mysqli->error);
+        
+        return ($result->num_rows != 0);
+    }
+    
+    public function shotgunGet($mysqli, $id)
+    {
+        if(!ctype_digit($id))
+            return null;
+        
+        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.id = $id LIMIT 1;";
+        $result = $mysqli->query($query);
+        
+        // If you can't do it quick, at least do it dirty
+        while(($row = $result->fetch_object('shotgun_event')))
+            return $row;
+    }
+
     // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
     public static function getVisibleShotguns($mysqli)
     {
@@ -95,8 +137,7 @@ class shotgun_event
         
         else
         {
-            echo "wow it didn't work as expected";
-            return 0;
+            die($mysqli->error);
         }
     }
     

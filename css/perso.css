@@ -20,3 +20,14 @@
     color: #555;
     text-align: left
 }
+
+.progress {
+    position: relative;
+}
+
+.progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+ }

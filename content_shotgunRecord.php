@@ -11,6 +11,8 @@
 // Mais... pourquoi 2 fichiers ?
 // Comme ça je ne fais pas un if-else démentiel et quitte à dupliquer du code commun, je m'y perds moins.
 
+require('shotgun_event.php');
+require('utils.php');
 
 // Si je suis un admin
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
