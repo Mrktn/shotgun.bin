@@ -29,7 +29,7 @@ foreach($shotguns as $currShotgun)
 
     $perc = floor(100 * ($k / (float) $n));
 
-    echo '<div class="panel panel-default center-block" style="align:center">
+    echo '<div idShotgun="'. $currShotgun->id .'" class="panel panel-default center-block shotgunPanel" style="align:center">
   <div class="panel-heading">
     <h3 class="panel-title">' . utf8_encode($currShotgun->titre) . ' par ' . utf8_encode($currShotgun->au_nom_de) .  ' </h3>
   </div>
