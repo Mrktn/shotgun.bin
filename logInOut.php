@@ -13,6 +13,7 @@ function logIn($mysqli)
     {
         $_SESSION['loggedIn'] = true; // la variable va persister au fur et à mesure de la navigation
         $_SESSION['isAdmin'] = $user->admin;
+        $_SESSION['mailUser'] = $user->mail;
         header('Location: index.php?activePage=info&msg=Vous êtes maintenant connecté !');
     }
     else

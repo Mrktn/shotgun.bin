@@ -1,5 +1,4 @@
 <?php
-
 session_name("thesess"); // Session : pour la persistance : cookies qui perdure savoir si on est co ou pas
 // ne pas mettre d'espace dans le nom de session !
 session_start();
@@ -11,19 +10,12 @@ if(!isset($_SESSION['initiated']))
 
 // Décommenter la ligne suivante pour afficher le tableau $_SESSION pour le debuggage
 //print_r($_SESSION);
-?>
-
-
-<?php
 
 require('database.php');
 $mysqli = Database::connect();
 require('logInOut.php');
 require('printForm.php');
 require('globalvar.php');
-?>
-
-<?php
 
 //traitement des contenus de formulaires
 //on regarde s'il y a quelque chose à faire 'todo' , si oui on regarde si c'est un login ou un loggout et on execute le cas échéant
@@ -37,9 +29,6 @@ if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
     //tentative de déconnexion
     logOut();
 }
-?>
-
-<?php
 
 // Si on a un truc dans l'URL qui dit ce qu'on doit afficher, on le fait
 if(isset($_GET['activePage']))
@@ -112,17 +101,6 @@ else
 {
     header('Location: index.php?activePage=index');
 }
-
-
-// Mettre ici les pages à ouvrir en gérant la sécurité cf TD suivant le statut connecté/déconnecté/admin
-?>
-
-<?php
-
-// Affichons ici la navbar suivant que l'utilisateur est connecté ou non
-?>
-
-<?php
 
 generateHTMLFooter();
 ?>

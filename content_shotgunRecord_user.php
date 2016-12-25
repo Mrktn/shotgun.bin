@@ -1,5 +1,6 @@
 <?php
 
+require('inscription.php');
 if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
     header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun !');
 
@@ -54,12 +55,60 @@ echo '
         <h4><strong>Description</strong></h4>
         <p>
          ' . utf8_encode(nl2br($shotgun->description)) .
- '</p>
-      </div>
-      
-  </div>
+ '</p><br/>
+           
+<h4><strong>Liste des participants</strong></h4>
+        ';
+
+if($shotgun->anonymous)
+{
+    echo '<p>L\'auteur du shotgun n\'a pas souhaité rendre la liste des participants visibles !</p>';
+}
+else
+{
+    $arrayInscriptions = inscription::getInscriptionsIn($mysqli, $shotgun->id);
+    $tableInscriptions = array();
+
+    echo '<div style="margin:50px"><table style="margin-bottom:10px" id="oklm" class="table-fill">
+               <thead>
+                <tr>
+                  <th>Rang</th>
+                  <th>Mail</th>
+                </tr>
+              </thead><tbody>';
+
+    $i = 1;
+    foreach($arrayInscriptions as $ins)
+    {
+        echo "<tr><td>$i</td><td>" . utf8_encode($ins->mail_user) . '</td></tr>';
+        $i = $i + 1;
+    }
+
+    echo '</tbody></table><script type="text/javascript">$(\'#oklm\').dynatable();</script>';
+
+// Si je suis un admin ou le créateur du shotgun j'ai le droit de télécharger le csv
+    if(((isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) || (isset($_SESSION['mailUser']) && $_SESSION['mailUser'] == $shotgun->mail_crea)))
+    {
+        $i = 1;
+        $j = 0;
+        echo "<script type=\"text/javascript\">var data = [";
+        for($j = 0; $j < (count($arrayInscriptions) - 1); $j = $j + 1)
+        {
+            echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . utf8_encode($arrayInscriptions[$j]->mail_user) . "'],";
+            $i = $i + 1;
+        }
+        echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . utf8_encode($arrayInscriptions[$j]->mail_user) . "']];";
+
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv(data)\">Télécharger au format CSV</button>";
+    }
+}
+echo '
+    </div>
 </div>
-    
+
+</div>
+</div>
+
 </div>
 
 </div>
