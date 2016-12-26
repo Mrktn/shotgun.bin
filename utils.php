@@ -28,6 +28,7 @@ function generateProgressBar($k, $n)
     </div>'; 
 }
 
+// TODO: cette fonction, mieux écrite, nous fera gagner en sécurité
 function isValidPolytechniqueEmail($mail)
 {
     return preg_match("/.+@polytechnique\.edu/", $mail);

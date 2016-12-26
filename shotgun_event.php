@@ -86,10 +86,15 @@ class shotgun_event
     }
 
     // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
-    public static function getVisibleShotguns($mysqli)
+    public static function getVisibleShotgunsNotMine($mysqli, $mailUser)
     {
         $a = array();
-        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 ORDER BY ev.date_crea DESC;";
+        
+        
+        if(!isValidPolytechniqueEmail($mailUser))
+        header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
+        
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 AND ev.mail_crea!=\"$mailUser\" ORDER BY ev.date_crea DESC;";
 
         $result = $mysqli->query($query);
 
@@ -104,12 +109,15 @@ class shotgun_event
         return $a;
     }
 
-    public static function getInactiveShotguns($mysqli)
+    public static function getMyShotguns($mysqli, $mailCrea)
     {
         $a = array();
 
+        if(!isValidPolytechniqueEmail($mailCrea))
+            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
+
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
-        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND ev.active=0 ORDER BY ev.date_crea ASC;";
+        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.mail_crea=\"$mailCrea\" ORDER BY ev.date_crea DESC;";
 
         $result = $mysqli->query($query);
 

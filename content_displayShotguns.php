@@ -5,7 +5,7 @@
 
 
 // On récupère les shotguns qui sont visibles, aka ouverts et actifs et non périmés
-$shotguns = shotgun_event::getVisibleShotguns($mysqli);
+$shotguns = shotgun_event::getVisibleShotgunsNotMine($mysqli, $_SESSION['mailUser']);
 
 echo '<div class="container">';
 foreach($shotguns as $currShotgun)

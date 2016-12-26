@@ -2,10 +2,10 @@
 
 
 // Quel est le titre à afficher dans la barre de navigation ?
-$title = array("index" => "shotgun.bin", "register" => "S'enregistrer", "error" => "Erreur", "info" => "Information", "displayShotguns" => "Shotguns ouverts", "manageShotguns" => "Gérer les shotguns", "shotgunRecord" => "Consulter un shotgun");
+$title = array("index" => "shotgun.bin", "register" => "S'enregistrer", "error" => "Erreur", "info" => "Information", "displayShotguns" => "Shotguns ouverts", "manageShotguns" => "Gérer les shotguns", "shotgunRecord" => "Consulter un shotgun", "myShotguns" => "Mes shotguns");
 
 // Quel est le nom de chaque page dans la navbar ?
-$titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "displayShotguns" => "Shotguns ouverts", "placeholderloggedin" => "Réservé aux utilisateurs enregistrés", "manageShotguns" => "Administrer");
+$titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "displayShotguns" => "Shotguns ouverts", "placeholderloggedin" => "Réservé aux utilisateurs enregistrés", "manageShotguns" => "Administrer", "myShotguns" => "Mes shotguns");
 //
 
 // Quelles sont les pages dans la navbar quand je suis pas logged in ?
@@ -15,7 +15,7 @@ $navbarLoggedOut = array("index", "register");
 $adminPages = array("manageShotguns");
 
 // Quelles sont les pages dans la navbar quand je suis logged in ?
-$navbarLoggedIn = array("index", "displayShotguns");
+$navbarLoggedIn = array("index", "displayShotguns", "myShotguns");
 
 // Quelles sont les pages dans la navbar quand je suis logged in en tant qu'admin ?
 //$navbarLoggedInAdmin = array("index", "displayShotguns", "manageShotguns");
@@ -24,7 +24,7 @@ $navbarLoggedIn = array("index", "displayShotguns");
 $authorizedLoggedOut = array("index", "register", "error", "info");
 
 // Quelles sont les pages que je suis autorisé à voir en étant logged in (admin ou user, peu importe) ?
-$authorizedLoggedIn = array("index", "error", "placeholerloggedin", "info", "displayShotguns", "manageShotguns", "shotgunRecord");
+$authorizedLoggedIn = array("index", "error", "placeholerloggedin", "info", "displayShotguns", "manageShotguns", "shotgunRecord", "myShotguns");
 
 // $accessibleSimpleUser['une page d'admin'] = false
-$accessibleSimpleUser = array("index" => true, "register" => true, "error" => true, "info" => true, "manageShotguns" => false, "shotgunRecord" => true);
+$accessibleSimpleUser = array("index" => true, "register" => true, "error" => true, "info" => true, "manageShotguns" => false, "shotgunRecord" => true, "myShotguns" => true);
