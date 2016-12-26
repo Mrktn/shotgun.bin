@@ -1,6 +1,5 @@
 <?php
 
-require('shotgun_event.php');
 
 $shotgunsInactive = shotgun_event::getInactiveShotguns($mysqli);
 

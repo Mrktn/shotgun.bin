@@ -2,7 +2,7 @@
 
 if(isset($_POST['submittedRegister']))
 {
-    if(($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !preg_match("/.+@polytechnique\.edu/", $_POST["inputEmailRegister"]))
+    if(($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]))
     {
         header('Location: index.php?activePage=error&msg=Merci de ne pas essayer de nous hacker ¯\_(ツ)_/¯');
     }

@@ -1,6 +1,5 @@
 <?php
 
-require('shotgun_event.php');
 // Provides you with an eye-candy overview of current shotguns ! Yay !
 //$mysqli = Database::connect();
 

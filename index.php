@@ -11,11 +11,13 @@ if(!isset($_SESSION['initiated']))
 // Décommenter la ligne suivante pour afficher le tableau $_SESSION pour le debuggage
 //print_r($_SESSION);
 
-require('database.php');
+require_once('database.php');
 $mysqli = Database::connect();
-require('logInOut.php');
-require('printForm.php');
-require('globalvar.php');
+require_once('logInOut.php');
+require_once('printForm.php');
+require_once('globalvar.php');
+require('utils.php');
+require_once('shotgun_event.php');
 
 //traitement des contenus de formulaires
 //on regarde s'il y a quelque chose à faire 'todo' , si oui on regarde si c'est un login ou un loggout et on execute le cas échéant
@@ -28,6 +30,45 @@ if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
 {
     //tentative de déconnexion
     logOut();
+}
+
+
+// Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer)
+if(isset($_POST['todoShotgun']))
+{
+    $action = $_POST['todoShotgun'];
+    
+    if($action == "closeShotgun" || $action == 'openShotgun')
+    {
+        if(isset($_GET['idShotgun']) && isset($_SESSION['mailUser']) && isset($_SESSION['isAdmin']) && shotgun_event::userMayCloseOrOpenShotgun($mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
+        {
+            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], $action);
+        }
+        
+        else
+            header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour fermer / ouvrir ce shotgun !');
+    }
+    
+    // Seuls les admins peuvent delete
+    else if($action == 'deleteShotgun')
+    {
+        if(isset($_GET['idShotgun']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
+            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], 'deleteShotgun');
+        else
+            header('Location: index.php?activePage=error&msg=Il faut être admin pour supprimer un shotgun !');
+    }
+    
+    // Il faut être admin pour activer / désactiver (autoriser / interdire)
+    else if($action == 'activateShotgun' || $action == 'disableShotgun')
+    {
+        if(isset($_GET['idShotgun']) && isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
+            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], $action);
+        else
+            header('Location: index.php?activePage=error&msg=Il faut être admin pour activer / désactiver un shotgun !');
+    }
+    
+    else
+        header('Location: index.php?activePage=error&msg=Action interdite !');
 }
 
 // Si on a un truc dans l'URL qui dit ce qu'on doit afficher, on le fait

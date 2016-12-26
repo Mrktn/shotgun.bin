@@ -25,17 +25,14 @@ function generateProgressBar($k, $n)
       <div class="progress-bar active ' . labelFromPercentage($perc) . '" role="progressbar" aria-valuenow="' . floor(100*$perc) . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . floor(100*$perc) . '%">
         <span><strong>' . $k . ' / ' . $n . '</strong></span>
       </div>
-    </div>';
-    
-    /*'<div class="progress">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-  aria-valuemin="0" aria-valuemax="100" style="width:5%">
-    40% Complete (success)
-  </div>
-</div>'*/
-        
-        
+    </div>'; 
+}
+
+function isValidPolytechniqueEmail($mail)
+{
+    return preg_match("/.+@polytechnique\.edu/", $mail);
 }
 
 
+        
 ?>

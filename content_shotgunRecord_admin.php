@@ -1,64 +1,26 @@
 <?php
 
 require_once('inscription.php');
-
-/*if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
-    header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun : ' . $_GET['idShotgun'] .'!');*/
+if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
+    header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun !');
 
 // À ce stade on sait que le shotgun est dans la database.
 
 $id = $_GET['idShotgun'];
 
+if(!shotgun_event::shotgunIsVisible($mysqli, $id))
+    header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
+
 $shotgun = shotgun_event::shotgunGet($mysqli, $id);
-
-// Est-ce que l'utilisateur courant est le créateur du shotgun considéré ?
-$isCreateur = isset($_SESSION['mailUser']) && ($shotgun->mail_crea == $_SESSION['mailUser']);
-
-if(!shotgun_event::shotgunIsVisible($mysqli, $id) && !$isCreateur)
-    ;//header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
-
 $k = shotgun_event::getNumInscriptions($mysqli, $id);
 $n = $shotgun->nb_places;
 // À ce stade on sait que l'utilisateur peut consulter le shotgun.
-
-$button = '';
-$note = ''; // frontNote = '(en attente de la réponse de l'administrateur)' si c'est le cas
-// Si je suis le créateur...
-if($isCreateur)
-{
-    // ... et que le shotgun est ouvert
-    if($shotgun->ouvert)
-    {
-        // On propose de fermer le shotgun
-        $button = '<form action="index.php?activePage=shotgunRecord&idShotgun='.$id.'" method="post"><input type="hidden" name="todoShotgun" value="closeShotgun"><input type="submit" value="Fermer le shotgun" class="btn btn-primary"></form>';
-    }
-    else
-    {
-        // Sinon, de l'ouvrir
-        $button = '<form action="" method="post"><button name="todoShotgun" value="open" type="button" class="btn btn-primary">Ouvrir le shotgun</button></form>';
-    }
-
-    if(!$shotgun->active)
-        $frontNote = '(en attente de la réponse de l\'administrateur)';
-}
-
-// Sinon je suis l'user random
-else
-{
-    // Si je suis inscrit, on me propose de me désinscrire
-    if(inscription::userIsRegistered($mysqli, $shotgun->id, $_SESSION['mailUser']))
-        $button = '<form action="" method="post"><button name="todoShotgun" value="unsuscribe" type="button" class="btn btn-danger">Désinscription</button></form>';
-    // Sinon, de shotgun
-    else
-        $button = '<form action="" method="post"><button name="todoShotgun" value="shotgunit" type="button" class="btn btn-danger">Shooootgun!</button></form>';
-}
-
 
 echo '
 <div class="container">
 <div>
     <header class="page-header">
-    <h1 class="page-title">' . utf8_encode($shotgun->titre) . ' ' . $button . '</h1>
+    <h1 class="page-title">' . utf8_encode($shotgun->titre) . '  '  . '</h1>
     <small> <i class="fa fa-clock-o"></i> Ajouté le <time>' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</time> par ' . stripTheMail($shotgun->mail_crea) . '</small>
   </header>
 <div class="row">
@@ -89,7 +51,7 @@ echo '
         <h4><strong>Description</strong></h4>
         <p>
          ' . utf8_encode(nl2br($shotgun->description)) .
-        '</p><br/>
+ '</p><br/>
            
 <h4><strong>Liste des participants</strong></h4>
         ';
@@ -120,8 +82,8 @@ else
 
     echo '</tbody></table><script type="text/javascript">$(\'#oklm\').dynatable();</script>';
 
-    // Si je suis le créateur du shotgun j'ai le droit de télécharger le csv
-    if((isset($_SESSION['mailUser']) && $_SESSION['mailUser'] == $shotgun->mail_crea))
+// Si je suis un admin ou le créateur du shotgun j'ai le droit de télécharger le csv
+    if(((isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) || (isset($_SESSION['mailUser']) && $_SESSION['mailUser'] == $shotgun->mail_crea)))
     {
         $i = 1;
         $j = 0;
