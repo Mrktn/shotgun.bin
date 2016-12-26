@@ -3,15 +3,8 @@
 // Provides you with an eye-candy overview of current shotguns ! Yay !
 //$mysqli = Database::connect();
 
-/* Challenge : sélectionner les shotgun
- * Dont la date de parution est passée
- * Sorted by ratio places occupées / places totales
- * Leur adjoindre le nombre de paxs (grâce à inscription) qui sont inscrits
- */
 
-
-// SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi
-
+// On récupère les shotguns qui sont visibles, aka ouverts et actifs et non périmés
 $shotguns = shotgun_event::getVisibleShotguns($mysqli);
 
 echo '<div class="container">';

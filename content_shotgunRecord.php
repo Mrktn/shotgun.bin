@@ -11,8 +11,6 @@
 // Mais... pourquoi 2 fichiers ?
 // Comme ça je ne fais pas un if-else démentiel et quitte à dupliquer du code commun, je m'y perds moins.
 
-
-
 // Si je suis un admin
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
 {
@@ -22,6 +20,7 @@ if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
 // Sinon comme j'ai déjà checké dans index.php que j'étais logué, c'est que je suis un prolétaire lambda (aka un user)
 else
 {
+    // Vérifions que l'utilisateur peut le voir.
     require('content_shotgunRecord_user.php');
 }
 ?>

@@ -2,20 +2,18 @@
 
 require_once('inscription.php');
 
-/*if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
-    header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun : ' . $_GET['idShotgun'] .'!');*/
+if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
+    header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun !');
 
 // À ce stade on sait que le shotgun est dans la database.
-
 $id = $_GET['idShotgun'];
-
 $shotgun = shotgun_event::shotgunGet($mysqli, $id);
 
 // Est-ce que l'utilisateur courant est le créateur du shotgun considéré ?
 $isCreateur = isset($_SESSION['mailUser']) && ($shotgun->mail_crea == $_SESSION['mailUser']);
 
 if(!shotgun_event::shotgunIsVisible($mysqli, $id) && !$isCreateur)
-    ;//header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
+    header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
 
 $k = shotgun_event::getNumInscriptions($mysqli, $id);
 $n = $shotgun->nb_places;
@@ -35,7 +33,7 @@ if($isCreateur)
     else
     {
         // Sinon, de l'ouvrir
-        $button = '<form action="" method="post"><button name="todoShotgun" value="open" type="button" class="btn btn-primary">Ouvrir le shotgun</button></form>';
+        $button = '<form action="index.php?activePage=shotgunRecord&idShotgun='.$id.'" method="post"><input type="hidden" name="todoShotgun" value="openShotgun"><input type="submit" value="Fermer le shotgun" class="btn btn-primary"></form>';
     }
 
     if(!$shotgun->active)
