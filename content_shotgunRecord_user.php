@@ -33,7 +33,7 @@ if($isCreateur)
     else
     {
         // Sinon, de l'ouvrir
-        $button = '<form action="index.php?activePage=shotgunRecord&idShotgun='.$id.'" method="post"><input type="hidden" name="todoShotgun" value="openShotgun"><input type="submit" value="Fermer le shotgun" class="btn btn-primary"></form>';
+        $button = '<form action="index.php?activePage=shotgunRecord&idShotgun='.$id.'" method="post"><input type="hidden" name="todoShotgun" value="openShotgun"><input type="submit" value="Ouvrir le shotgun" class="btn btn-primary"></form>';
     }
 
     if(!$shotgun->active)

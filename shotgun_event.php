@@ -29,7 +29,7 @@ class shotgun_event
         if($action == 'deleteShotgun')
             $query = "DELETE FROM shotgun_event WHERE id=$idShotgun;";
         else if($action == 'closeShotgun')
-            $query = "UPDATE shotgun_event SET ouvert=0 WHERE id=$idShotgun;";
+            $query = "UPDATE shotgun_event SET ouvert=0 WHERE id='$idShotgun';";
         else if($action == 'openShotgun')
             $query = "UPDATE shotgun_event SET ouvert=1 WHERE id=$idShotgun;";
         else if($action == 'activateShotgun')
