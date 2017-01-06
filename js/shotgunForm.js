@@ -13,7 +13,7 @@ function htmlQ(n) {
             + '<div class="col-sm-10" id="Reponse_libre' + n + '">'
             + '<input type="radio" id ="rtrois' + n + '" name="typeReponse" value="Réponse libre" ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
             + '</div>'
-            + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '">'
+            + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '">' // choixn refere ici à la question n
             + "<input type='button' id='ajouteChoix" + n + "' value='Ajouter un choix' class='btn btn-default ajout_bouton ' onclick='(ajout(this.id))'/> "
             + "<div>"
             + "<br/>"
@@ -34,17 +34,16 @@ var max_fields = 10; //Nombre de champs maximum
 var wrapper = ".input_fields_wrap"; //Fields wrapper
 var ajout_bouton = $(".ajout_bouton"); //Ajoute bouton ID
 var enleve_bouton = $(".enleve_bouton"); // Enleve Bouton
-var x = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]; //Nombre de champs initiaux
+var x = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]; //Nombre de champs initiaux x[i] donne le nombre de choix pour la question i
 
 $(document).ready(function () {
     // On cache tout ce qui doit être caché à mettre dans un tableau des variables à cacher...
-    alert("ok");
     $(".cache").hide();
     // On ajoute le bouton de question
     //$("#question").append("<input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default' /><br/>");
-    $("#r1").click('$("#choix").show();');
-    $("#r2").click('$("#choix").show();');
-    $("#r3").click('$("#choix").hide();');
+    //$("#r1").click('$("#choix").show();');
+    //$("#r2").click('$("#choix").show();');
+    //$("#r3").click('$("#choix").hide();');
 
     // Ceci sert a gérer les ajout/ retrait de choix pour une question donnée
     //var max_fields = 10; //Nombre de champs maximum
@@ -82,6 +81,7 @@ $(document).ready(function () {
     });
     $(wrapperQ).on("click", ".enleve_boutonQ", function (e) { //user click on remove text
         e.preventDefault();
+            alert("Avant suppression: "+ xQ);
         $(this).parent('div').remove();
         xQ--;
     });
@@ -90,29 +90,21 @@ $(document).ready(function () {
 // je vais cliquer sur un ajout_bouton je dois chopper le numéro de référence : 2classes ajout_bouton et ajout_bouton_n
 
 function ajout(s) {
-    var n = s.match(/\d+/);                   // On choppe son numéro
-    alert("Avant ajout: "+ n + " " + x[n]);
+    var n = s.match(/\d+/);  // On choppe le numéro de la question
+    alert("Avant ajout Choix: "+ n + " " + x[n] );
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="choix"><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
+        $($(wrapper + n)).append('<div id="choixNQAsNOMMER"><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
     }
     alert("Après ajout: "+ n + " " + x[n]);
 }
 
-
-
 function suppr(s,p) {
-    var n = s.match(/\d+/);
-    alert("Avant suppression: "+ n + " " + x[n]);
+    var nChoix = s.match(/\d+/); // Numéro du choix
+    var nQuestion = $(p).parent('div').parent('div').attr('id').match(/\d+/); // Numéro de la question
+    alert("Avant suppression: Question: "+ nQuestion + "Nombre de Choix : " + x[nQuestion] + "Choix n: "+nChoix);
     $(p).parent('div').remove();
     alert(p);
-    x[n]--;
-    alert("Après suppression: "+ n + " " + x[n]);    
+    x[nQuestion]--;
+    alert("Après suppression: "+ nQuestion + " " + x[nQuestion] + nChoix);    
 }
-
-$($(wrapper)).on("click", ".enleve_bouton", function (e) {//user click on remove text
-        var n = this.id.match(/\d+/);
-        e.preventDefault();
-        $(this).parent('div').remove();
-        x[n]--;
-    });
