@@ -1,17 +1,17 @@
 // n est le numéro de la question cette fonction génère le script HTML associée à la j-eme question
 function htmlQ(n) {
     return ('<div class="question' + n + '">'
-            + '<textarea class="form-control" name = "questions' + n + '[]" placeholder="Poser votre question"></textarea> <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_boutonQ taille" > <br/>'
+            + '<textarea class="form-control" name = "intitule' + n + '[]" placeholder="Poser votre question"></textarea> <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_boutonQ taille" > <br/>'
             + '<div class="form-group" id="type_reponse' + n + '">'
             + "<label for='typeReponse' class='col-sm-2 control-label'>Quel type de réponse attendez-vous?</label>"
             + '<div class="col-sm-10" id="Choix_Multiple_REPU' + n + '">'
-            + '<input type="radio" id = "run' + n + '" name="typeReponse" value="Choix multiple à une réponse" ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Choix multiple à une réponse <br/>"
+            + '<input type="radio" id = "run' + n + '" name="typeReponse'+n+'" value="choix_multiple_a_une_reponse" ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Choix multiple à une réponse <br/>"
             + '</div>'
             + '<div class="col-sm-10" id="Choix_Multiple_REPM' + n + '">'
-            + '<input type="radio"   id ="rdeux' + n + '" name="typeReponse" value="Choix multiple à plusieurs réponses" ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Choix multiple à plusieurs réponses"
+            + '<input type="radio"   id ="rdeux' + n + '" name="typeReponse'+n+'" value="choix_multiple_a_plusieurs_reponses" ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Choix multiple à plusieurs réponses"
             + '</div>'
             + '<div class="col-sm-10" id="Reponse_libre' + n + '">'
-            + '<input type="radio" id ="rtrois' + n + '" name="typeReponse" value="Réponse libre" ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
+            + '<input type="radio" id ="rtrois' + n + '" name="typeReponse'+n+'" value="reponse_libre" ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
             + '</div>'
             + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '">' // choixn refere ici à la question n
             + "<input type='button' id='ajouteChoix" + n + "' value='Ajouter un choix' class='btn btn-default ajout_bouton ' onclick='(ajout(this.id))'/> "
@@ -22,7 +22,7 @@ function htmlQ(n) {
             + '</div>'
             + '<div>'
             + '<br/>'
-            + '<input type="text" name="qcmrep' + n + '[]" placeholder="Choix 2">'
+            + '<input type="text" name="qcmrep' + n + '[]" placeholder="Choix 2">' //qcmrepN[] est le tableau contenant la liste des choix possibles pour la questionN
             + '<br/>'
             + '</div>'
             + '</div>'
@@ -94,7 +94,7 @@ function ajout(s) {
     alert("Avant ajout Choix: "+ n + " " + x[n] );
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="choixNQAsNOMMER"><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
+        $($(wrapper + n)).append('<div id="choixNQAsNOMMER"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
     }
     alert("Après ajout: "+ n + " " + x[n]);
 }
