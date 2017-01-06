@@ -1,3 +1,6 @@
 
 Checker que nbplaces n'est pas nul quand on crée un shotgun
 Bien filtrer les balises html dans les textes saisis par l'utilisateur, pour ne pas qu'il ajoute des <script> ou autre
+
+Vérifier à l'inscription à un shotgun que c'est possible (nbplaces etc).
+Un utilisateur ne peut pas voir la fiche d'un shotgun pas encore publié, un admin peut

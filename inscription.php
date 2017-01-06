@@ -41,5 +41,7 @@ class inscription
         
         return ($result->num_rows != 0);
     }
+    
+    
 
 }

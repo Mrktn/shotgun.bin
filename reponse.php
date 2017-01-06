@@ -2,15 +2,13 @@
 
 class reponse
 {
-
     public $id;
     public $id_question;
-    public $type;
     public $intitule;
 
     public static function insererReponse($dbh, $id, $id_question, $type, $intitule)
     {
-        if (!getReponse($dbh, $id))
+        if(!getReponse($dbh, $id))
         {
             $sth = $dbh->prepare("INSERT INTO `reponse` (`id`, `id_question`, `type`, `intitule`) VALUES(?,?,?,?))");
             $sth->execute(array($id, $id_question, $type, $intitule));
@@ -21,15 +19,24 @@ class reponse
         }
     }
 
-    public static function getReponse($dbh, $id)
-    { // renvoie la réponse sous la classe reponse si elle existe et false sinon
-        $query = "SELECT * FROM `reponse` WHERE id = ?;";
-        $sth = $dbh->prepare($query);
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'reponse');
-        $sth->execute(array($id));
-        $reponse = $sth->fetch(); // renvoi false si la question n'existe pas
-        $sth->closeCursor();
-        return $reponse;
+    public static function getReponses($mysqli, $idQuest)
+    {
+        $a = array();
+
+        // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
+        $query = "SELECT * FROM reponse AS rep WHERE rep.id_question='$idQuest';";
+
+        $result = $mysqli->query($query);
+
+        if(!$result)
+            die($mysqli->error);
+
+        while(($row = $result->fetch_object('reponse')))
+        {
+            $a[] = $row;
+        }
+
+        return $a;
     }
 
     public static function getReponse_Quest($dbh, $id)

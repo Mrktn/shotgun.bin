@@ -8,8 +8,10 @@ if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['i
 
 $id = $_GET['idShotgun'];
 
+/*
+// Un admin peut tout voir a priori
 if(!shotgun_event::shotgunIsVisible($mysqli, $id))
-    header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
+    header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');*/
 
 $shotgun = shotgun_event::shotgunGet($mysqli, $id);
 $k = shotgun_event::getNumInscriptions($mysqli, $id);

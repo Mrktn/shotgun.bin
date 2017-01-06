@@ -24,7 +24,7 @@ class shotgun_event
         $query = "";
 
         if(!ctype_digit($idShotgun))
-            return;
+            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
 
         if($action == 'deleteShotgun')
             $query = "DELETE FROM shotgun_event WHERE id=$idShotgun;";
@@ -47,7 +47,7 @@ class shotgun_event
     {
         // They see me checkin', they hatin'
         if(!ctype_digit($id))
-            return false;
+            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
 
         $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id LIMIT 1;";
         $result = $mysqli->query($query);
@@ -61,7 +61,7 @@ class shotgun_event
     public static function shotgunIsVisible($mysqli, $id)
     {
         if(!ctype_digit($id))
-            return false;
+            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
 
         $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND ev.ouvert=1 AND ev.active=1 AND NOW() > ev.date_publi LIMIT 1;";
         $result = $mysqli->query($query);
@@ -89,11 +89,10 @@ class shotgun_event
     public static function getVisibleShotgunsNotMine($mysqli, $mailUser)
     {
         $a = array();
-        
-        
+
         if(!isValidPolytechniqueEmail($mailUser))
-        header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
-        
+            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
+
         $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 AND ev.mail_crea!=\"$mailUser\" ORDER BY ev.date_crea DESC;";
 
         $result = $mysqli->query($query);

@@ -3,10 +3,14 @@
 class question
 {
     public $id;
-    public $intitulé;
-    public $choix_multiple;
+    public $intitule;
+    public $type;
     public $id_shotgun;
 
+    public static $TYPE_CHOIXMULTIPLE = 0;
+    public static $TYPE_CHOIXUNIQUE = 1;
+    public static $TYPE_REPONSELIBRE = 2;
+   
     public static function insererQuestion($dbh, $id, $intitulé, $choix_multiple, $id_shotgun)
     {
         if (!getQuestion($dbh, $id))
@@ -20,15 +24,25 @@ class question
         }
     }
 
-    public static function getQuestion($dbh, $id)
-    { // renvoie la question sous la classe question si elle existe et false sinon
-        $query = "SELECT * FROM `question` WHERE id = ?;";
-        $sth = $dbh->prepare($query);
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'question');
-        $sth->execute(array($id));
-        $question = $sth->fetch(); // renvoi false si la question n'existe pas
-        $sth->closeCursor();
-        return $question;
+    // Récupère les questions du shotgun $idShot
+    public static function getQuestions($mysqli, $idShot)
+    {
+        $a = array();
+
+        // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
+        $query = "SELECT * FROM question AS quest WHERE quest.id_shotgun='$idShot';";
+
+        $result = $mysqli->query($query);
+
+        if(!$result)
+            die($mysqli->error);
+
+        while(($row = $result->fetch_object('question')))
+        {
+            $a[] = $row;
+        }
+
+        return $a;
     }
 
     public static function getShotgun($dbh, $id)
