@@ -38,6 +38,7 @@ var x = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]; //Nombre de champs initiaux
 
 $(document).ready(function () {
     // On cache tout ce qui doit être caché à mettre dans un tableau des variables à cacher...
+    alert("ok");
     $(".cache").hide();
     // On ajoute le bouton de question
     //$("#question").append("<input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default' /><br/>");
@@ -90,20 +91,23 @@ $(document).ready(function () {
 
 function ajout(s) {
     var n = s.match(/\d+/);                   // On choppe son numéro
+    alert("Avant ajout: "+ n + " " + x[n]);
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="choix"><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+'x[n]'+'"></div>');
+        $($(wrapper + n)).append('<div id="choix"><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
     }
+    alert("Après ajout: "+ n + " " + x[n]);
 }
 
 
 
 function suppr(s,p) {
     var n = s.match(/\d+/);
-    alert(s);
+    alert("Avant suppression: "+ n + " " + x[n]);
     $(p).parent('div').remove();
     alert(p);
     x[n]--;
+    alert("Après suppression: "+ n + " " + x[n]);    
 }
 
 $($(wrapper)).on("click", ".enleve_bouton", function (e) {//user click on remove text
