@@ -28,12 +28,12 @@ if($isCreateur)
     if($shotgun->ouvert)
     {
         // On propose de fermer le shotgun
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgun" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Fermer le shotgun" class="btn btn-primary"></form>';
+        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Fermer le shotgun" class="btn btn-primary"></form>';
     }
     else
     {
         // Sinon, de l'ouvrir
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgun" value="openShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Ouvrir le shotgun" class="btn btn-primary"></form>';
+        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="openShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Ouvrir le shotgun" class="btn btn-primary"></form>';
     }
 
     if(!$shotgun->active)
@@ -45,10 +45,10 @@ else
 {
     // Si je suis inscrit, on me propose de me désinscrire
     if(inscription::userIsRegistered($mysqli, $shotgun->id, $_SESSION['mailUser']))
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgun" value="unsuscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Désinscription" class="btn btn-danger"></form>';
+        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="unsuscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Désinscription" class="btn btn-danger"></form>';
     // Sinon, de shotgun
     else
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgun" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Shoootgun!" class="btn btn-danger"></form>';
+        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Shoootgun!" class="btn btn-danger"></form>';
 }
 
 

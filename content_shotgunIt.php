@@ -32,57 +32,64 @@ if($_GET['todoShotgunIt'] == 'suscribe')
         $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
         $questions = question::getQuestions($mysqli, $idShot);
 
-        var_dump($_POST);
-        if(count($questions) == 0)
+        // On a donc submitted les réponses.
+        if(isset($_POST['submitting']) && $_POST['submitting'] == "true")
         {
-            echo '<div class="alert alert-info">
-  <strong>Bonne nouvelle !</strong> L\'auteur du shotgun n\'a pas souhaité poser de question. Vous pouvez appuyer sur le bouton "Shotgun!" pour terminer l\'inscription.
-</div>';
+            
         }
         else
         {
-            echo '<form method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun='. $idShot . '">'; ///////// ******* IL FAUT UNE METHOD ET RÉFLÉCHIR À L'ACTION *****////
-            foreach($questions as $q)
+            if(count($questions) == 0)
             {
-                echo '<div class="panel panel-primary  center-block" style="align:center">
+                echo '<div class="alert alert-info">
+  <strong>Bonne nouvelle !</strong> L\'auteur du shotgun n\'a pas souhaité poser de question. Vous pouvez appuyer sur le bouton "Shotgun!" pour terminer l\'inscription.
+</div>';
+            }
+            else
+            {
+                echo '<form data-toggle="validator" method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">'; ///////// ******* IL FAUT UNE METHOD ET RÉFLÉCHIR À L'ACTION *****////
+                foreach($questions as $q)
+                {
+                    echo '<div class="panel panel-primary  center-block" style="align:center">
                             <div class="panel-heading">
                               <h3 class="panel-title"><strong>' . utf8_encode($q->intitule) . '</strong></h3>
                             </div>
-                            <div class="panel-body">';
+                            <div class="panel-body"><div class="form-group">';
 
-                if($q->type == question::$TYPE_CHOIXMULTIPLE)
-                {
-                    $reponses = reponse::getReponses($mysqli, $q->id);
-                    foreach($reponses as $rep)
+                    if($q->type == question::$TYPE_CHOIXMULTIPLE)
                     {
-                        echo '<input type="checkbox" name="quest' . $q->id . '[]" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                        $reponses = reponse::getReponses($mysqli, $q->id);
+                        foreach($reponses as $rep)
+                        {
+                            echo '<input type="checkbox" name="quest' . $q->id . '[]" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                        }
+                        //echo 'la question est multiple !';
                     }
-                    //echo 'la question est multiple !';
-                }
-                else if($q->type == question::$TYPE_CHOIXUNIQUE)
-                {
-                    $reponses = reponse::getReponses($mysqli, $q->id);
-                    foreach($reponses as $rep)
+                    else if($q->type == question::$TYPE_CHOIXUNIQUE)
                     {
-                        echo '<input type="radio" name="quest' . $q->id . '" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                        $reponses = reponse::getReponses($mysqli, $q->id);
+                        foreach($reponses as $rep)
+                        {
+                            echo '<input type="radio" name="quest' . $q->id . '" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                        }
                     }
-                }
-                else // réponse libre !
-                {
-                    echo '<textarea placeholder="Votre réponse..." name="quest' . $q->id . '" class="form-control" rows="5" id="comment"></textarea>';
-                }
-                echo '
+                    else // réponse libre !
+                    {
+                        echo '<textarea placeholder="Votre réponse..." name="quest' . $q->id . '" class="form-control" rows="5" id="comment"></textarea>';
+                    }
+                    echo ' </div>
                             </div>
                         </div>';
+                }
+
+                echo '<button type="submit" class="btn btn-default">Submit</button>';
+
+
+                /* Quand on clique sur le bouton, on renvoie tout à cette page avec $_POST['submitting'] = "true" de sorte qu'on sait
+                 * qu'on est en train d'envoyer les données du formulaire et pas seulement en train de le remplir */
+                echo '<input type="hidden" name="submitting" id="hiddenField" value="true" />';
+                echo '</form>';
             }
-
-            echo '<button type="submit" class="btn btn-default">Submit</button>';
-
-
-            /* Quand on clique sur le bouton, on renvoie tout à cette page avec $_POST['submitting'] = "true" de sorte qu'on sait
-             * qu'on est en train d'envoyer les données du formulaire et pas seulement en train de le remplir */
-            echo '<input type="hidden" name="submitting" id="hiddenField" value="true" />';
-            echo '</form>';
         }
     }
     else
