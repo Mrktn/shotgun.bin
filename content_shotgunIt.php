@@ -2,9 +2,29 @@
 
 //echo "Ici on tâche de vous faire shotgun l'évènement d'id : " . $_GET['idShotgun'];
 
-function fieldName($idQuest, $idRep)
+function checkRas($type, $nquest, $rep)
 {
-    return 'quest' . $idQuest . ';rep' . $idRep;
+    global $mysqli;
+    if(!ctype_digit($nquest) || ($type == "m" && !is_array($rep)) || false)
+        header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
+
+    if($type == "u" || $type == "f")
+    {
+        $pieces = explode("-", $rep);
+        if(!ctype_digit($pieces[1]) || !reponse::repIsValid($mysqli, intval($nquest), intval($pieces[1])))
+            header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
+    }
+
+    elseif($type == "m")
+    {
+        foreach($rep as $vrep)
+        {
+            $pieces = explode("-", $vrep);
+
+            if(!ctype_digit($pieces[1]) || !reponse::repIsValid($mysqli, intval($nquest), intval($pieces[1])))
+                header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
+        }
+    }
 }
 
 $idShot = $_GET['idShotgun'];
@@ -35,8 +55,89 @@ if($_GET['todoShotgunIt'] == 'suscribe')
         // On a donc submitted les réponses.
         if(isset($_POST['submitting']) && $_POST['submitting'] == "true")
         {
+            // Ici on va envoyer une requête pour inscrire le pax.
+            $formattedArray = array();
+
+            foreach($_POST as $q => $r)
+            {
+                if($q != "submitting")
+                {
+                    // FIXME: checker que tout se passe bien ici
+                    $pieces = explode("-", $q);
+
+                    if($pieces[0] == "uquest")
+                    {
+                        checkRas("u", $pieces[1], $r);
+
+                        $repieces = explode("-", $r);
+                        $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
+                        
+                        //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
+                    }
+                    elseif($pieces[0] == "mquest")
+                    {
+                        checkRas("m", $pieces[1], $r);
+
+                        foreach($r as $vrep)
+                        {
+                            $repieces = explode("-", $vrep);
+                            $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
+                            
+                            //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
+                        }
+                    }
+                    elseif($pieces[0] == "fquest")
+                    {
+                        checkRas("f", $pieces[1], $r[0]);
+                        
+                        $repieces = explode("-", $r[0]);
+                        
+                        $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), $r[1]);
+                    }
+                    else
+                        header("Location: index.php?activePage=error&msg=Requête d'inscription mal formée !");
+                }
+            }
             
+            /*echo "<br/><br/><br/><pre>";
+            
+            var_dump($formattedArray);
+            echo "</pre>";*/
+
+            if(inscription::doInscription($mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
+                header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
+            else
+                header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) ."\" !");
+            // $idShot est déjà vérifié plus que de raison
+            // $user est récupéré dans la session courante donc safe
+            // $answers est associatif $idquestion => array{[$idréponse, $texte si libre]} et déjà vérifié
+            // public static function doInscription($mysqli, $idShot, $mailUser, $answers)
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Sinon on est en train d'afficher le formulaire
         else
         {
             if(count($questions) == 0)
@@ -61,28 +162,29 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="checkbox" name="quest' . $q->id . '[]" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="checkbox" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" value="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
-                        //echo 'la question est multiple !';
                     }
                     else if($q->type == question::$TYPE_CHOIXUNIQUE)
                     {
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="radio" name="quest' . $q->id . '" value="rep' . $rep->id . '" name="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="radio" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '" value="rep' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
                     }
                     else // réponse libre !
                     {
-                        echo '<textarea placeholder="Votre réponse..." name="quest' . $q->id . '" class="form-control" rows="5" id="comment"></textarea>';
+                        $reponses = reponse::getReponses($mysqli, $q->id);
+                        echo '<input type="hidden" name="fquest-' . $q->id . '[]" id="hiddenField" value="rep-' . $reponses[0]->id . '" />';
+                        echo '<textarea placeholder="Votre réponse..." name="fquest-' . $q->id . '[]" value="testomg" class="form-control" rows="5" id="comment"></textarea>';
                     }
                     echo ' </div>
                             </div>
                         </div>';
                 }
 
-                echo '<button type="submit" class="btn btn-default">Submit</button>';
+                echo '<button type="submit" class="btn btn-default">Envoyer</button>';
 
 
                 /* Quand on clique sur le bouton, on renvoie tout à cette page avec $_POST['submitting'] = "true" de sorte qu'on sait
@@ -94,8 +196,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
     }
     else
     {
-        echo 'ouch';
-        //header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous inscrire à ce shotgun !');
+        header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous inscrire à ce shotgun !');
     }
 }
 
@@ -110,10 +211,16 @@ else
     // déjà inscrit
     if(userMayUnsuscribe($mysqli, $idShot, $_SESSION['isAdmin'], $_SESSION['mailUser']))
     {
-        
+        $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
+
+        if(inscription::doDesinscription($mysqli, $idShot, $_SESSION['mailUser']))
+            header('Location: index.php?activePage=shotgunRecord&idShotgun='.$shotgun->id);
+        else
+            header('Location: index.php?activePage=error&msg=Impossible de vous désinscrire de ce shotgun !');
     }
-    else
+    else{
         header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
+    }
 }
 
 echo '</div>';

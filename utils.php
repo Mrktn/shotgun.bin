@@ -42,24 +42,20 @@ function isValidPolytechniqueEmail($mail)
 // pas déjà inscrit
 function userMaySuscribe($mysqli, $idShot, $isAdmin, $mail)
 {
-    if($isAdmin){echo 'luser est admin !!';
+    // L'administrateur ne peut pas shotgunner
+    if($isAdmin){
         return false;
     }
 
-    $user = utilisateur::getUtilisateur($mysqli, $mail);
+    // Il doit être visible, aka ouvert, actif, et de date de publi (programmée) dépassée
+    // Et pas périmé, aka la date de l'évènement n'est pas dépassée.
+    if(!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
+        return false;
+
     $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
 
-    if(!$shotgun->active)
-        echo 'ouais il est inactif';
-    if(!$shotgun->ouvert)
-        echo 'il est pas ouvert';
-    if($mail == $shotgun->mail_crea)
-        echo 'mais tes le crea coco';
-    if((date('Y-m-d G:i:s') < $shotgun->date_publi))
-        echo "ouais mais il est pas encore publié";
-    if((date('Y-m-d G:i:s') > $shotgun->date_event))
-        echo "la date est dépassée !" . date('Y-m-d G:i:s');
-    if(!$shotgun->active || !$shotgun->ouvert || ($mail == $shotgun->mail_crea) || (date('Y-m-d G:i:s') < $shotgun->date_publi) || (date('Y-m-d G:i:s') > $shotgun->date_event) || inscription::userIsRegistered($mysqli, $idShot, $mail))
+    // Si l'utilisateur est le créateur ou qu'il est déjà enregistré, c'est aussi interdit...
+    if(($mail == $shotgun->mail_crea) || inscription::userIsRegistered($mysqli, $idShot, $mail))
         return false;
 
     return true;
@@ -76,10 +72,14 @@ function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
     if($isAdmin)
         return false;
 
-    $user = utilisateur::getUtilisateur($mysqli, $mail);
+    // Il doit être visible, aka ouvert, actif, et de date de publi (programmée) dépassée
+    // Et pas périmé, aka la date de l'évènement n'est pas dépassée.
+    if(!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
+        return false;
+   
     $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
-
-    if(!$shotgun->active || !$shotgun->ouvert || ($mail == $shotgun->mail_crea) || (date('Y-M-D G:i:s') < $shotgun->date_publi) || (date('Y-M-D G:i:s') > $shotgun->date_event) || !inscription::userIsRegistered($mysqli, $idShot, $mail))
+    
+    if(($mail == $shotgun->mail_crea) || !inscription::userIsRegistered($mysqli, $idShot, $mail))
         return false;
 
     return true;

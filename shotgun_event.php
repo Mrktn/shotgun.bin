@@ -71,6 +71,20 @@ class shotgun_event
 
         return ($result->num_rows != 0);
     }
+    
+    public static function shotgunIsPerime($mysqli, $id)
+    {
+        if(!ctype_digit($id))
+            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+
+        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND NOW() >= ev.date_event LIMIT 1;";
+        $result = $mysqli->query($query);
+
+        if(!$result)
+            die($mysqli->error);
+
+        return ($result->num_rows != 0);
+    }
 
     public static function shotgunGet($mysqli, $id)
     {

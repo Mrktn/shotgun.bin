@@ -38,27 +38,22 @@ class reponse
 
         return $a;
     }
+    
+    // Vérifie que la réponse n°nr est bien associée à la question n°nq
+    public static function repIsValid($mysqli, $nq, $nr)
+    {
+        // J'ai déjà vérifié avant chaque appel que $nq et $nr sont des entiers avec ctype !!!
+        $query = "SELECT * FROM reponse AS rep WHERE rep.id='$nr' AND rep.id_question='$nq';";
+        
+        $result = $mysqli->query($query);
 
-    public static function getReponse_Quest($dbh, $id)
-    { // Donne les réponses possibles à la question id 
-        $query = "SELECT reponse.* FROM question,reponse WHERE question.id =? AND question.id = id_question ";
-        $sth = $dbh->prepare($query);
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'reponse');
-        $sth->execute(array($id));
-        $user = $sth->fetchAll();
-        $sth->closeCursor();
-        return $user;
+        if(!$result)
+            die($mysqli->error);
+
+        return ($result->num_rows != 0);
     }
 
-    public static function getReponse_RepUtilisateur($dbh, $id)
-    { // Donne la réponse associée à la reponse_de_utilisateur id
-        $query = "SELECT reponse.* FROM reponse_de_utilisateur,reponse WHERE reponse_de_utilisateur.id =? AND reponse.id = id_reponse ";
-        $sth = $dbh->prepare($query);
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'reponse');
-        $sth->execute(array($id));
-        $user = $sth->fetchAll();
-        $sth->closeCursor();
-        return $user;
-    }
+
+    
 
 }

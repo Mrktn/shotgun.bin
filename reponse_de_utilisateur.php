@@ -6,6 +6,7 @@ class reponse_de_utilisateur
     public $id;
     public $id_reponse;
     public $texte;
+    public $mail_utilisateur;
 
     public static function insererReponseUtilisateur($dbh, $id, $id_reponse, $texte)
     {
@@ -18,6 +19,18 @@ class reponse_de_utilisateur
         {
             echo("La réponse a déjà été enregistrée"); // à insérer en erreur?
         }
+    }
+    
+    // Insère une réponse
+    // $mailUser est déjà vérifié, il provient de la session
+    // $idReponse a déjà été checké moult fois (on a vérifié que ça correspondait bien à une question et que c'était un entier - pas dans cet ordre hein)
+    public static function insertReponseUtilisateur($mysqli, $mailUser, $idReponse, $texte)
+    {
+        $stmt = $mysqli->prepare("INSERT INTO reponse_de_utilisateur (id_reponse, texte, mail_utilisateur) VALUES (?, ?, ?)");
+
+        $stmt->bind_param('iss', $idReponse, $texte, $mailUser);
+
+        return ($stmt->execute());
     }
 
     public static function getReponseUtilisateur($dbh, $id)
