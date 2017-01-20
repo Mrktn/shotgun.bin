@@ -1,7 +1,7 @@
-// n est le numéro de la question cette fonction génère le script HTML associée à la j-eme question
+// n est le numéro de la question cette fonction génère le script HTML associée à la n-eme question
 function htmlQ(n) {
-    return ('<div class="question' + n + '">'
-            + '<textarea class="form-control" name = "intitule' + n + '[]" placeholder="Poser votre question"></textarea> <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_boutonQ taille" > <br/>'
+    return ('<div id="question' + n + '">'
+            + '<textarea class="form-control" name = "intitule[]" placeholder="Poser votre question"></textarea> <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_boutonQ taille" > <br/>'
             + '<div class="form-group" id="type_reponse' + n + '">'
             + "<label for='typeReponse' class='col-sm-2 control-label'>Quel type de réponse attendez-vous?</label>"
             + '<div class="col-sm-10" id="Choix_Multiple_REPU' + n + '">'
@@ -15,14 +15,14 @@ function htmlQ(n) {
             + '</div>'
             + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '">' // choixn refere ici à la question n
             + "<input type='button' id='ajouteChoix" + n + "' value='Ajouter un choix' class='btn btn-default ajout_bouton ' onclick='(ajout(this.id))'/> "
-            + "<div>"
+            + '<div id ="question'+n+'Choix1">'
             + "<br/>"
-            + '<input type="text" name="qcmrep' + n + '[]" placeholder="Choix 1"> '
+            + '<input type="text"  name="qcmrep' + n + '[]" placeholder="Choix 1"> '
             + '<br/>'
             + '</div>'
-            + '<div>'
+            + '<div id ="question'+n+'Choix2">'
             + '<br/>'
-            + '<input type="text" name="qcmrep' + n + '[]" placeholder="Choix 2">' //qcmrepN[] est le tableau contenant la liste des choix possibles pour la questionN
+            + '<input type="text"  name="qcmrep' + n + '[]" placeholder="Choix 2">' //qcmrepN[] est le tableau contenant la liste des choix possibles pour la questionN
             + '<br/>'
             + '</div>'
             + '</div>'
@@ -39,38 +39,10 @@ var x = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]; //Nombre de champs initiaux x[i] donne l
 $(document).ready(function () {
     // On cache tout ce qui doit être caché à mettre dans un tableau des variables à cacher...
     $(".cache").hide();
-    // On ajoute le bouton de question
-    //$("#question").append("<input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default' /><br/>");
-    //$("#r1").click('$("#choix").show();');
-    //$("#r2").click('$("#choix").show();');
-    //$("#r3").click('$("#choix").hide();');
-
-    // Ceci sert a gérer les ajout/ retrait de choix pour une question donnée
-    //var max_fields = 10; //Nombre de champs maximum
-    //var wrapper = ".input_fields_wrap"; //Fields wrapper
-    //var ajout_bouton = $(".ajout_bouton"); //Ajoute bouton ID
-    //var enleve_bouton = $(".enleve_bouton"); // Enleve Bouton
-    //var x = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]; //Nombre de champs initiaux
-    //$(ajout_bouton).click(function (e) { //Si on clique sur un ajout_bouton
-    // var n = this.id.match(/\d+/);                   // On choppe son numéro
-    //e.preventDefault(); // empeche l'action par défaut du bouton
-    //if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
-    //  x[n]++; //text box increment
-    //  $($(wrapper + n)).append('<div><input type="text" name="qcmrep[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille"></div>'); //ajoute un champ <input type="text" name="qcmrepU[]" placeholder="Choix2">
-    //}
-    //});
-    //$($(wrapper)).on("click", ".enleve_bouton", function (e) {//user click on remove text
-       // var n = this.id.match(/\d+/);
-        //e.preventDefault();
-       // $(this).parent('div').remove();
-      //  x[n]--;
-    //});
-    //
 
     //Ceci sert à traiter l'ajout/ retrait de questions
     var wrapperQ = $(".input_fields_wrapQ"); //Fields wrapper
     var ajout_boutonQ = $(".ajout_boutonQ"); //Ajoute bouton ID
-    var enleve_boutonQ = $(".enleve_boutonQ"); // Enleve Bouton
     var xQ = 0; //Nombre de questions initial
     $(ajout_boutonQ).click(function (e) { //Si on clique sur un ajout_bouton
         e.preventDefault(); // empeche l'action par défaut du bouton
@@ -79,32 +51,83 @@ $(document).ready(function () {
             $(wrapperQ).append(htmlQ(xQ)); //Ajoute le HTML associé à la question xQ
         }
     });
-    $(wrapperQ).on("click", ".enleve_boutonQ", function (e) { //user click on remove text
+    $(wrapperQ).on("click", ".enleve_boutonQ", function (e) { //Bouton de suppression de question
         e.preventDefault();
-            alert("Avant suppression: "+ xQ);
+        var numQ = parseInt($(this).parent('div').attr('id').match(/\d+/));// Savoir quelle question on retire
         $(this).parent('div').remove();
-        xQ--;
+        // Actualisation des id
+        for ( var i = (numQ + 1); i< (xQ+2); i++){ // Traitons la question numéro i s'il elle n'existe pas, rien n'est fait
+                if ((typeof ($('#question'+i).attr('id'))) !== 'undefined'){
+                refresh_attr('run'+i, 'name',i-1); // Actualiser les radios
+                refresh_attr('run'+i, 'onclick',i-1);
+                refresh_attr('run'+i, 'id',i-1);
+ 
+                refresh_attr('rdeux'+i, 'name',i-1); 
+                refresh_attr('rdeux'+i, 'onclick',i-1);
+                refresh_attr('rdeux'+i, 'id',i-1);
+            
+                refresh_attr('rtrois'+i, 'name',i-1);
+                refresh_attr('rtrois'+i, 'onclick',i-1);
+                refresh_attr('rtrois'+i, 'id',i-1);
+                
+                refresh_attr('choix'+i,'class',i-1);
+            
+                refresh_attr($('#choix'+i).children('input').attr("id"),'id',i-1);
+                
+                $('#choix'+i).children('div').each(function(){ // actualiser les numéros de question dans les choix
+                    $(this).children('input').attr('name',$(this).children('input').attr('name').replace(/[0-9]+/gi,i-1));      
+                    $(this).attr("id",$(this).attr("id").replace(/[0-9]+(?=Choix)/gi,i-1)); // On renomme la question sans toucher au numéro du choix
+            }); // Actualiser tous les choix
+                        
+            $('#type_reponse'+i).children('div').each(function(){ // Actualiser le reste
+                refresh_attr($(this).attr("id"),"id",i-1);
+            });
+            refresh_attr('type_reponse'+i,'id',i-1);
+            refresh_attr('question'+i,'id',i-1);
+        }}
+        xQ--; // Il faut actualiser le nombre de choix pour chaque question
+        for (var k = (numQ-1); k <9 ; k++) {
+            x[k] = x[k+1];
+        }
+        x[9] = 0;
     });
     //
 });
-// je vais cliquer sur un ajout_bouton je dois chopper le numéro de référence : 2classes ajout_bouton et ajout_bouton_n
 
 function ajout(s) {
-    var n = s.match(/\d+/);  // On choppe le numéro de la question
-    alert("Avant ajout Choix: "+ n + " " + x[n] );
+    var n = s.match(/\d+/);  // On récupère le numéro de la question
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="choixNQAsNOMMER"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
+        $($(wrapper + n)).append('<div id="question'+n+'Choix' +x[n]+ '"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><img src="http://t2.gstatic.com/images?q=tbn:ANd9GcRvyAqQ5-XKMHWROUQ120PRMzIHW3uTj_ixh_3qHdZobwiTmo6Y-VI6chA" alt="Supprimer" class="enleve_bouton taille" onclick="suppr(this.id,this)" id="suppr'+x[n]+'"></div>');  
     }
-    alert("Après ajout: "+ n + " " + x[n]);
 }
 
 function suppr(s,p) {
     var nChoix = s.match(/\d+/); // Numéro du choix
     var nQuestion = $(p).parent('div').parent('div').attr('id').match(/\d+/); // Numéro de la question
-    alert("Avant suppression: Question: "+ nQuestion + "Nombre de Choix : " + x[nQuestion] + "Choix n: "+nChoix);
     $(p).parent('div').remove();
-    alert(p);
+    //alert (typeof nQuestion);
+    var choix = parseInt(nChoix); // nChoix est de type str
+    //alert(p);
     x[nQuestion]--;
-    alert("Après suppression: "+ nQuestion + " " + x[nQuestion] + nChoix);    
+    //On test si le choix i existe le cas échéant on le décrémente, actualisation des numéros de choix
+    for ( var i = (choix+1); i < (11); i++) {
+        var choixi = $('#question'+nQuestion+'Choix'+i);
+        if (typeof choixi.attr('id') !== 'undefined'){
+            $(choixi).children('.enleve_bouton').attr("id","suppr"+(i-1));
+            $(choixi).children('input').attr("placeholder","Choix "+(i-1));
+            $(choixi).attr("id","question"+nQuestion+"Choix"+(i-1));
+    }}
+}
+
+
+function refresh_attr(id,attribut,i) { // Modifie un attribut numéroté d'un objet en changeant son numéro
+    reg = /[0-9]+/gi;
+    change_attr(id,attribut,$('#'+id).attr(attribut).replace(reg,i));
+}
+
+
+
+function change_attr(id,attribut,newAttribut) { // Change l'attribut d'un objet donné par son id
+    $('#'+id).attr(attribut,newAttribut);
 }
