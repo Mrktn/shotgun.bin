@@ -58,6 +58,8 @@ class inscription
         if(!$stmt->execute())
             return false;
         
+        // The id of the newly created inscription !
+        $idCreatedInscription = $stmt->insert_id;
         // À partir d'ici on est bons, c'est parti pour l'étape 2 :
         // implémenter les réponses de l'utilisateur en les ajoutant à reponse_de_utilisateur
         
@@ -66,7 +68,7 @@ class inscription
         {
             foreach($r_array as $idr)
             {
-                reponse_de_utilisateur::insertReponseUtilisateur($mysqli, $mailUser, $idr[0], $idr[1]);
+                reponse_de_utilisateur::insertReponseUtilisateur($mysqli, $idCreatedInscription, $mailUser, $idr[0], $idr[1]);
             }
         }
         

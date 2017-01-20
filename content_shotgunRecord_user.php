@@ -131,7 +131,7 @@ else
         }
         echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . utf8_encode($arrayInscriptions[$j]->mail_user) . "']];";
 
-        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv(data)\">Télécharger au format CSV</button>";
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedquestions, data)\">Télécharger au format CSV</button>";
     }
 }
 echo '
