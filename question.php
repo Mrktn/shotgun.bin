@@ -30,7 +30,7 @@ class question
         $a = array();
 
         // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
-        $query = "SELECT * FROM question AS quest WHERE quest.id_shotgun='$idShot';";
+        $query = "SELECT * FROM question AS quest WHERE quest.id_shotgun='$idShot' ORDER BY quest.id ASC;";
 
         $result = $mysqli->query($query);
 

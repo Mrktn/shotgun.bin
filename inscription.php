@@ -86,5 +86,28 @@ class inscription
         return true;
     }
     
+    // Retourne l'inscription de quelqu'un à un shotgun sous forme exhaustive (intitulé des questions avec
+    // en vis-à-vis l'intitulé des réponses, grâce à une requête d'outre-tombe
+    // Diablement efficace pour créer l'array des données à télécharger
+    public static function getComprehensiveInscription($mysqli, $idShot, $mailUser)
+    {
+        $stmt = $mysqli->prepare(
+        "SELECT ins.date_shotgunned,quest.id,quest.intitule AS intitule_question,quest.type AS question_type,rep.id,GROUP_CONCAT(rep.intitule SEPARATOR ';') AS intitule_reponses,repuser.texte
+        FROM inscription AS ins, question AS quest, reponse AS rep, reponse_de_utilisateur AS repuser
+        WHERE ins.mail_user = ? AND quest.id_shotgun = ? AND rep.id_question=quest.id AND repuser.id_reponse=rep.id AND repuser.id_inscription=ins.id
+        GROUP BY quest.id
+        ORDER BY quest.id ASC");
+        
+        $stmt->bind_param('si', $mailUser, $idShot);
+        $a = array();
+        if(!$stmt->execute())
+            die($stmt->error);
+        
+        $result = $stmt->get_result();
+        while($row = $result->fetch_array(MYSQLI_ASSOC))
+            $a[] = $row;
+        return $a;
+    }
+    
 
 }

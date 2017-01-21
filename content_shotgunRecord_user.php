@@ -123,15 +123,42 @@ else
     {
         $i = 1;
         $j = 0;
-        echo "<script type=\"text/javascript\">var data = [";
-        for($j = 0; $j < (count($arrayInscriptions) - 1); $j = $j + 1)
+
+        $formattedheader = "['Rang','Date d\'inscription','Mail'";
+
+        $allQuestions = question::getQuestions($mysqli, $shotgun->id);
+
+        foreach($allQuestions as $q)
         {
-            echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . utf8_encode($arrayInscriptions[$j]->mail_user) . "'],";
+            $formattedheader .= ",'" . addslashes(htmlspecialchars(utf8_encode($q->intitule))) . "'";
+        }
+        
+        $formattedheader .= "]";
+        //inscription::getComprehensiveInscription($mysqli, $shotgun->id, $mailUser)
+
+
+
+        echo "<script type=\"text/javascript\">var data = [";
+        for($j = 0; $j < count($arrayInscriptions); $j = $j + 1)
+        {
+            $newline = "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(htmlentities($arrayInscriptions[$j]->mail_user)) . "'";
+            $currInscription = inscription::getComprehensiveInscription($mysqli, $shotgun->id, $arrayInscriptions[$j]->mail_user);
+            
+            foreach($currInscription as $row)
+            {
+                $newline .= ", '" . htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'],ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8') . "'";
+            }
+            $newline .= "]";
+            if($j < (count($arrayInscriptions) - 1))
+                $newline .= ",";
+            echo $newline;
             $i = $i + 1;
         }
-        echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . utf8_encode($arrayInscriptions[$j]->mail_user) . "']];";
+        
+        echo "];";
+        //echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(utf8_encode(htmlspecialchars($arrayInscriptions[$j]->mail_user))) . "']];";
 
-        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedquestions, data)\">Télécharger au format CSV</button>";
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>";
     }
 }
 echo '

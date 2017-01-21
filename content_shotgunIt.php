@@ -71,7 +71,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
 
                         $repieces = explode("-", $r);
                         $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
-                        
+
                         //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
                     }
                     elseif($pieces[0] == "mquest")
@@ -82,32 +82,32 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         {
                             $repieces = explode("-", $vrep);
                             $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
-                            
+
                             //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
                         }
                     }
                     elseif($pieces[0] == "fquest")
                     {
                         checkRas("f", $pieces[1], $r[0]);
-                        
+
                         $repieces = explode("-", $r[0]);
-                        
+
                         $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), $r[1]);
                     }
                     else
                         header("Location: index.php?activePage=error&msg=Requête d'inscription mal formée !");
                 }
             }
-            
-            /*echo "<br/><br/><br/><pre>";
-            
-            var_dump($formattedArray);
-            echo "</pre>";*/
+
+            /* echo "<br/><br/><br/><pre>";
+
+              var_dump($formattedArray);
+              echo "</pre>"; */
 
             if(inscription::doInscription($mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
                 header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
             else
-                header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) ."\" !");
+                header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" !");
             // $idShot est déjà vérifié plus que de raison
             // $user est récupéré dans la session courante donc safe
             // $answers est associatif $idquestion => array{[$idréponse, $texte si libre]} et déjà vérifié
@@ -214,11 +214,12 @@ else
         $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
 
         if(inscription::doDesinscription($mysqli, $idShot, $_SESSION['mailUser']))
-            header('Location: index.php?activePage=shotgunRecord&idShotgun='.$shotgun->id);
+            header('Location: index.php?activePage=shotgunRecord&idShotgun=' . $shotgun->id);
         else
             header('Location: index.php?activePage=error&msg=Impossible de vous désinscrire de ce shotgun !');
     }
-    else{
+    else
+    {
         header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
     }
 }
