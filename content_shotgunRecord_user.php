@@ -134,9 +134,6 @@ else
         }
         
         $formattedheader .= "]";
-        //inscription::getComprehensiveInscription($mysqli, $shotgun->id, $mailUser)
-
-
 
         echo "<script type=\"text/javascript\">var data = [";
         for($j = 0; $j < count($arrayInscriptions); $j = $j + 1)
@@ -156,8 +153,6 @@ else
         }
         
         echo "];";
-        //echo "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(utf8_encode(htmlspecialchars($arrayInscriptions[$j]->mail_user))) . "']];";
-
         echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>";
     }
 }

@@ -99,19 +99,10 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 }
             }
 
-            /* echo "<br/><br/><br/><pre>";
-
-              var_dump($formattedArray);
-              echo "</pre>"; */
-
             if(inscription::doInscription($mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
                 header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
             else
                 header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" !");
-            // $idShot est déjà vérifié plus que de raison
-            // $user est récupéré dans la session courante donc safe
-            // $answers est associatif $idquestion => array{[$idréponse, $texte si libre]} et déjà vérifié
-            // public static function doInscription($mysqli, $idShot, $mailUser, $answers)
         }
 
 
