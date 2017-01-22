@@ -1,7 +1,7 @@
 <?php
 
 // On récupère les shotguns dont je suis le créateur
-/*
+
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
     header('Location: index.php?activePage=error&msg=L\'administrateur ne peut pas poster de shotguns !');
 if(!isset($_SESSION['mailUser']))
@@ -10,13 +10,7 @@ if(!isset($_SESSION['mailUser']))
 $shotguns = shotgun_event::getMyShotguns($mysqli, $_SESSION['mailUser']);
 
 // TODO: proposer une autre interface
-echo <<<END
-<div class="wide">
-  	<div class="col-xs-5 line"><hr></div>
-    <div class="col-xs-2 logo">Logo</div>
-    <div class="col-xs-5 line"><hr></div>
-</div>
-END;
+
 echo '<div class="container">';
 foreach($shotguns as $currShotgun)
 {
@@ -42,16 +36,5 @@ foreach($shotguns as $currShotgun)
 
     echo '</div></div>';
 }
-*/
-echo <<<END
 
-
-
-
-<div class="container">
-  <div class="text-center">
-    <h1>Content</h1>
-  </div>
-</div><!-- /.container -->
-END;
 ?>
