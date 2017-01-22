@@ -5,13 +5,13 @@ function htmlQ(n) {
             + '<div class="form-group" id="type_reponse' + n + '">'
             + "<label for='typeReponse' class='col-sm-2 control-label'>Quel type de réponse attendez-vous?</label>"
             + '<div class="col-sm-10" id="Choix_Multiple_REPU' + n + '">'
-            + '<input type="radio" id = "run' + n + '" name="typeReponse'+n+'" value="choix_multiple_a_une_reponse" ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Choix multiple à une réponse <br/>"
+            + '<input type="radio" id = "run' + n + '" name="typeReponse'+n+'" value= 1 ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Choix multiple à une réponse <br/>"
             + '</div>'
             + '<div class="col-sm-10" id="Choix_Multiple_REPM' + n + '">'
-            + '<input type="radio"   id ="rdeux' + n + '" name="typeReponse'+n+'" value="choix_multiple_a_plusieurs_reponses" ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Choix multiple à plusieurs réponses"
+            + '<input type="radio"   id ="rdeux' + n + '" name="typeReponse'+n+'" value= 0 ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Choix multiple à plusieurs réponses"
             + '</div>'
             + '<div class="col-sm-10" id="Reponse_libre' + n + '">'
-            + '<input type="radio" id ="rtrois' + n + '" name="typeReponse'+n+'" value="reponse_libre" ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
+            + '<input type="radio" id ="rtrois' + n + '" name="typeReponse'+n+'" value= 2 ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
             + '</div>'
             + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '">' // choixn refere ici à la question n
             + "<input type='button' id='ajouteChoix" + n + "' value='Ajouter un choix' class='btn btn-default ajout_bouton ' onclick='(ajout(this.id))'/> "
