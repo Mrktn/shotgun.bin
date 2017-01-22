@@ -136,3 +136,37 @@ td.text-right {
 .taille{
     width: 15px;
 }
+
+.wide {
+  width:100%;
+  height:100px;
+  background-image:url('../resources/thunder2.jpg');
+  background-size:auto;
+}
+
+.wide img {
+  width:100%;
+}
+
+body,html {
+  height: 100%;
+}
+
+body {
+  padding-top: 50px;
+}
+
+.logo {
+  color:#fff;
+  font-weight:800;
+  font-size:12pt;
+  padding:25px;
+  text-align:center;
+}
+
+.line {
+  padding-top:20px;
+  white-space:no-wrap;
+  overflow:hidden;
+  text-align:center;
+}

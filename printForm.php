@@ -96,13 +96,60 @@ END;
 function generateNavBar($activePage, $loggedin)
 {
 
+    /*
+     * 
+     * 
+     * 
+     * <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+      <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+      </div>
+      <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#about">About</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Username</a></li>
+      </ul>
+      </div><!--/.nav-collapse -->
+      </div>
+      </div>
+     */
     echo <<<END
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
 END;
 
-    // Si par contre l'activePage est une erreur, par convention on met le focus sur l'accueil.
-    // Contestable, on peut aussi ne pas mettre de focus.
+    /* // Si par contre l'activePage est une erreur, par convention on met le focus sur l'accueil.
+      // Contestable, on peut aussi ne pas mettre de focus.
+
+
+      echo <<<END
+      </div>
+      </div>
+      </div>
+      </nav>
+      END; */
+
+    echo <<<END
+    <div class="navbar-header">
+    
+      <a class="navbar-brand" href="#">
+    <audio style="display:none" id="sound1" src="resources/thunder.mp3" preload="auto"></audio>
+                    <span onclick="document.getElementById('sound1').play();" class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+                </a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+END;
+
     if($loggedin)
     {
         if($_SESSION['isAdmin'])
@@ -118,13 +165,24 @@ END;
     {
         generateNavBarLoggedOut($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
     }
+    
+    echo "</div></div></div></div>";
+    echo '<div class="wide">
+  	<div class="col-xs-5 line"><hr></div>
+    <div class="col-xs-2 logo">shotgun.bin</div>
+    <div class="col-xs-5 line"><hr></div>
+</div>';
+    /*
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#about">About</a></li>
+      </ul>
 
-    echo <<<END
-                </div>
-            </div>
-        </div>
-    </nav>
-END;
+      <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Username</a></li>
+      </ul>
+      </div>
+      </div>
+      END; */
 }
 
 function generateHTMLHeader($title)
@@ -153,14 +211,16 @@ function generateHTMLHeader($title)
         <![endif]-->
     </head>
     <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
-                </a>
-            </div>
 END;
+    /* echo <<<END
+      <nav class="navbar navbar-default">
+      <div class="container-fluid">
+      <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+      <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+      </a>
+      </div>
+      END; */
 }
 
 function generateHTMLFooter()

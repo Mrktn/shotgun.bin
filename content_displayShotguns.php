@@ -23,15 +23,12 @@ foreach($shotguns as $currShotgun)
 
     echo '<div idShotgun="'. $currShotgun->id .'" class="panel panel-default center-block shotgunPanel" style="align:center">
   <div class="panel-heading">
-    <h3 class="panel-title">' . utf8_encode($currShotgun->titre) . ' par ' . utf8_encode($currShotgun->au_nom_de) .  ' </h3>
+    <h3 class="panel-title">' . htmlspecialchars(utf8_encode($currShotgun->titre)) . ' par ' . htmlspecialchars(utf8_encode($currShotgun->au_nom_de)) .  ' </h3>
   </div>
   <div class="panel-body">' .
-    "<div style='width: 50%' class='progress'>
-  <div  class='progress-bar' role='progressbar' aria-valuenow='$perc' aria-valuemin='0' aria-valuemax='100' style='background-color: rgb($red,$green,0);align: right;display:inline-block;width:$perc%'>
-    $k / $n
-  </div>
-</div>".
-    utf8_encode(nl2br($currShotgun->description));
+     generateProgressBar($k, $n) .
+'</div>'.
+    nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
     
     echo '</div></div>';
     

@@ -155,7 +155,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="checkbox" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="checkbox" id="rep' . $rep->id . '" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
                         echo '</div>';
                     }
@@ -165,7 +165,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="radio" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '"  required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="radio" id="rep' . $rep->id . '" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '"  required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
                         echo '</div>';
                     }
@@ -173,8 +173,8 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                     {
                         echo '<div class="form-group">';
                         $reponses = reponse::getReponses($mysqli, $q->id);
-                        echo '<input type="hidden" name="fquest-' . $q->id . '[]" id="hiddenField" value="rep-' . $reponses[0]->id . '" />';
-                        echo '<textarea placeholder="Votre réponse..." name="fquest-' . $q->id . '[]" value="testomg" class="form-control" rows="5" id="comment"></textarea>';
+                        echo '<input type="hidden" name="fquest-' . $q->id . '[]" value="rep-' . $reponses[0]->id . '" />';
+                        echo '<textarea placeholder="Votre réponse..." name="fquest-' . $q->id . '[]" class="form-control" rows="5" id="comment"></textarea>';
                         echo '</div>';
                         
                     }
@@ -183,12 +183,12 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         </div>';
                 }
 
-                echo '<button type="submit" class="btn btn-default">Envoyer</button>';
+                echo '<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
 
 
                 /* Quand on clique sur le bouton, on renvoie tout à cette page avec $_POST['submitting'] = "true" de sorte qu'on sait
                  * qu'on est en train d'envoyer les données du formulaire et pas seulement en train de le remplir */
-                echo '<input type="hidden" name="submitting" id="hiddenField" value="true" />';
+                echo '<input type="hidden" name="submitting" value="true" />';
                 echo '</form>';
             }
         }

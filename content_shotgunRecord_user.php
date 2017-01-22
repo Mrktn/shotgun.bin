@@ -20,6 +20,7 @@ $n = $shotgun->nb_places;
 // À ce stade on sait que l'utilisateur peut consulter le shotgun.
 
 $button = '';
+$frontNote = '';
 $note = ''; // frontNote = '(en attente de la réponse de l'administrateur)' si c'est le cas
 // Si je suis le créateur...
 if($isCreateur)
@@ -54,10 +55,9 @@ else
 
 echo '
 <div class="container">
-<div>
     <header class="page-header">
-    <h1 class="page-title">' . utf8_encode($shotgun->titre) . ' ' . $button . '</h1>
-    <small> <i class="fa fa-clock-o"></i> Ajouté le <time>' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</time> par ' . stripTheMail($shotgun->mail_crea) . '</small>
+    <h1 class="page-title">' . htmlspecialchars(utf8_encode($shotgun->titre)) . " $frontNote</h1>" . $button . '
+    <small> <i class="fa fa-clock-o"></i> Ajouté le ' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
   </header>
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-offset-10 col-md-5 col-lg-offset-0 col-lg-12">
@@ -67,29 +67,61 @@ echo '
           <div class="col-lg-12">
             <div class="col-xs-12 col-sm-4">
               <figure>
-                <img height="200" width="200" class="img-circle img-responsive img-thumbnail" alt="alt text" src=" ' . $shotgun->link_thumbnail . '" onerror="this.src=\'http://staging-us.armscor.com/assets/users/products/612/ria_m5_shotgun_mattnickel_12ga_edited-1.jpg\'">
+                <img height="200" width="200" class="img-circle img-responsive img-thumbnail" alt="alt text" src="' . $shotgun->link_thumbnail . '" onerror="this.src=\'http://staging-us.armscor.com/assets/users/products/612/ria_m5_shotgun_mattnickel_12ga_edited-1.jpg\'">
               </figure>
             </div>
 
             <div class="col-xs-12 col-sm-8">
               <ul class="list-group">
-                <li class="list-group-item"><strong>Auteur:</strong> ' . utf8_encode($shotgun->au_nom_de) . '</li>
+                <li class="list-group-item"><strong>Auteur:</strong> ' . htmlspecialchars(utf8_encode($shotgun->au_nom_de)) . '</li>
                 <li class="list-group-item"><strong>Date:</strong> le ' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</li>
-                <li class="list-group-item">' . '<div class="row" class="col-sm-6"> 
-    <span class="col-sm-3"><strong >Effectifs:</strong> </span>' . generateProgressBar($k, $n) . '</li>
+                <li class="list-group-item">' . '<div class="row"> 
+                <span class="col-sm-3"><strong >Effectifs:</strong> </span>' . generateProgressBar($k, $n) . '</div></li>
                 <li class="list-group-item"><strong>Prix: </strong>' . $shotgun->prix . '€ </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <div class="bs-callout bs-callout-danger">
-        <h4><strong>Description</strong></h4>
+      <div style="margin:10px">
+        <h3><strong>Description</strong></h3>
         <p>
-         ' . utf8_encode(nl2br($shotgun->description)) .
- '</p><br/>
-           
-<h4><strong>Liste des participants</strong></h4>
+         ' . nl2br(htmlspecialchars(utf8_encode($shotgun->description))) .
+ '</p><br/>';
+
+if($isCreateur)
+{
+    echo "<h3><strong>Questions posées</strong></h3>";
+    
+    $allQuestions = question::getQuestions($mysqli, $shotgun->id);
+    
+    echo "<ul>";
+    
+    foreach($allQuestions as $q)
+    {
+        echo "<li style=\"list-style-type:none \"><strong>" . htmlspecialchars(utf8_encode($q->intitule)) . "</strong>";
+        
+        if($q->type != question::$TYPE_REPONSELIBRE)
+        {
+            echo "<ul>";
+            $reponses = reponse::getReponses($mysqli, $q->id);
+            $stylePuce = 'style="list-style-type:' . ($q->type == question::$TYPE_CHOIXMULTIPLE ? "square" : "circle" ). '"';
+            foreach($reponses as $r)
+            {
+                echo "<li>" . htmlspecialchars(utf8_encode($r->intitule)) . "</li>";
+            }
+            
+            echo "</ul>";
+        }
+        
+        echo "</li>";
+    }
+    
+    echo "</ul>";
+    
+    echo "<br/>";
+}
+echo '<h3><strong>Liste des participants</strong></h3>
         ';
 
 if($shotgun->anonymous)
