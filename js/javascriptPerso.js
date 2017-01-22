@@ -3,6 +3,19 @@ $(document).ready(function () {
     $("div.shotgunPanel").click(function () {
         window.location.href = "index.php?activePage=shotgunRecord&idShotgun=".concat($(this).attr('idShotgun'));
     });
+
+
+    var requiredCheckboxes = $('.multiple_choices_form input[type=checkbox]');
+    requiredCheckboxes.click(function () {
+        var fratrie = $(this).parent().children();
+        var atLeastOneIsChecked = fratrie.is(":checked");
+
+        if (atLeastOneIsChecked) {
+            fratrie.prop('required', false);
+        } else {
+            fratrie.prop('required', true);
+        }
+    });
 });
 
 function htmlspecialchars_decode(string, quote_style) {
@@ -92,3 +105,7 @@ function download_csv(header, dat) {
     hiddenElement.download = 'people.csv';
     hiddenElement.click();
 }
+
+$(function () {
+
+});

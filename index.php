@@ -2,6 +2,8 @@
 session_name("thesess"); // Session : pour la persistance : cookies qui perdure savoir si on est co ou pas
 // ne pas mettre d'espace dans le nom de session !
 session_start();
+
+setlocale(LC_ALL, 'fr_FR.utf8','fra');
 if(!isset($_SESSION['initiated']))
 {
     session_regenerate_id();

@@ -37,10 +37,6 @@ if(!shotgun_event::shotgunIsInDB($mysqli, $idShot))
 
 if($_GET['todoShotgunIt'] == 'suscribe')
 {
-    echo '<div class="container">
-<div class="alert alert-warning center-block">
-  <strong>Attention !</strong> ' . "En vous inscrivant, vous vous engagez :<br/><ul><li>À régler la somme de n€ à l'organisateur ()</li><li>À participer à l'évènement, qui aura lieu le [date]</li></ul><br/>Vous conserverez le droit de vous désinscrire, mais les organisateurs garderont un historique détaillé des inscriptions. Conduisez-vous de manière responsable !<br/>Après inscriptions, vos informations ne seront plus modifiables. Si vous souhaitez modifier votre inscription, il vous faudra d'abord vous désinscrire et refaire un shotgun." .
-    '</div>';
     // pas un admin
     // pas le créateur
     // open et active
@@ -51,6 +47,11 @@ if($_GET['todoShotgunIt'] == 'suscribe')
     {
         $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
         $questions = question::getQuestions($mysqli, $idShot);
+        $dateIntelligible = strftime('%A %d %B %Y à %H:%M', strtotime($shotgun->date_event));
+        echo '<div class="container">
+<div class="alert alert-warning center-block">
+  <strong>Attention !</strong> ' . "En vous inscrivant, vous vous engagez :<br/><ul>" . ($shotgun->prix != (-1) ? ("<li>À <b>régler la somme de {$shotgun->prix}€</b> à \"{$shotgun->au_nom_de}\"</li>") : ("")) . "<li>À participer à l'évènement, qui aura lieu le <b>$dateIntelligible</b></li></ul><br/>Vous conserverez le droit de vous désinscrire, mais les organisateurs garderont un historique détaillé des inscriptions. Conduisez-vous de manière responsable !<br/>Après inscription, vos informations ne seront plus modifiables. Si vous souhaitez modifier votre inscription, il vous faudra d'abord vous désinscrire et refaire un shotgun, <b>au risque de perdre votre place dans cet intervalle de temps</b> !" .
+    '</div>';
 
         // On a donc submitted les réponses.
         if(isset($_POST['submitting']) && $_POST['submitting'] == "true")
@@ -146,31 +147,38 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                             <div class="panel-heading">
                               <h3 class="panel-title"><strong>' . utf8_encode($q->intitule) . '</strong></h3>
                             </div>
-                            <div class="panel-body"><div class="form-group">';
+                            <div class="panel-body">';
 
                     if($q->type == question::$TYPE_CHOIXMULTIPLE)
                     {
+                        echo '<div class="form-group multiple_choices_form">';
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="checkbox" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" value="rep' . $rep->id . '"/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="checkbox" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
+                        echo '</div>';
                     }
                     else if($q->type == question::$TYPE_CHOIXUNIQUE)
                     {
+                        echo '<div class="form-group">';
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="radio" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '" value="rep' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="radio" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '"  required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
                         }
+                        echo '</div>';
                     }
                     else // réponse libre !
                     {
+                        echo '<div class="form-group">';
                         $reponses = reponse::getReponses($mysqli, $q->id);
                         echo '<input type="hidden" name="fquest-' . $q->id . '[]" id="hiddenField" value="rep-' . $reponses[0]->id . '" />';
                         echo '<textarea placeholder="Votre réponse..." name="fquest-' . $q->id . '[]" value="testomg" class="form-control" rows="5" id="comment"></textarea>';
+                        echo '</div>';
+                        
                     }
-                    echo ' </div>
+                    echo '
                             </div>
                         </div>';
                 }

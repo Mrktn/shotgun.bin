@@ -14,6 +14,7 @@ $isCreateur = isset($_SESSION['mailUser']) && ($shotgun->mail_crea == $_SESSION[
 
 if((!shotgun_event::shotgunIsVisible($mysqli, $id) || shotgun_event::shotgunIsPerime($mysqli, $id)) && !$isCreateur)
     header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
+
 $k = shotgun_event::getNumInscriptions($mysqli, $id);
 $n = $shotgun->nb_places;
 // À ce stade on sait que l'utilisateur peut consulter le shotgun.
@@ -139,7 +140,7 @@ else
         {
             $newline = "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(htmlentities($arrayInscriptions[$j]->mail_user)) . "'";
             $currInscription = inscription::getComprehensiveInscription($mysqli, $shotgun->id, $arrayInscriptions[$j]->mail_user);
-            
+
             foreach($currInscription as $row)
             {
                 $newline .= ", '" . htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'],ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8') . "'";
