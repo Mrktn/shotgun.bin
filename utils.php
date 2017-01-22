@@ -43,7 +43,8 @@ function isValidPolytechniqueEmail($mail)
 function userMaySuscribe($mysqli, $idShot, $isAdmin, $mail)
 {
     // L'administrateur ne peut pas shotgunner
-    if($isAdmin){
+    if($isAdmin)
+    {
         return false;
     }
 
@@ -76,13 +77,34 @@ function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
     // Et pas périmé, aka la date de l'évènement n'est pas dépassée.
     if(!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
         return false;
-   
+
     $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
-    
+
     if(($mail == $shotgun->mail_crea) || !inscription::userIsRegistered($mysqli, $idShot, $mail))
         return false;
 
     return true;
+}
+
+function displayShotgunList($mysqli, $shotguns)
+{
+    foreach($shotguns as $currShotgun)
+    {
+        // Maintenant on claque une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
+        $k = shotgun_event::getNumInscriptions($mysqli, $currShotgun->id);
+        $n = $currShotgun->nb_places;
+
+        echo '<div idShotgun="' . $currShotgun->id . '" class="panel panel-default center-block shotgunPanel" style="align:center; width: 80%">
+  <div class="panel-heading">
+    <h3 class="panel-title" style="text-align:center"><strong>' . htmlspecialchars(utf8_encode($currShotgun->titre)) . '</strong> par <i>' . htmlspecialchars(utf8_encode($currShotgun->au_nom_de)) . '</i></h3>
+  </div>
+  <div class="panel-body">' .
+        generateProgressBar($k, $n) .
+        '</div>' .
+        nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
+
+        echo '</div></div>';
+    }
 }
 
 ?>
