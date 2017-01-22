@@ -23,7 +23,7 @@ if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
             {
                 $stmt = $mysqli->prepare("UPDATE `utilisateurs` SET `mdp`=? WHERE mail=?");
                 $stmt->bind_param('ss',md5($_POST['inputNewPassword']), $_SESSION["mail"]);
-                $form_values_valid = true;
+                $stmt->execute();
                 echo("mot de passe modifié");
                 $stmt->close();
                 header('Location: http://127.0.0.1/shotgun.bin/index.php?activePage=index');
