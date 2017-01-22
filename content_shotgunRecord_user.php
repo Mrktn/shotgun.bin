@@ -12,7 +12,7 @@ $shotgun = shotgun_event::shotgunGet($mysqli, $id);
 // Est-ce que l'utilisateur courant est le créateur du shotgun considéré ?
 $isCreateur = isset($_SESSION['mailUser']) && ($shotgun->mail_crea == $_SESSION['mailUser']);
 
-if(!shotgun_event::shotgunIsVisible($mysqli, $id) || shotgun_event::shotgunIsPerime($mysqli, $id) && !$isCreateur)
+if((!shotgun_event::shotgunIsVisible($mysqli, $id) || shotgun_event::shotgunIsPerime($mysqli, $id)) && !$isCreateur)
     header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
 $k = shotgun_event::getNumInscriptions($mysqli, $id);
 $n = $shotgun->nb_places;
