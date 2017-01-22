@@ -10,6 +10,7 @@
 
 // Mais... pourquoi 2 fichiers ?
 // Comme ça je ne fais pas un if-else démentiel et quitte à dupliquer du code commun, je m'y perds moins.
+// En véritié l'interface diffère pas mal selon qu'on est admin ou utilisateur.
 
 // Si je suis un admin
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
