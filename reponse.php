@@ -25,39 +25,42 @@ class reponse // Réponse = Choix
     public static function insererReponse($mysqli, $id_question, $intitule)
     {
 
-            $query = "INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)";
-            $stmt = $mysqli->prepare($query);
-            $stmt->bind_param($id_question, $intitule);
-            if (!$stmt->execute())
-            {
-                die($stmt->error);
-            }
+        $query = "INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param($id_question, $intitule);
+        if (!$stmt->execute())
+        {
+            die($stmt->error);
+        }
     }
 
     public static function getReponses($mysqli, $idQuest)
     {
         $a = array();
 
-        // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
-        $query = "SELECT * FROM reponse AS rep WHERE rep.id_question='$idQuest';";
+        $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id_question = ?;");
+        $stmt->bind_param('i', $idQuest);
 
-        $result = $mysqli->query($query);
+        if (!$stmt->execute())
+            die($stmt->error);
 
         if (!$result)
             die($mysqli->error);
 
+
         while (($row = $result->fetch_object('reponse')))
         {
-            $a[] = $row;
-        }
 
-        return $a;
+            $a[] = $row;
+
+            return $a;
+        }
     }
 
-    // Vérifie que la réponse n°nr est bien associée à la question n°nq
+// Vérifie que la réponse n°nr est bien associée à la question n°nq
     public static function repIsValid($mysqli, $nq, $nr)
     {
-        // J'ai déjà vérifié avant chaque appel que $nq et $nr sont des entiers avec ctype !!!
+// J'ai déjà vérifié avant chaque appel que $nq et $nr sont des entiers avec ctype !!!
         $query = "SELECT * FROM reponse AS rep WHERE rep.id='$nr' AND rep.id_question='$nq';";
 
         $result = $mysqli->query($query);

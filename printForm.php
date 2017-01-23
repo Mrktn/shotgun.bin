@@ -50,12 +50,12 @@ END;
 }
 
 // Génère la navbar quand on est logged in
-function generateNavbarLoggedIn($activePage)
+function generateNavbarSimpleUser($activePage)
 {
-    global $navbarLoggedIn;
+    global $navbarSimpleUser;
     global $titleNavbar;
 
-    foreach($navbarLoggedIn as $p)
+    foreach($navbarSimpleUser as $p)
     {
         $t = $titleNavbar[$p];
         echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
@@ -70,12 +70,12 @@ END;
 }
 
 // Génère la navbar quand on est logged in
-function generateNavbarLoggedInAdmin($activePage)
+function generateNavbarAdmin($activePage)
 {
-    global $navbarLoggedIn;
+    global $navbarAdmin;
     global $titleNavbar;
 
-    foreach($navbarLoggedIn as $p)
+    foreach($navbarAdmin as $p)
     {
         $t = $titleNavbar[$p];
         echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
@@ -95,23 +95,43 @@ END;
 // $activePage est la page sur laquelle on est actuellement (codage des noms de page défini dans globalvar.php : index, register, etc
 function generateNavBar($activePage, $loggedin)
 {
-
     echo <<<END
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
 END;
 
-    // Si par contre l'activePage est une erreur, par convention on met le focus sur l'accueil.
-    // Contestable, on peut aussi ne pas mettre de focus.
+    /* // Si par contre l'activePage est une erreur, par convention on met le focus sur l'accueil.
+      // Contestable, on peut aussi ne pas mettre de focus.
+
+
+      echo <<<END
+      </div>
+      </div>
+      </div>
+      </nav>
+      END; */
+
+    echo <<<END
+    <div class="navbar-header">
+    
+      <a class="navbar-brand" href="#">
+    <audio style="display:none" id="sound1" src="resources/thunder.mp3" preload="auto"></audio>
+                    <span onclick="document.getElementById('sound1').play();" class="glyphicon glyphicon-flash" aria-hidden="true" style="color:yellow"></span>
+                </a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+END;
+
     if($loggedin)
     {
         if($_SESSION['isAdmin'])
         {
-            generateNavBarLoggedInAdmin($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+            generateNavBarAdmin($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
         }
         else
         {
-            generateNavBarLoggedIn($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+            generateNavBarSimpleUser($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
         }
     }
     else
@@ -119,12 +139,23 @@ END;
         generateNavBarLoggedOut($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
     }
 
-    echo <<<END
-                </div>
-            </div>
-        </div>
-    </nav>
-END;
+    echo "</div></div></div></div>";
+    echo '<div class="wide">
+  	<div class="col-xs-5 line"><hr></div>
+    <div class="col-xs-2 logo">shotgun.bin</div>
+    <div class="col-xs-5 line"><hr></div>
+</div>';
+    /*
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#about">About</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Username</a></li>
+      </ul>
+      </div>
+      </div>
+      END; */
 }
 
 function generateHTMLHeader($title)
@@ -146,6 +177,7 @@ function generateHTMLHeader($title)
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
+            <script type="text/javascript" src="js/refresher.js"></script>
         <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -153,14 +185,16 @@ function generateHTMLHeader($title)
         <![endif]-->
     </head>
     <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
-                </a>
-            </div>
 END;
+    /* echo <<<END
+      <nav class="navbar navbar-default">
+      <div class="container-fluid">
+      <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+      <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+      </a>
+      </div>
+      END; */
 }
 
 function generateHTMLFooter()

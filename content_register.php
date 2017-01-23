@@ -8,15 +8,14 @@ if(isset($_POST['submittedRegister']))
     }
     else
     {
-        $mysqli = Database::connect();
         
-        $password = $mysqli->real_escape_string($_POST['inputPasswordRegister']);
-        $email = $mysqli->real_escape_string($_POST['inputEmailRegister']);
+        $password = DBi::$mysqli->real_escape_string($_POST['inputPasswordRegister']);
+        $email = DBi::$mysqli->real_escape_string($_POST['inputEmailRegister']);
         
         // Clé secrète de l'utilisateur, en théorie pour vérifier l'adresse mail
         $key = md5($password . $email . date('mY'));
         
-        if(utilisateur::insererUtilisateur($mysqli, $email, 0, $key, $password, 0))
+        if(utilisateur::insererUtilisateur(DBi::$mysqli, $email, 0, $key, $password, 0))
         {
             header('Location: index.php?activePage=info&msg=Votre compte a été créé, vous pouvez maintenant vous connecter !');
         }
@@ -25,7 +24,9 @@ if(isset($_POST['submittedRegister']))
 else
 {
     echo <<<END
-<div class="container">
+<div class="container center-block" style="width:100%; background-color: #ffffff">
+    <h1>S'enregistrer</h1>
+ <div class="container center-block" style="padding:30px; width:70%">
     <form data-toggle="validator" role="form" id='register' action='index.php?activePage=register' method='post'>
         <input type='hidden' name='submittedRegister' id='submittedRegister' value='1'/>
         <div class="form-group">
@@ -60,11 +61,12 @@ else
         </div>
 
         <div class="form-group ">
-            <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block login-button">S'enregistrer</button>
         </div>
 
     </form>
 </div>
+    </div>
 END;
 }
 ?>

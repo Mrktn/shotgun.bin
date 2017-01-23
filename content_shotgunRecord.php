@@ -18,6 +18,7 @@ if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
     require('content_shotgunRecord_admin.php');
 }
 
+
 // Sinon comme j'ai déjà checké dans index.php que j'étais logué, c'est que je suis un prolétaire lambda (aka un user)
 else
 {
