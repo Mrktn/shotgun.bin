@@ -82,11 +82,11 @@ echo '
                 <li class="list-group-item"><strong>Date:</strong> le ' . strftime("%d %B %Y à %H:%M", strtotime($shotgun->date_crea)) . '</li>
                 <li class="list-group-item">' . '<div class="row"> 
                 <span class="col-sm-3"><strong >Effectifs:</strong> </span>';
-                echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">';
-                include('progressbar.php');
-                echo '</div>';
+echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">';
+include('progressbar.php');
+echo '</div>';
 
-    echo '</div></li>
+echo '</div></li>
                 <li class="list-group-item"><strong>Prix: </strong>' . $shotgun->prix . '€ </li>
               </ul>
             </div>

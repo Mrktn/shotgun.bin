@@ -50,12 +50,12 @@ END;
 }
 
 // Génère la navbar quand on est logged in
-function generateNavbarLoggedIn($activePage)
+function generateNavbarSimpleUser($activePage)
 {
-    global $navbarLoggedIn;
+    global $navbarSimpleUser;
     global $titleNavbar;
 
-    foreach($navbarLoggedIn as $p)
+    foreach($navbarSimpleUser as $p)
     {
         $t = $titleNavbar[$p];
         echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
@@ -70,12 +70,12 @@ END;
 }
 
 // Génère la navbar quand on est logged in
-function generateNavbarLoggedInAdmin($activePage)
+function generateNavbarAdmin($activePage)
 {
-    global $navbarLoggedIn;
+    global $navbarAdmin;
     global $titleNavbar;
 
-    foreach($navbarLoggedIn as $p)
+    foreach($navbarAdmin as $p)
     {
         $t = $titleNavbar[$p];
         echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
@@ -127,11 +127,11 @@ END;
     {
         if($_SESSION['isAdmin'])
         {
-            generateNavBarLoggedInAdmin($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+            generateNavBarAdmin($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
         }
         else
         {
-            generateNavBarLoggedIn($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
+            generateNavBarSimpleUser($activePage == 'error' || $activePage == 'info' ? 'index' : $activePage);
         }
     }
     else

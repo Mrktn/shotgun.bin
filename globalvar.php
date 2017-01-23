@@ -11,14 +11,14 @@ $titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "displ
 // Quelles sont les pages dans la navbar quand je suis pas logged in ?
 $navbarLoggedOut = array("index", "register");
 
+// Quelles sont les pages dans la navbar quand je suis simple user ?
+$navbarSimpleUser = array("index", "displayShotguns", "myShotguns");
+
+// Quelles sont les pages dans la navbar quand je suis admin ?
+$navbarAdmin = array("index", "displayShotguns");
+
 // Quelles sont les pages qui requièrent d'être admin pour les voir ?
 $adminPages = array("manageShotguns");
-
-// Quelles sont les pages dans la navbar quand je suis logged in ?
-$navbarLoggedIn = array("index", "displayShotguns", "myShotguns");
-
-// Quelles sont les pages dans la navbar quand je suis logged in en tant qu'admin ?
-//$navbarLoggedInAdmin = array("index", "displayShotguns", "manageShotguns");
 
 // Quelles sont les pages que je suis autorisé à voir en étant logged out ?
 $authorizedLoggedOut = array("index", "register", "error", "info");

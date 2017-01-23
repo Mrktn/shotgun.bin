@@ -10,11 +10,9 @@ $shotgunsUpAndRunning = shotgun_event::getVisibleShotguns(DBi::$mysqli);
 // (sinon il est déjà apparu dans les shotguns inactifs)
 $shotgunsAVenir = shotgun_event::getActiveAVenirShotguns(DBi::$mysqli);
 
-echo '<div class="container">
-  <div class="jumbotron center-block">
-    <h2 style="align:center">Page d\'administration</h2>
-  </div>';
-echo '<div class="container">';
+echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
+echo "<h1>Administration</h1>";
+echo '<div class="container center-block" style="padding:15px">';
 echo <<<END
 <div id="menu">
     <div class="panel list-group">
