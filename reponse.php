@@ -44,17 +44,15 @@ class reponse // Réponse = Choix
         if (!$stmt->execute())
             die($stmt->error);
 
+        $result = $stmt->get_result();
+        
         if (!$result)
             die($mysqli->error);
 
-
-        while (($row = $result->fetch_object('reponse')))
-        {
-
+        while(($row = $result->fetch_object('reponse')))
             $a[] = $row;
 
-            return $a;
-        }
+        return $a;
     }
 
 // Vérifie que la réponse n°nr est bien associée à la question n°nq

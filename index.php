@@ -4,6 +4,7 @@ session_name("thesess"); // Session : pour la persistance : cookies qui perdure 
 session_start();
 
 setlocale(LC_ALL, 'fr_FR.utf8','fra');
+setlocale(LC_TIME, 'fr_FR.utf8','fra'); 
 
 if(!isset($_SESSION['initiated']))
 {
@@ -52,7 +53,7 @@ if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
 }
 */
 
-// Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer)
+// Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer, créer)
 if(isset($_GET['todoShotgunIt']))
 {
     $action = $_GET['todoShotgunIt'];

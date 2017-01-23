@@ -1,7 +1,5 @@
 <?php
 
-//echo "Ici on tâche de vous faire shotgun l'évènement d'id : " . $_GET['idShotgun'];
-
 function checkRas($type, $nquest, $rep)
 {
     if(!ctype_digit($nquest) || ($type == "m" && !is_array($rep)) || false)

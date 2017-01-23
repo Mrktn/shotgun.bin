@@ -75,16 +75,16 @@
       paginationNextClass: 'dynatable-page-next',
       paginationActiveClass: 'dynatable-active-page',
       paginationDisabledClass: 'dynatable-disabled-page',
-      paginationPrev: 'Previous',
-      paginationNext: 'Next',
+      paginationPrev: 'Précédent',
+      paginationNext: 'Suivant',
       paginationGap: [1,2,2,1],
       searchTarget: null,
       searchPlacement: 'before',
       perPageTarget: null,
       perPagePlacement: 'before',
-      perPageText: 'Show: ',
-      recordCountText: 'Showing ',
-      processingText: 'Processing...'
+      perPageText: 'Afficher: ',
+      recordCountText: 'Afficher ',
+      processingText: 'Traitement...'
     },
     dataset: {
       ajax: false,
@@ -120,7 +120,7 @@
       page: 'page',
       perPage: 'perPage',
       offset: 'offset',
-      records: 'records',
+      records: 'participants',
       record: null,
       queryRecordCount: 'queryRecordCount',
       totalRecordCount: 'totalRecordCount'
@@ -713,9 +713,9 @@
 
       if (recordsShown < recordsQueryCount && settings.features.paginate) {
         var bounds = obj.records.pageBounds();
-        text += "<span class='dynatable-record-bounds'>" + (bounds[0] + 1) + " to " + bounds[1] + "</span> of ";
+        text += "<span class='dynatable-record-bounds'>" + (bounds[0] + 1) + " to " + bounds[1] + "</span> des ";
       } else if (recordsShown === recordsQueryCount && settings.features.paginate) {
-        text += recordsShown + " of ";
+        text += recordsShown + " des ";
       }
       text += recordsQueryCount + " " + collection_name;
       if (recordsQueryCount < recordsTotal) {
@@ -1209,7 +1209,7 @@
           $searchSpan = $('<span></span>', {
             id: 'dynatable-search-' + obj.element.id,
             'class': 'dynatable-search',
-            text: 'Search: '
+            text: 'Recherche: '
           }).append($search);
 
       $search
