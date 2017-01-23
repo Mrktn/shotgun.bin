@@ -1,14 +1,14 @@
 <?php
 
-
-$shotgunsInactive = shotgun_event::getInactiveShotguns($mysqli);
+// Les shotguns pas encore autorisés
+$shotgunsInactive = shotgun_event::getInactiveShotguns(DBi::$mysqli);
 
 // Les shotguns en cours tels que visibles par les utilisateurs
-$shotgunsUpAndRunning = shotgun_event::getVisibleShotguns($mysqli);
+$shotgunsUpAndRunning = shotgun_event::getVisibleShotguns(DBi::$mysqli);
 
 // On récupère les shotguns dont la date de publi n'est pas encore arrivée, mais qui ont déjà été activés par l'admin
 // (sinon il est déjà apparu dans les shotguns inactifs)
-$shotgunsAVenir = shotgun_event::getActiveAVenirShotguns($mysqli);
+$shotgunsAVenir = shotgun_event::getActiveAVenirShotguns(DBi::$mysqli);
 
 echo '<div class="container">
   <div class="jumbotron center-block">
