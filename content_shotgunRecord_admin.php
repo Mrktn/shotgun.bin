@@ -1,7 +1,7 @@
 <?php
 
 require_once('inscription.php');
-if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB($mysqli, $_GET['idShotgun']))
+if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB(DBi::$mysqli, $_GET['idShotgun']))
     header('Location: index.php?activePage=error&msg=Impossible d\'afficher ce shotgun !');
 
 // À ce stade on sait que le shotgun est dans la database.
@@ -10,11 +10,11 @@ $id = $_GET['idShotgun'];
 
 /*
 // Un admin peut tout voir a priori
-if(!shotgun_event::shotgunIsVisible($mysqli, $id))
+if(!shotgun_event::shotgunIsVisible(DBi::$mysqli, $id))
     header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');*/
 
-$shotgun = shotgun_event::shotgunGet($mysqli, $id);
-$k = shotgun_event::getNumInscriptions($mysqli, $id);
+$shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $id);
+$k = shotgun_event::getNumInscriptions(DBi::$mysqli, $id);
 $n = $shotgun->nb_places;
 // À ce stade on sait que l'utilisateur peut consulter le shotgun.
 
@@ -64,7 +64,7 @@ if($shotgun->anonymous)
 }
 else
 {
-    $arrayInscriptions = inscription::getInscriptionsIn($mysqli, $shotgun->id);
+    $arrayInscriptions = inscription::getInscriptionsIn(DBi::$mysqli, $shotgun->id);
     $tableInscriptions = array();
 
     echo '<div style="margin:50px"><table style="margin-bottom:10px" id="oklm" class="table-fill">

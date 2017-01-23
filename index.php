@@ -2,7 +2,7 @@
 session_name("thesess"); // Session : pour la persistance : cookies qui perdure savoir si on est co ou pas
 // ne pas mettre d'espace dans le nom de session !
 session_start();
-
+session_id('TEST');
 setlocale(LC_ALL, 'fr_FR.utf8','fra');
 if(!isset($_SESSION['initiated']))
 {
@@ -13,8 +13,9 @@ if(!isset($_SESSION['initiated']))
 // Décommenter la ligne suivante pour afficher le tableau $_SESSION pour le debuggage
 //print_r($_SESSION);
 
-require('database.php');
-$mysqli = Database::connect();
+require('DBi.php');
+DBi::connect();
+
 require('logInOut.php');
 require('printForm.php');
 require('globalvar.php');
@@ -29,7 +30,7 @@ require('reponse.php');
 if(isset($_GET['todo']) && ($_GET['todo'] == 'login'))
 {
     //tentative de connexion , on a alors accès à ce qui a été entré via POST
-    logIn($mysqli);
+    logIn(DBi::$mysqli);
 }
 if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
 {
@@ -48,9 +49,9 @@ if(isset($_GET['todoShotgunIt']))
 
     if($action == "closeShotgun" || $action == 'openShotgun')
     {
-        if(shotgun_event::userMayCloseOrOpenShotgun($mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
+        if(shotgun_event::userMayCloseOrOpenShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
         {
-            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], $action);
+            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
         }
         
         else
@@ -61,7 +62,7 @@ if(isset($_GET['todoShotgunIt']))
     else if($action == 'deleteShotgun')
     {
         if($_SESSION['isAdmin'])
-            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], 'deleteShotgun');
+            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], 'deleteShotgun');
         else
             header('Location: index.php?activePage=error&msg=Il faut être admin pour supprimer un shotgun !');
     }
@@ -70,7 +71,7 @@ if(isset($_GET['todoShotgunIt']))
     else if($action == 'activateShotgun' || $action == 'disableShotgun')
     {
         if($_SESSION['isAdmin'])
-            shotgun_event::updateShotgun($mysqli, $_GET['idShotgun'], $action);
+            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
         else
             header('Location: index.php?activePage=error&msg=Il faut être admin pour activer / désactiver un shotgun !');
     }

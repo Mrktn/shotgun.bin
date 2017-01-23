@@ -12,6 +12,7 @@ echo '<div class="container center-block" style="width:100%; background-color: #
 echo "<h1>Mes shotguns</h1>";
 echo '<div class="container center-block" style="padding:15px">';
 
-displayShotgunList($mysqli, shotgun_event::getMyShotguns($mysqli, $_SESSION['mailUser']));
+displayShotgunList(DBi::$mysqli, shotgun_event::getMyShotguns(DBi::$mysqli, $_SESSION['mailUser']));
 
+echo '<script src="js/refresher.js"></script>';
 ?>

@@ -71,7 +71,7 @@ class shotgun_event
 
         return ($result->num_rows != 0);
     }
-    
+
     public static function shotgunIsPerime($mysqli, $id)
     {
         if(!ctype_digit($id))
@@ -192,6 +192,22 @@ class shotgun_event
         {
             return $isAdmin || ($shotgun->mail_crea == $mailUser);
         }
+    }
+
+    public static function userMayViewShotgunRecord($mysqli, $mailUser, $idShotgun, $isAdmin)
+    {
+        if(!shotgun_event::shotgunIsInDB($mysqli, $idShotgun))
+            return false;
+        
+        if($isAdmin)
+            return true;
+        
+        $shotgun = shotgun_event::shotgunGet($mysqli, $idShotgun);
+        
+        if($mailUser == $shotgun->mail_crea)
+            return true;
+        
+        return (shotgun_event::shotgunIsVisible($mysqli, $idShotgun) && !shotgun_event::shotgunIsPerime($mysqli, $idShotgun));
     }
 
 }
