@@ -14,9 +14,9 @@ function printLoginForm()
                             <input type="password" class="form-control" name="password"  placeholder="Mot de passe" required>
                         </div>
                         <button class="btn btn-default" name="login" type="submit">Login</button>
-                        <button  class="btn btn-default">Login Frankizzz</button>
-                    </form>
 END;
+                        //echo '<button  class="btn btn-default">Login Frankizzz</button>';
+    echo'</form>';
 }
 
 // Affuche un formulaire de déconnexion
@@ -100,17 +100,6 @@ function generateNavBar($activePage, $loggedin)
             <div class="container">
 END;
 
-    /* // Si par contre l'activePage est une erreur, par convention on met le focus sur l'accueil.
-      // Contestable, on peut aussi ne pas mettre de focus.
-
-
-      echo <<<END
-      </div>
-      </div>
-      </div>
-      </nav>
-      END; */
-
     echo <<<END
     <div class="navbar-header">
     
@@ -145,17 +134,6 @@ END;
     <div class="col-xs-2 logo">shotgun.bin</div>
     <div class="col-xs-5 line"><hr></div>
 </div>';
-    /*
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#about">About</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">Username</a></li>
-      </ul>
-      </div>
-      </div>
-      END; */
 }
 
 function generateHTMLHeader($title)
@@ -170,15 +148,16 @@ function generateHTMLHeader($title)
         <title>$title</title>
 
         <link href="css/bootstrap.css" rel="stylesheet">
-            <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
-         <link href="css/perso.css" rel="stylesheet">
+        <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
+        <link href="css/perso.css" rel="stylesheet">
 
-        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
             <script type="text/javascript" src="js/refresher.js"></script>
         <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
+            <script type="text/javascript" src="https://fastcdn.org/Readmore.js/2.1.0/readmore.min.js"></script>
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -186,15 +165,6 @@ function generateHTMLHeader($title)
     </head>
     <body>
 END;
-    /* echo <<<END
-      <nav class="navbar navbar-default">
-      <div class="container-fluid">
-      <div class="navbar-header">
-      <a class="navbar-brand" href="#">
-      <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
-      </a>
-      </div>
-      END; */
 }
 
 function generateHTMLFooter()
