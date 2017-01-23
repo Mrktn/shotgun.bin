@@ -22,7 +22,7 @@ class shotgun_event
     public static function insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active)
     { // créer un nouveau shotgun
             $date_crea = date("Y-m-d H:i:s");
-            $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`contacte`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`contacte`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($query);
             $stmt->bind_param('ssssiissisiiis',$titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active, $date_crea);
         if (!$stmt->execute())
@@ -288,7 +288,7 @@ class shotgun_event
     }
     
     public static function traiteShotgunForm($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail){
-        return insererShotgun($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail,1,0,1);
+        return shotgun_event::insererShotgun($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail,1,0,1);
     }
 
 }

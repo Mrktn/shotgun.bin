@@ -53,7 +53,7 @@ if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
 }
 */
 
-// Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer, créer)
+// Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer)
 if(isset($_GET['todoShotgunIt']))
 {
     $action = $_GET['todoShotgunIt'];
@@ -96,6 +96,19 @@ if(isset($_GET['todoShotgunIt']))
     }
     else
         header('Location: index.php?activePage=error&msg=Action interdite !');
+}
+
+elseif(isset($_GET['todoCreate']))
+{
+    if($_GET['todoCreate'] == "createShotgun")
+    {
+        
+    }
+    
+    else
+    {
+        echo "Valeur interdite pour cette variable : {$_GET['todoCreate']}";
+    }
 }
 
 // Si on a un truc dans l'URL qui dit ce qu'on doit afficher, on le fait

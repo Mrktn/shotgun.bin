@@ -27,7 +27,7 @@ class reponse // Réponse = Choix
 
         $query = "INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param($id_question, $intitule);
+        $stmt->bind_param('is',$id_question, $intitule);
         if (!$stmt->execute())
         {
             die($stmt->error);
@@ -76,6 +76,10 @@ class reponse // Réponse = Choix
         { // Traitons le choix j pour la question nQuest
             reponse::insererReponse($mysqli, $idQuestion, $qcmrep[$nQuestion][$j]);
         }
+    }
+    
+    public static function insertChoixLibre ($mysqli, $idQuestion){
+        reponse::insererReponse($mysqli, $idQuestion, "");
     }
 
 }

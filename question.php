@@ -13,8 +13,10 @@ class question
 
     public static function insererQuestion($mysqli, $intitule, $type, $id_shotgun)
     {
-        $stmt = $mysqli->prepare("INSERT INTO `question` (`intitule`, `type`, `id_shotgun`) VALUES(?,?,?))");
-        $stmt->bind_param('isii', $intitule, $type, $id_shotgun);
+        $stmt = $mysqli->prepare("INSERT INTO `question` (`intitule`, `type`, `id_shotgun`) VALUES(?,?,?)");
+        echo "$intitule<br/>$type<br/>$id_shotgun";
+        
+        $stmt->bind_param('sii', $intitule, $type, $id_shotgun);
         if (!$stmt->execute())
         {
             die($stmt->error);
@@ -77,7 +79,7 @@ class question
 
     public static function traiteQuestionForm($mysqli, $intitule, $typeReponse, $id_shotgun, $i)
     { // Insere la question i du formulaire dans la BDD
-        return insererQuestion($mysqli, $intitule[$i], $typeReponse[$i], $id_shotgun);
+        return question::insererQuestion($mysqli, $intitule[$i], $typeReponse[$i], $id_shotgun);
     }
 
 }
