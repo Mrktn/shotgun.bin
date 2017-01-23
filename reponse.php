@@ -69,12 +69,12 @@ class reponse // Réponse = Choix
         return ($result->num_rows != 0);
     }
 
-    public static function traiteChoixForm($mysqli, $idQuestion, $nQuestion)
+    public static function traiteChoixForm($mysqli,$idQuestion, $nQuestion,$qcmrep)
     { // Traite tous les choix en rapport à la question d'id ID dont on aura préalablement vérifié qu'elle admet des choix
-        $nChoix = $_POST['qcmrep' + $nQuestion] . length; // Nombre de Choix pour la question nQuestion
+        $nChoix = count($qcmrep[$nQuestion]); // Nombre de Choix pour la question nQuestion
         for ($j = 0; $j < $nChoix; $j++)
         { // Traitons le choix j pour la question nQuest
-            reponse::insererReponse($mysqli, $idQuestion, $_POST['qcmrep' + $nQuestion][$j]);
+            reponse::insererReponse($mysqli, $idQuestion, $qcmrep[$nQuestion][$j]);
         }
     }
 

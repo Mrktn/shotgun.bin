@@ -1,6 +1,51 @@
 <?php
+function doCreateShotgun($mysqli, $titre,$description,$mail_crea,$au_nom_de,$date_event,$date_publi,$nb_places,$prix,$anonymous,$link_thumbnail,$intitule,$typeReponse,$qcmrep){
+if (isset($titre) && $titre != "" &&
+        isset($description) && $description != "" &&
+        isset($mail_crea) && $mail_crea != "" &&
+        isset($au_nom_de) && $au_nom_de != "" &&
+        isset($date_event) && $date_event != "" &&
+        isset($date_publi) && $date_publi != "" &&
+        isset($anonymous) && ctype_digit($anonymous))
+{
+    $idShotgun = shotgun_event::traiteShotgunForm($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail);
+    $nQuest = count($intitule); // Nombre de questions
+    for ($i = 0; $i < $nQuest; $i++)
+    { // Traitons la question i 
+        $idQuestion = question::traiteQuestionForm($mysqli,$intitule,$typeReponse,$idShotgun,$i); // Insertion de la question
+        if ($typeReponse[$i] != question::$TYPE_REPONSELIBRE){
+        traiteChoixForm($mysqli, $idQuestion, $i);
+        }
+    }
+}
+}
 print_r($_POST);
 print_r($_GET);
+if (isset($_GET["todoShotgunIt"]) && $_GET["todoShotgunIt"] == "createShotgun")
+{
+    $titre = $_POST[$titre];
+    $description = $_POST['description'];
+    $date_event = $_POST['date_event'];
+    $date_publi = $_POST['date_publi'];
+    $nb_places = $_POST['nb_places'];
+    $prix = $_POST['prix'];
+    $mail_crea = $_POST['mail_crea'];
+    $au_nom_de = $_POST['au_nom_de'];
+    $anonymous = $_POST['anonymous'];
+    $link_thumbnail = $_POST['link_thumbnail'];
+    $intitule = $_POST['intitule'];
+    $typeReponse = array();
+    $qcmrep = array();
+    $nQuest = count($intitule); // Nombre de questions
+    for ($i = 0; $i < $nQuest; $i++) {
+        $typeReponse[$i] = $_POST['typeReponse'.$i];
+        $nChoix = count($_POST['qcmrep'.$i]); // Nombre de questions
+        for ($j = 0; $j < $nChoix; $j++) {
+            $qcmrep[$i][$j] = $_POST['qcmrep'.$i][$j];
+        }  
+    }
+    doCreateShotgun($mysqli, $titre,$description,$mail_crea,$au_nom_de,$date_event,$date_publi,$nb_places,$prix,$anonymous,$link_thumbnail,$intitule,$typeReponse,$qcmrep);
+}
 ?>
 <head>
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
@@ -9,7 +54,7 @@ print_r($_GET);
     <link href="css/perso.css" rel="stylesheet">
 </head>
 <body>
-    <form class="form-horizontal" action="content_createShotgun.php?activePage=new_shotgun&todoShotgun=create_shotgun" method="post" >
+    <form class="form-horizontal" action="content_createShotgun.php?todoShotgunIt=createShotgun" method="post" >
         <div class="form-group">
             <label for="inputTitle3" class="col-sm-2 control-label">Titre</label>
             <div class="col-sm-10">
