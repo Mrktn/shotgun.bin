@@ -11,11 +11,16 @@ class question
     public static $TYPE_CHOIXUNIQUE = 1;
     public static $TYPE_REPONSELIBRE = 2;
 
-    public static function insererQuestion($mysqli, $intitulé, $choix_multiple, $id_shotgun)
+    public static function insererQuestion($mysqli, $intitule, $type, $id_shotgun)
     {
-            $stmt = $mysqli->prepare("INSERT INTO `question` (`intitulé`, `choix_multiple`, `id_shotgun`) VALUES(?,?,?))");
-            $stmt->bind_param('isii',$intitulé, $choix_multiple, $id_shotgun);
-            $stmt->execute();
+        $stmt = $mysqli->prepare("INSERT INTO `question` (`intitule`, `type`, `id_shotgun`) VALUES(?,?,?))");
+        $stmt->bind_param('isii', $intitule, $type, $id_shotgun);
+        if (!$stmt->execute())
+        {
+            die($stmt->error);
+        }
+        $idQuestion = $stmt->insert_id;
+        return $idQuestion;
     }
 
     // Récupère la question à partir de son id
@@ -70,7 +75,9 @@ class question
         return $row;
     }
 
-    public static function traiteQuestionForm($mysqli,$id_shotgun,$i){ // Insere la question i du formulaire dans la BDD
-        insererQuestion($mysqli,$_POST['intitule'][$i],$_POST['typeReponse'+$i], $id_shotgun);
+    public static function traiteQuestionForm($mysqli, $intitule, $typeReponse, $id_shotgun, $i)
+    { // Insere la question i du formulaire dans la BDD
+        return insererQuestion($mysqli, $intitule[$i], $typeReponse[$i], $id_shotgun);
     }
+
 }

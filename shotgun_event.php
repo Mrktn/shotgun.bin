@@ -25,7 +25,12 @@ class shotgun_event
             $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`contacte`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($query);
             $stmt->bind_param('ssssiissisiiis',$titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active, $date_crea);
-            $stmt->execute();
+        if (!$stmt->execute())
+        {
+            die($stmt->error);
+        }
+        $idShotgun = $stmt->insert_id;
+        return $idShotgun;
     }
 
     public static function getShotgun($mysqli, $id)
@@ -282,8 +287,8 @@ class shotgun_event
         return $row;
     }
     
-    public static function traiteShotgunForm($mysqli){
-        insererShotgun($mysqli,htmlspecialchars($_POST['titre']),$_POST['description'],$_POST['date_event'],$_POST['date_publi'],$_POST['nb_places'],$_POST['prix'],$_POST['mail_crea'],$_POST['au_nom_de'],$_POST['anonymous'],$_POST['link_thumbnail'],1,0,1);
+    public static function traiteShotgunForm($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail){
+        return insererShotgun($mysqli,$titre,$description,$date_event,$date_publi,$nb_places,$prix,$mail_crea,$au_nom_de,$anonymous,$link_thumbnail,1,0,1);
     }
 
 }
