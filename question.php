@@ -11,17 +11,27 @@ class question
     public static $TYPE_CHOIXUNIQUE = 1;
     public static $TYPE_REPONSELIBRE = 2;
 
-    public static function insererQuestion($mysqli, $id, $intitulé, $choix_multiple, $id_shotgun)
+    public static function insererQuestion($mysqli, $intitulé, $choix_multiple, $id_shotgun)
     {
-        if (!getQuestion($mysqli, $id))
-        {
-            $stmt = $mysqli->prepare("INSERT INTO `question` (`id`, `intitulé`, `choix_multiple`, `id_shotgun`) VALUES(?,?,?,?))");
-            $stmt->bind_param('isii', $id, $intitulé, $choix_multiple, $id_shotgun);
+            $stmt = $mysqli->prepare("INSERT INTO `question` (`intitulé`, `choix_multiple`, `id_shotgun`) VALUES(?,?,?))");
+            $stmt->bind_param('isii',$intitulé, $choix_multiple, $id_shotgun);
             $stmt->execute();
-        } else
+    }
+
+    // Récupère la question à partir de son id
+    public static function getQuestionFromId($mysqli, $id)
+    {
+        $query = "SELECT * FROM question WHERE id = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param('i', $id);
+        if (!$stmt->execute())
         {
-            echo("La question existe déjà"); // à insérer en erreur?
+            die($stmt->error);
         }
+        $result = $stmt->get_result();
+        $row = $result->fetch_object('question');
+        $stmt->close();
+        return $row;
     }
 
     // Récupère les questions du shotgun $idShot
@@ -60,4 +70,7 @@ class question
         return $row;
     }
 
+    public static function traiteQuestionForm($mysqli,$id_shotgun,$i){ // Insere la question i du formulaire dans la BDD
+        insererQuestion($mysqli,$_POST['intitule'][$i],$_POST['typeReponse'+$i], $id_shotgun);
+    }
 }

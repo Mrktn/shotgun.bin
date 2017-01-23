@@ -12,6 +12,8 @@ if(!isset($_SESSION['initiated']))
 
 // Décommenter la ligne suivante pour afficher le tableau $_SESSION pour le debuggage
 //print_r($_SESSION);
+//print_r($_POST);
+//print_r($_GET);
 
 require('database.php');
 $mysqli = Database::connect();
@@ -23,6 +25,7 @@ require('shotgun_event.php');
 require('inscription.php');
 require('question.php');
 require('reponse.php');
+require_once('reponse_de_utilisateur.php');
 
 //traitement des contenus de formulaires
 //on regarde s'il y a quelque chose à faire 'todo' , si oui on regarde si c'est un login ou un loggout et on execute le cas échéant
@@ -37,6 +40,14 @@ if(isset($_GET['todo']) && $_GET['todo'] == 'logout')
     logOut();
 }
 
+/*if(isset($_GET['todo']) && $_GET['todo'] == 'create_shotgun')
+{
+    //tentative de création de shotgun
+    echo('tentative de création de shotgun');
+    doCreateShotgun($mysqli);
+    echo('shotgun crée');
+}
+*/
 
 // Si on a du boulot à faire du point de vue des shotguns (fermer, ouvrir, activer, désactiver, supprimer)
 if(isset($_GET['todoShotgunIt']))

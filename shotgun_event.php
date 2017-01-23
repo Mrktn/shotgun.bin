@@ -19,6 +19,30 @@ class shotgun_event
     public $active;
     public $date_crea;
 
+    public static function insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active)
+    { // créer un nouveau shotgun
+            $date_crea = date("Y-m-d H:i:s");
+            $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`contacte`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($query);
+            $stmt->bind_param('ssssiissisiiis',$titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active, $date_crea);
+            $stmt->execute();
+    }
+
+    public static function getShotgun($mysqli, $id)
+    { // renvoie le shotgun d'id id et faux sinon , fait-on la même avec en paramètre titre?
+        $query = "SELECT * FROM `shotgun_event` WHERE id = ?;";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param('i', $id);
+        if (!$stmt->execute())
+        {
+            die($stmt->error);
+        }
+        $result = $stmt->get_result();
+        $shotgun = $result->fetch_object('shotgun_event'); // Renvoie false si le shotgun n'existe pas
+        $stmt->close();
+        return $shotgun;
+    }
+
     public static function updateShotgun($mysqli, $idShotgun, $action)
     {
         $query = "";
@@ -206,6 +230,10 @@ class shotgun_event
         $row = $result->fetch_object('shotgun_event');
         $stmt->close();
         return $row;
+    }
+    
+    public static function traiteShotgunForm($mysqli){
+        insererShotgun($mysqli,htmlspecialchars($_POST['titre']),$_POST['description'],$_POST['date_event'],$_POST['date_publi'],$_POST['nb_places'],$_POST['prix'],$_POST['mail_crea'],$_POST['au_nom_de'],$_POST['anonymous'],$_POST['link_thumbnail'],1,0,1);
     }
 
 }

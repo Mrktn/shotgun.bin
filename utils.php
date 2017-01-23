@@ -84,5 +84,28 @@ function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
 
     return true;
 }
-
+function doCreateShotgun($mysqli){
+if (isset($_POST["titre"]) && $_POST["titre"] != "" &&
+        isset($_POST["description"]) && $_POST["description"] != "" &&
+        isset($_POST["mail_crea"]) && $_POST["mail_crea"] != "" &&
+        isset($_POST["au_nom_de"]) && $_POST["au_nom_de"] != "" &&
+        isset($_POST["date_event"]) && $_POST["date_event"] != "" &&
+        isset($_POST["date_publi"]) && $_POST["date_publi"] != "" &&
+        isset($_POST["anonymous"]) && gettype($_POST["anonymous"]) == "integer")
+{
+    shotgun_event::traiteShotgunForm($mysqli);
+    $idShotgun = $stmt->insert_id;
+    $stmt->close();
+    $nQuest = $_POST['intitule'] . length; // Nombre de questions
+    for ($i = 0; $i < $nQuest; $i++)
+    { // Traitons la question i 
+        question::traiteQuestionForm($mysqli, $idShotgun, $i); // Insertion de la question
+        $idQuestion = $stmt->insert_id;
+        $stmt->close();
+        if ($_POST['typeReponse'+$i] != 2){
+        traiteChoixForm($mysqli, $idQuestion, $i);
+        }
+    }
+}
+}
 ?>
