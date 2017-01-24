@@ -66,8 +66,10 @@ class inscription
         //FIXME: checker que les requêtes se passent bien
         foreach($answers as $idq => $r_array)
         {
+            echo "<br/>Pour la question d'id $idq<br/>";
             foreach($r_array as $idr)
             {
+                echo 'Voilà une sacré réponse : <pre>';var_dump($idr);echo '</pre><br/>';
                 reponse_de_utilisateur::insertReponseUtilisateur($mysqli, $idCreatedInscription, $mailUser, $idr[0], $idr[1]);
             }
         }

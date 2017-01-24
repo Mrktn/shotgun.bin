@@ -14,14 +14,11 @@ class reponse_de_utilisateur
     // $idReponse a déjà été checké moult fois (on a vérifié que ça correspondait bien à une question et que c'était un entier - pas dans cet ordre hein)
     public static function insertReponseUtilisateur($mysqli, $idInscription, $mailUser, $idReponse, $texte)
     {
-        if(!reponse_de_utilisateur::getReponseUtilisateur($mysqli, $idInscription))
-        {
-            $stmt = $mysqli->prepare("INSERT INTO reponse_de_utilisateur (id_reponse, texte, mail_utilisateur, id_inscription) VALUES (?, ?, ?, ?)");
+        $stmt = $mysqli->prepare("INSERT INTO reponse_de_utilisateur (id_reponse, texte, mail_utilisateur, id_inscription) VALUES (?, ?, ?, ?)");
 
-            $stmt->bind_param('issi', $idReponse, $texte, $mailUser, $idInscription);
+        $stmt->bind_param('issi', $idReponse, $texte, $mailUser, $idInscription);
 
-            return ($stmt->execute());
-        }
+        return ($stmt->execute());
     }
 
     public static function getReponseUtilisateur($mysqli, $id)

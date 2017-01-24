@@ -167,18 +167,18 @@ else
     $arrayInscriptions = inscription::getInscriptionsIn(DBi::$mysqli, $shotgun->id);
     $tableInscriptions = array();
 
-    echo '<div style="margin:50px"><table style="margin-bottom:10px" id="oklm" class="table-fill">
-               <thead>
-                <tr>
-                  <th>Rang</th>
-                  <th>Mail</th>
+    echo '<div style="margin:50px"><table style="margin-bottom:10px" id="oklm" class="dynamic table-fill">
+               <thead class="dynamic">
+                <tr  class="dynamic">
+                  <th class="dynamic">Rang</th>
+                  <th class="dynamic">Mail</th>
                 </tr>
-              </thead><tbody>';
+              </thead><tbody class="dynamic">';
 
     $i = 1;
     foreach($arrayInscriptions as $ins)
     {
-        echo "<tr><td>$i</td><td>" . utf8_encode($ins->mail_user) . '</td></tr>';
+        echo "<tr class=\"dynamic\"><td class=\"dynamic\">$i</td><td class=\"dynamic\">" . utf8_encode($ins->mail_user) . '</td></tr>';
         $i = $i + 1;
     }
 
