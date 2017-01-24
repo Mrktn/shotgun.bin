@@ -1,4 +1,5 @@
 <?php
+
 require_once('shotgun_event.php');
 require_once('DBi.php');
 
@@ -54,15 +55,9 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
         }
     }
     doCreateShotgun(DBi::$mysqli, $titre, $description, $mail_crea, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
-}
-?>
-<head>
-    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="js/shotgunForm.js"></script>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/perso.css" rel="stylesheet">
-</head>
-<body>
+} else
+{
+    echo<<<END
     <div class="fondColor">
     <br/>
     <form class="form-horizontal" action="index.php?activePage=createShotgun&todoCreate=createShotgun" method="post" >
@@ -133,7 +128,7 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
             </div>
         </div>
         <div class="form-group">
-            <label for="anonymous" class="col-sm-2 control-label">La liste des participants est-elle privée?</label>
+            <label class="col-sm-2 control-label">La liste des participants est-elle privée?</label>
             <div class="col-sm-6">
                 <input type="radio" name="anonymous" value="1" required>   oui
                 <br>
@@ -159,11 +154,5 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
         </div>
     </form>
     </div>
-</body>
-<!-- Pour la prochaine fois: traiter le POST avec BDD pour insérer le shtogun POST a pour champ titre description date_event date_publi placeLimBool nb_places payantBool prix anonymous (valant 1 si oui ou 0 sinon) link_thumbnail à mettre sous url
-intitule[] contenant un tableau avec les intitulés de chaque question (Virer le n  dans shotgunForm)
-typeReponseN contenant le type de reponse à la qeustion N
-qcmrepN[] contenant l'ensemble des choix pour la question N
-surement à implementer le placeLimBool... faire html special chars  + ??? dans le traitement
-Pb deux fois Q4!!! Il faut compléter la fonction suppr pour que en cas de suppression les numéros de choix s'actualisent!
-Idée : En partant de la racine pour chaque div id = blabla + parsing()-1
+END;
+}
