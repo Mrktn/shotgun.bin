@@ -115,5 +115,32 @@ function displayShotgunList($mysqli, $shotguns)
         echo '</p></div></div>';
     }
 }
-
+function displayShotgunAVenir($mysqli, $shotguns){
+    echo'<div class="container">
+  <h2>Hover Rows</h2>
+  <p>The .table-hover class enables a hover state on table rows:</p>            
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Organisateur</th>
+        <th>Titre</th>
+        <th>Date de l'."'évènement</th>
+        <th>Début de Shotgun</th>
+                <th>Prix</th>
+      </tr>
+    </thead>
+    <tbody>";
+    foreach($shotguns as $currShotgun) {
+           echo'<tr>
+        <td>'.$currShotgun["au_nom_de"].'</td>
+        <td>'.$currShotgun["titre"].'</td>
+        <td>'.$currShotgun["date_event"].'</td>
+        <td>'.$currShotgun["date_publi"].'</td>
+        <td>'.$currShotgun["prix"].'</td>
+      </tr>';
+    }
+    echo'    </tbody>
+  </table>
+</div>';
+}
 ?>
