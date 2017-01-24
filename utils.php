@@ -102,7 +102,8 @@ function displayShotgunList($mysqli, $shotguns)
     {
         echo '<div idShotgun="' . $currShotgun->id . '" class="panel panel-default center-block shotgunPanel" style="align:center; width: 80%">
   <div class="panel-heading">
-    <h3 class="panel-title" style="text-align:center"><strong>' . htmlspecialchars(utf8_encode($currShotgun->titre)) . '</strong> par <i>' . htmlspecialchars(utf8_encode($currShotgun->au_nom_de)) . '</i></h3>
+    <h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars(utf8_encode($currShotgun->titre)) . '</strong> par <i>' . htmlspecialchars(utf8_encode($currShotgun->au_nom_de)) . '</i></h3>
+  <a href="index.php?activePage=shotgunRecord&idShotgun='.$currShotgun->id.'" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
   </div>
   <div class="panel-body">';
         $_GET['idShotgun'] = $currShotgun->id;
@@ -110,8 +111,8 @@ function displayShotgunList($mysqli, $shotguns)
         echo '<div class="progress progress-shotgun" idShotgun="' . $currShotgun->id . '">';
         include('progressbar.php');
         echo '</div>';
-        echo  '</div>' . nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
-        echo '</div></div>';
+        echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
+        echo '</p></div></div>';
     }
 }
 

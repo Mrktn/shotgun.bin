@@ -1,9 +1,8 @@
 $(document).ready(function () {
-    $("div.shotgunPanel").css('cursor', 'pointer');
-    $("div.shotgunPanel").click(function () {
-        window.location.href = "index.php?activePage=shotgunRecord&idShotgun=".concat($(this).attr('idShotgun'));
-    });
-
+    /*$("div.shotgunPanel").css('cursor', 'pointer');
+     $("div.shotgunPanel").click(function () {
+     window.location.href = "index.php?activePage=shotgunRecord&idShotgun=".concat($(this).attr('idShotgun'));
+     });*/
 
     var requiredCheckboxes = $('.multiple_choices_form input[type=checkbox]');
     requiredCheckboxes.click(function () {
@@ -16,6 +15,12 @@ $(document).ready(function () {
             fratrie.prop('required', true);
         }
     });
+
+});
+
+jQuery(document).ready(function ($) {
+    $('.readingmore').readmore({moreLink: '<a href="#">Lire la suite</a>',
+        lessLink: '<a href="#">Fermer</a>'})
 });
 
 function htmlspecialchars_decode(string, quote_style) {
@@ -106,6 +111,3 @@ function download_csv(header, dat) {
     hiddenElement.click();
 }
 
-$(function () {
-
-});
