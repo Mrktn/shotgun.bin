@@ -2,7 +2,7 @@
 function htmlQ(n) {
     return ('<div id="question' + n + '" class="questionStyle text-center">'
             +'<br/>'
-            +'<p class = "titreQuestion"> Question n°'+n+'</p>'
+            +'<p class = "titreQuestion" id = "titreQ'+n+'"> Question n°'+n+'</p>'
             +'<img src="http://www.levivat.net/media/cache/vivat_thumbnail_view/media/vivat/12-croix-blanche-fond-noir-1.jpg" alt="SupprimerQuestion" class="enleve_boutonQ tailleQuestion" > '
             +'<br/>'
             + '<textarea class="form-control" name = "intitule[]" placeholder="Poser votre question"></textarea> <br/>'
@@ -85,6 +85,7 @@ $(document).ready(function () {
                 refresh_attr($(this).attr("id"),"id",i-1);
             });
             refresh_attr('type_reponse'+i,'id',i-1);
+            $('#titreQ'+i).replaceWith('<p class = "titreQuestion" id = "titreQ'+(i-1)+'"> Question n°'+(i-1)+'</p>');
             refresh_attr('question'+i,'id',i-1);
         }}
         xQ--; // Il faut actualiser le nombre de choix pour chaque question
