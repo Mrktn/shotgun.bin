@@ -155,13 +155,13 @@ function generateHTMLHeader($title)
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
-            <script type="text/javascript" src="js/refresher.js"></script>
+        <script type="text/javascript" src="js/refresher.js"></script>
         <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
-            <script type="text/javascript" src="js/shotgunForm.js"></script>
-            <script type="text/javascript" src="https://fastcdn.org/Readmore.js/2.1.0/readmore.min.js"></script>
+        <script type="text/javascript" src="js/shotgunForm.js"></script>
+        <script type="text/javascript" src="https://fastcdn.org/Readmore.js/2.1.0/readmore.min.js"></script>
         <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" defer></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" defer></script>
         <![endif]-->
     </head>
     <body>
