@@ -1,11 +1,11 @@
 <?php
 
-require('utils.php');
-require('database.php');
-require('utilisateur.php');
+require_once('utils.php');
+require_once('database.php');
+require_once('utilisateur.php');
 //generateHTMLHeader("S'enregistrer");
 //generateMenu("content_changePassword.php");
-$_SESSION["mail"] = 'tesuto@polytechnique.edu';
+$_SESSION['mailUser'] = 'tesuto@polytechnique.edu';
 $mysqli = mysqli_connect();
 
 if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
@@ -22,7 +22,7 @@ if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
             if (utilisateur::testerMdp($mysqli, $user, $_POST['formerPassword'])) // Tout se passe bien
             {
                 $stmt = $mysqli->prepare("UPDATE `utilisateurs` SET `mdp`=? WHERE mail=?");
-                $stmt->bind_param('ss',md5($_POST['inputNewPassword']), $_SESSION["mail"]);
+                $stmt->bind_param('ss',md5($_POST['inputNewPassword']), $_SESSION["mailUser"]);
                 $stmt->execute();
                 echo("mot de passe modifié");
                 $stmt->close();
@@ -40,6 +40,7 @@ if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
          echo ("Votre compte n'est pas référencé");   
         }
 }
+else{
 
 echo <<<FIN
 
@@ -84,7 +85,7 @@ echo <<<FIN
             </form>
         </div>
 FIN;
-
+}
 ?>
 
 <?php

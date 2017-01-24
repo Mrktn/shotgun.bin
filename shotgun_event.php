@@ -151,7 +151,7 @@ class shotgun_event
         return $a;
     }
 
-    public static function getMyShotguns($mysqli, $mailCrea)
+    public static function getMyShotguns($mysqli, $mailCrea) // Renvoie la liste des shotguns que l'utilisateur a crée
     {
         $a = array();
 
@@ -161,6 +161,27 @@ class shotgun_event
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
         $query = "SELECT * FROM shotgun_event AS ev WHERE ev.mail_crea=\"$mailCrea\" ORDER BY ev.date_crea DESC;";
 
+        $result = $mysqli->query($query);
+
+        if (!$result)
+            die($mysqli->error);
+
+        while (($row = $result->fetch_object('shotgun_event')))
+        {
+            $a[] = $row;
+        }
+
+        return $a;
+    }
+        public static function getMyShotgunsReserves($mysqli, $mailCrea) // Renvoie la liste des shotguns que l'utilisateur a crée
+    {
+        $a = array();
+
+        if (!isValidPolytechniqueEmail($mailCrea))
+            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
+
+        // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
+        $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user=\"$mailCrea\" AND inscription.id_shotgun = shotgun_event.id ORDER BY shotgun_event.date_crea DESC;";
         $result = $mysqli->query($query);
 
         if (!$result)
