@@ -14,20 +14,19 @@ class reponse_de_utilisateur
     // $idReponse a déjà été checké moult fois (on a vérifié que ça correspondait bien à une question et que c'était un entier - pas dans cet ordre hein)
     public static function insertReponseUtilisateur($mysqli, $idInscription, $mailUser, $idReponse, $texte)
     {
-                if (!getReponseUtilisateur($mysqli, $idInscription)){
         $stmt = $mysqli->prepare("INSERT INTO reponse_de_utilisateur (id_reponse, texte, mail_utilisateur, id_inscription) VALUES (?, ?, ?, ?)");
 
         $stmt->bind_param('issi', $idReponse, $texte, $mailUser, $idInscription);
 
         return ($stmt->execute());
-    }}
+    }
 
     public static function getReponseUtilisateur($mysqli, $id)
     { // renvoie la réponse de l'utilisateur sous la classe reponse_de_utilisateur si elle existe et false sinon
         $query = "SELECT * FROM `reponse_de_utilisateur` WHERE id = ?;";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute())
+        if(!$stmt->execute())
         {
             die($stmt->error);
         }
@@ -43,13 +42,14 @@ class reponse_de_utilisateur
         $query = "SELECT reponse_de_utilisateur.* FROM reponse_de_utilisateur,reponse WHERE reponse.id =? AND reponse.id = id_reponse ";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute())
+        if(!$stmt->execute())
         {
             die($stmt->error);
         }
         $result = $stmt->get_result();
- 
-        while($row = $result->fetch_object()){
+
+        while($row = $result->fetch_object())
+        {
             $a[] = $row;
         }
         $stmt->close();

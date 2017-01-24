@@ -16,28 +16,6 @@ function labelFromPercentage($r)
     return "progress-bar-danger";
 }
 
-/* function generateProgressBarFromShotgun($mysqli, $shotgun)
-  {
-  // Maintenant on claque une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
-  $k = shotgun_event::getNumInscriptions($mysqli, $shotgun->id);
-  $n = $shotgun->nb_places;
-
-  $perc = $k / (float) $n;
-
-  return '
-  <div class="progress progress-shotgun" idShot="' . $shotgun->id . '">
-  <div class="progress-bar active ' . labelFromPercentage($perc) . '" role="progressbar" aria-valuenow="' . floor(100 * $perc) . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . floor(100 * $perc) . '%">
-  <span><strong>' . $k . ' / ' . $n . '</strong></span>
-  </div>
-  </div>';
-  }
-
-  function generateProgressBarFromId($mysqli, $id)
-  {
-  $shotgun = shotgun_event::shotgunGet($mysqli, $id);
-  return generateProgressBarFromShotgun($mysqli, $shotgun);
-  } */
-
 // TODO: cette fonction, mieux écrite, nous fera gagner en sécurité
 function isValidPolytechniqueEmail($mail)
 {
@@ -112,7 +90,7 @@ function displayShotgunList($mysqli, $shotguns)
         include('progressbar.php');
         echo '</div>';
         echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
-        echo '</p></div></div>';
+        echo '</p></div>';
     }
 }
 function displayShotgunAVenir($mysqli, $shotguns){

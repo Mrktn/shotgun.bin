@@ -11,7 +11,8 @@ if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB(DBi::$mysqli, $_G
 else
 {
     $iid = $_GET['idShotgun'];
-    $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $iid);
+    $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, strval($iid));
+
     // Maintenant on claque une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
     $k = shotgun_event::getNumInscriptions(DBi::$mysqli, $iid);
     $n = $shotgun->nb_places;

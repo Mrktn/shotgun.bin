@@ -28,7 +28,7 @@ else
     echo '<span class="label label-primary">' . count($shotgunsInactive) . '</span>';
 }
 echo <<<END
-<strong>Shotguns non approuvés</strong>
+<strong> Shotguns non approuvés</strong>
 END;
 
 
@@ -60,7 +60,7 @@ else
     echo '<span class="label label-primary">' . count($shotgunsUpAndRunning) . '</span>';
 }
 
-echo '<strong>Tous les shotguns en cours</strong><span class="glyphicon glyphicon-list pull-right"></span></a>
+echo '<strong> Tous les shotguns en cours</strong><span class="glyphicon glyphicon-list pull-right"></span></a>
         <div style="margin-bottom: 40px" id="sl" class="sublinks collapse">';
 
 if(count($shotgunsUpAndRunning) == 0)
@@ -87,7 +87,7 @@ else
     echo '<span class="label label-primary">' . count($shotgunsAVenir) . '</span>';
 }
 
-echo '<strong>Shotguns à venir</strong><span class="glyphicon glyphicon-send pull-right"></span></a>
+echo '<strong> Shotguns à venir</strong><span class="glyphicon glyphicon-send pull-right"></span></a>
         <div style="margin-bottom: 40px" id="s2" class="sublinks collapse">';
 
 
