@@ -109,7 +109,7 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
         <div class="form-group cache" id="Nb_places" >
             <label for="inputNb_places3" id ="labelplace" class="col-sm-2 control-label" >Nombre de places</label>
             <div class="col-sm-6">
-                <input type="number" name="nb_places" value = -1 class="col-sm-2 control-label" id="inputNb_places3">
+                <input type="number" name="nb_places" value = 0 class="col-sm-2 control-label" id="inputNb_places3">
             </div>
         </div>
         <div class="form-group">
@@ -124,7 +124,7 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
         <div class="form-group cache" id="PrixQ">
             <label for="inputPrix3" id="labelprix" class="col-sm-2 control-label">Prix</label>
             <div class="col-sm-6">
-                <input type="number" name="prix" value = -1 class="col-sm-2 control-label" id="inputPrix3">
+                <input type="number" name="prix" value = 0 class="col-sm-2 control-label" id="inputPrix3">
             </div>
         </div>
         <div class="form-group">

@@ -94,27 +94,59 @@ function displayShotgunList($mysqli, $shotguns)
     }
 }
 function displayShotgunAVenir($mysqli, $shotguns){
-    echo'<div class="container">
-  <h2>Hover Rows</h2>
-  <p>The .table-hover class enables a hover state on table rows:</p>            
+    echo'<div class="container fiftycent">
+  <h2>Les prochains shotguns à ne pas rater</h2>
+  <p>Be on time!</p>            
   <table class="table table-hover">
     <thead>
       <tr>
         <th>Organisateur</th>
         <th>Titre</th>
         <th>Date de l'."'évènement</th>
-        <th>Début de Shotgun</th>
+        <th >Début Shotgun</th>
                 <th>Prix</th>
       </tr>
     </thead>
     <tbody>";
     foreach($shotguns as $currShotgun) {
            echo'<tr>
-        <td>'.$currShotgun["au_nom_de"].'</td>
-        <td>'.$currShotgun["titre"].'</td>
-        <td>'.$currShotgun["date_event"].'</td>
-        <td>'.$currShotgun["date_publi"].'</td>
-        <td>'.$currShotgun["prix"].'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->au_nom_de)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->titre)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_publi)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>
+      </tr>';
+    }
+    echo'    </tbody>
+  </table>
+</div>';
+}
+
+function displayMonAgenda($mysqli, $shotguns){
+        echo'<div class="container fiftycent">
+  <h2>Mon agenda</h2>
+  <p>Sois présent si tu ne veux pas te faire Balestrer!</p>            
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Organisateur</th>
+        <th>Titre</th>
+        <th>Date de l'."'évènement</th>
+        <th>Prix</th>
+        <th>Inscrits</th>
+      </tr>
+    </thead>
+    <tbody>";
+    foreach($shotguns as $currShotgun) { // Faire le truc du ? de pro
+        $n = shotgun_event::getNumInscriptions($mysqli,$currShotgun->id);
+        $nbplaces = htmlspecialchars(utf8_encode($currShotgun->nb_places));
+           echo'<tr>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->au_nom_de)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->titre)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
+        <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>';
+           if ($nbplaces == 0) { echo ($n.'/'.$nbplaces);} else { echo ($nbplaces);};
+        echo'<td>'.$n.'/'.htmlspecialchars(utf8_encode($currShotgun->nb_places)).'</td> 
       </tr>';
     }
     echo'    </tbody>
