@@ -8,7 +8,7 @@
  */
 
 
-require_once('inscription.php');
+require_once('classes/inscription.php');
 
 if(!isset($_GET['idShotgun']))
     header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
@@ -107,7 +107,7 @@ echo '
                 <li class="list-group-item">' . '<div class="row"> 
                 <span class="col-sm-3"><strong >Effectifs:</strong> </span>';
 echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">';
-include('progressbar.php');
+include('api/progressbar.php');
 echo '</div>';
 
 echo '</div></li>
@@ -158,7 +158,7 @@ if($isCreateur)
 echo '<h3><strong>Liste des participants</strong></h3>
         ';
 
-if($shotgun->anonymous)
+if($shotgun->anonymous && !($_SESSION['mailUser'] == $shotgun->mail_crea))
 {
     echo '<p>L\'auteur du shotgun n\'a pas souhaité rendre la liste des participants visibles !</p>';
 }
@@ -220,8 +220,14 @@ else
 
         echo "];";
         echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>";
+        
     }
-}
+    
+    if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
+        echo '<a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun='. $shotgun->id .'" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a>';
+//echo '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" type="submit" value="Supprimer" class="btn btn-danger"></form>';
+        
+            }
 echo '
     </div>
 </div>

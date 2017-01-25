@@ -17,18 +17,18 @@ if(!isset($_SESSION['initiated']))
 //print_r($_POST);
 //print_r($_GET);
 
-require('DBi.php');
+require('classes/DBi.php');
 DBi::connect();
 
 require('logInOut.php');
 require('printForm.php');
 require('globalvar.php');
 require('utils.php');
-require('shotgun_event.php');
-require('inscription.php');
-require('question.php');
-require('reponse.php');
-require_once('reponse_de_utilisateur.php');
+require('classes/shotgun_event.php');
+require('classes/inscription.php');
+require('classes/question.php');
+require('classes/reponse.php');
+require_once('classes/reponse_de_utilisateur.php');
 
 //traitement des contenus de formulaires
 //on regarde s'il y a quelque chose à faire 'todo' , si oui on regarde si c'est un login ou un loggout et on execute le cas échéant
@@ -63,10 +63,8 @@ if(isset($_GET['todoShotgunIt']))
 
     if($action == "closeShotgun" || $action == 'openShotgun')
     {
-        if(shotgun_event::userMayCloseOrOpenShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
-        {
+        if(shotgun_event::userMayCloseOpenShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
             shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
-        }
         
         else
             header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour fermer / ouvrir ce shotgun !');
@@ -75,16 +73,16 @@ if(isset($_GET['todoShotgunIt']))
     // Seuls les admins peuvent delete
     else if($action == 'deleteShotgun')
     {
-        if($_SESSION['isAdmin'])
+        if(shotgun_event::userMayDeleteShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
             shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], 'deleteShotgun');
         else
-            header('Location: index.php?activePage=error&msg=Il faut être admin pour supprimer un shotgun !');
+            header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions nécessaires pour supprimer un shotgun !');
     }
     
     // Il faut être admin pour activer / désactiver (autoriser / interdire)
     else if($action == 'activateShotgun' || $action == 'disableShotgun')
     {
-        if($_SESSION['isAdmin'])
+        if(shotgun_event::userMayActivateDisableShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
             shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
         else
             header('Location: index.php?activePage=error&msg=Il faut être admin pour activer / désactiver un shotgun !');
@@ -98,6 +96,7 @@ if(isset($_GET['todoShotgunIt']))
         header('Location: index.php?activePage=error&msg=Action interdite !');
 }
 
+// FIXME: clean this mess
 elseif(isset($_GET['todoCreate']))
 {
     if($_GET['todoCreate'] == "createShotgun")
@@ -131,7 +130,7 @@ if(isset($_GET['activePage']))
             generateHTMLHeader("Erreur");
             generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
 
-            require('content_error.php');
+            require('content/content_error.php');
         }
 
         // Ici on gère les informations à l'utilisateur
@@ -140,7 +139,7 @@ if(isset($_GET['activePage']))
             generateHTMLHeader("Information");
             generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
 
-            require('content_info.php');
+            require('content/content_info.php');
         }
         //echo "La clé existe <br/>";
         // Si l'utilisateur est logué et la page est accessible aux utilisateur logués
@@ -155,7 +154,7 @@ if(isset($_GET['activePage']))
                 generateHTMLHeader($title[$_GET['activePage']]);
                 generateNavBar($_GET['activePage'], isset($_SESSION['loggedIn']));
 
-                require("content_" . $_GET['activePage'] . ".php");
+                require("content/content_" . $_GET['activePage'] . ".php");
             }
             
             else

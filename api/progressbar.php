@@ -1,9 +1,34 @@
 <?php
 
-require_once('DBi.php');
-require_once('shotgun_event.php');
-require_once('utils.php');
+// Propriété: include ne crée pas d'erreur si la ressource n'existe pas.
+// Si c'est jQuery qui contacte l'API pour refresh une progressbar, il faut remonter l'arborescence car on est dans api/
+// Sinon, si c'est un content_X.php, on est déjà à la racine.
+
+$filesDepuisContent = array('classes/DBi.php', 'classes/shotgun_event.php', 'utils.php');
+$filesDepuisjQuery = array('../classes/DBi.php', '../classes/shotgun_event.php', '../utils.php');
+/* // Si c'est depuis un content, ce seront ces fichiers
+  include_once('classes/DBi.php');
+  include_once('classes/shotgun_event.php');
+  include_once('utils.php');
+
+  // Sinon in faut remonter
+  include_once('../classes/DBi.php');
+  include_once('../classes/shotgun_event.php');
+  include_once('../utils.php'); */
+
+if(file_exists($filesDepuisContent[0]))
+{
+    foreach($filesDepuisContent as $f)
+        include_once($f);
+}
+else
+{
+    foreach($filesDepuisjQuery as $f)
+        include_once($f);
+}
+
 // Retourner une jolie progressbar pour le shotgun donné
+
 DBi::connect();
 // shotgunIsInDB va vérifier qu'ona bien un entier dans le $_GET !
 if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB(DBi::$mysqli, $_GET['idShotgun']))
