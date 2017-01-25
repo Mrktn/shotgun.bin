@@ -76,7 +76,8 @@ else
 {
     // Si je suis inscrit, on me propose de me désinscrire
     if(inscription::userIsRegistered(DBi::$mysqli, $shotgun->id, $_SESSION['mailUser']))
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="unsuscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Désinscription" class="btn btn-danger"></form>';
+        $button = '<a href="index.php?activePage=shotgunIt&todoShotgunIt=unsuscribe&idShotgun='. $shotgun->id .'" class="btn btn-danger" unsuscribe-confirm="Êtes-vous certain de vouloir vous désinscrire ? :-O" role="button">Désinscription</a><br/>';
+
     // Sinon, de shotgun
     else
         $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Shoootgun!" class="btn btn-danger"></form>';
@@ -219,7 +220,7 @@ else
         }
 
         echo "];";
-        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>";
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>  ";
         
     }
     
