@@ -87,7 +87,7 @@ function displayShotgunList($mysqli, $shotguns)
         $_GET['idShotgun'] = $currShotgun->id;
         
         echo '<div class="progress progress-shotgun" idShotgun="' . $currShotgun->id . '">';
-        include('progressbar.php');
+        include('./api/progressbar.php');
         echo '</div>';
         echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
         echo '</p></div>';

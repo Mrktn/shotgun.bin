@@ -1,8 +1,7 @@
 <?php
 
 require_once('utils.php');
-require_once('database.php');
-require_once('utilisateur.php');
+require_once('classes/utilisateur.php');
 //generateHTMLHeader("S'enregistrer");
 //generateMenu("content_changePassword.php");
 $_SESSION['mailUser'] = 'tesuto@polytechnique.edu';

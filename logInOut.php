@@ -1,6 +1,6 @@
 <?php
 
-require('utilisateur.php');
+require('classes/utilisateur.php');
 
 // opérations sur la base
 function logIn($mysqli)

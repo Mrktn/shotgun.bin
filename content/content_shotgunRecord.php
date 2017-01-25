@@ -8,7 +8,7 @@
  */
 
 
-require_once('inscription.php');
+require_once('classes/inscription.php');
 
 if(!isset($_GET['idShotgun']))
     header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
@@ -107,7 +107,7 @@ echo '
                 <li class="list-group-item">' . '<div class="row"> 
                 <span class="col-sm-3"><strong >Effectifs:</strong> </span>';
 echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">';
-include('progressbar.php');
+include('api/progressbar.php');
 echo '</div>';
 
 echo '</div></li>

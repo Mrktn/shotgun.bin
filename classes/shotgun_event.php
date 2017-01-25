@@ -292,7 +292,7 @@ class shotgun_event
         return $a;
     }
 
-    public static function userMayCloseOrOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
+    public static function userMayCloseOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
     {
         $shotgun = shotgun_event::shotgunGet($mysqli, $idShotgun);
 
@@ -306,7 +306,12 @@ class shotgun_event
     // ou créateur !
     public static function userMayDeleteShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
     {
-        return shotgun_event::userMayCloseOrOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin);
+        return shotgun_event::userMayCloseOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin);
+    }
+    
+    public static function userMayActivateDisableShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
+    {
+        return $isAdmin && shotgun_event::shotgunIsInDB($mysqli, $idShotgun);
     }
 
     public static function userMayViewShotgunRecord($mysqli, $mailUser, $idShotgun, $isAdmin)

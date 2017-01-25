@@ -1,7 +1,7 @@
 <?php
 
-require_once('shotgun_event.php');
-require_once('DBi.php');
+require_once('classes/shotgun_event.php');
+require_once('classes/DBi.php');
 
 function doCreateShotgun($mysqli, $titre, $description, $mail_crea, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep)
 {
