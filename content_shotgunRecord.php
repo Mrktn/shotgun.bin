@@ -220,8 +220,14 @@ else
 
         echo "];";
         echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>";
+        
     }
-}
+    
+    if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
+        echo '<a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun='. $shotgun->id .'" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a>';
+//echo '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" type="submit" value="Supprimer" class="btn btn-danger"></form>';
+        
+            }
 echo '
     </div>
 </div>

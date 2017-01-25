@@ -98,10 +98,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
             }
 
             if(inscription::doInscription(DBi::$mysqli, $idShot, $_SESSION['mailUser'], $formattedArray)){
-                echo '<pre>';
-                var_dump($formattedArray);
-                echo '</pre>';
-                //header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
+                header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
             }
             else
                 header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" !");

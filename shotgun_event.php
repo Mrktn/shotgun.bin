@@ -52,8 +52,8 @@ class shotgun_event
     {
         $query = "";
 
-        if(!ctype_digit($idShotgun))
-            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+        if(!shotgun_event::shotgunIsInDB($mysqli, $idShotgun))
+            return false;
 
         if($action == 'deleteShotgun')
             $query = "DELETE FROM shotgun_event WHERE id=$idShotgun;";
@@ -70,18 +70,21 @@ class shotgun_event
 
         if(!$result)
             die($mysqli->error);
+        
+        return true;
     }
 
+    // Ça devrait s'appeler shotgunIsInDBEtidEstBienFormé.
     public static function shotgunIsInDB($mysqli, $id)
     {
         $iid = 0;
         $query = "SELECT * FROM shotgun_event AS ev WHERE ev.id = ? LIMIT 1";
 
-        // They see me checkin', they hatin'
+        // Selon l'appeleur, c'est une string ou un entier. Les deux sont valides sémantiquement !
         if(is_string($id))
         {
             if(!ctype_digit($id))
-                header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+                return false;
             else
                 $iid = intval($id);
         }
@@ -89,16 +92,15 @@ class shotgun_event
         else if(is_int($id))
             $iid = $id;
         else
-            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+            return false;
 
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $iid);
         
         if(!$stmt->execute())
             die($stmt->error);
-        
-        $result = $stmt->get_result();
 
+        $result = $stmt->get_result();
 
         if(!$result)
             die($mysqli->error);
@@ -108,8 +110,8 @@ class shotgun_event
 
     public static function shotgunIsVisible($mysqli, $id)
     {
-        if(!ctype_digit($id))
-            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+        if(!shotgun_event::shotgunIsInDB($mysqli, $id))
+            return false;
 
         $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND ev.ouvert=1 AND ev.active=1 AND NOW() > ev.date_publi LIMIT 1;";
         $result = $mysqli->query($query);
@@ -122,8 +124,8 @@ class shotgun_event
 
     public static function shotgunIsPerime($mysqli, $id)
     {
-        if(!ctype_digit($id))
-            header('Location: index.php?activePage=error&msg=Shotgun invalide !');
+        if(!shotgun_event::shotgunIsInDB($mysqli, $id))
+            return false;
 
         $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND NOW() >= ev.date_event LIMIT 1;";
         $result = $mysqli->query($query);
@@ -136,7 +138,7 @@ class shotgun_event
 
     public static function shotgunGet($mysqli, $id)
     {
-        if(!ctype_digit($id))
+        if(!shotgun_event::shotgunIsInDB($mysqli, $id))
             return null;
 
         $query = "SELECT * FROM shotgun_event AS ev WHERE ev.id = $id LIMIT 1;";
@@ -145,6 +147,8 @@ class shotgun_event
         // If you can't do it quick, at least do it dirty
         while(($row = $result->fetch_object('shotgun_event')))
             return $row;
+        
+        return null;
     }
 
     // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
@@ -152,6 +156,7 @@ class shotgun_event
     {
         $a = array();
 
+        // FIXME: optionnel ?
         if(!isValidPolytechniqueEmail($mailUser))
             header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
 
@@ -163,9 +168,7 @@ class shotgun_event
             die($mysqli->error);
 
         while(($row = $result->fetch_object('shotgun_event')))
-        {
             $a[] = $row;
-        }
 
         return $a;
     }
@@ -186,35 +189,10 @@ class shotgun_event
             die($mysqli->error);
 
         while(($row = $result->fetch_object('shotgun_event')))
-        {
             $a[] = $row;
-        }
 
         return $a;
     }
-
-    /*
-     * public static function getReponses($mysqli, $idQuest)
-      {
-      $a = array();
-
-      $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id_question = ?;");
-      $stmt->bind_param('i', $idQuest);
-
-      if (!$stmt->execute())
-      die($stmt->error);
-
-      $result = $stmt->get_result();
-
-      if (!$result)
-      die($mysqli->error);
-
-      while(($row = $result->fetch_object('reponse')))
-      $a[] = $row;
-
-      return $a;
-      }
-     */
 
     // Renvoie la liste des shotguns auxquels l'utilisateur s'est inscrit
     public static function getMyShotgunsReserves($mysqli, $mailCrea)
@@ -229,6 +207,7 @@ class shotgun_event
 
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('s', $mailCrea);
+
         if(!$stmt->execute())
             die($stmt->error);
 
@@ -308,9 +287,7 @@ class shotgun_event
             die($mysqli->error);
 
         while(($row = $result->fetch_object('shotgun_event')))
-        {
             $a[] = $row;
-        }
 
         return $a;
     }
@@ -319,23 +296,28 @@ class shotgun_event
     {
         $shotgun = shotgun_event::shotgunGet($mysqli, $idShotgun);
 
-        if(!$shotgun)
-            header('Location: index.php?activePage=error&msg=Ce shotgun n\'existe pas !');
+        if($shotgun == null)
+            return false;
         else
-        {
             return $isAdmin || ($shotgun->mail_crea == $mailUser);
-        }
+    }
+    
+    // En fait c'est exactement la même condition que pour ouvrir / fermer, il faut être admin
+    // ou créateur !
+    public static function userMayDeleteShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
+    {
+        return shotgun_event::userMayCloseOrOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin);
     }
 
     public static function userMayViewShotgunRecord($mysqli, $mailUser, $idShotgun, $isAdmin)
     {
-        if(!shotgun_event::shotgunIsInDB($mysqli, $idShotgun))
+        $shotgun = shotgun_event::shotgunGet($mysqli, $idShotgun);
+
+        if($shotgun == null)
             return false;
 
         if($isAdmin)
             return true;
-
-        $shotgun = shotgun_event::shotgunGet($mysqli, $idShotgun);
 
         if($mailUser == $shotgun->mail_crea)
             return true;
@@ -344,7 +326,7 @@ class shotgun_event
     }
 
     public static function getShotgunFromQuestion($mysqli, $id)
-    { // Donne le shotgun auquel renvoie la question
+    {
         $query = "SELECT shotgun_event.* FROM question,shotgun_event WHERE question.id =? AND shotgun_event.id = id_shotgun ";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $id);

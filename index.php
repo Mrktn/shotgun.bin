@@ -75,10 +75,10 @@ if(isset($_GET['todoShotgunIt']))
     // Seuls les admins peuvent delete
     else if($action == 'deleteShotgun')
     {
-        if($_SESSION['isAdmin'])
+        if(shotgun_event::userMayDeleteShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
             shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], 'deleteShotgun');
         else
-            header('Location: index.php?activePage=error&msg=Il faut être admin pour supprimer un shotgun !');
+            header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions nécessaires pour supprimer un shotgun !');
     }
     
     // Il faut être admin pour activer / désactiver (autoriser / interdire)
