@@ -55,7 +55,7 @@ class inscription
             return false;
         
         // Si on est à la limite du nombre de places, ce n'est pas la peine d'essayer !
-        if(shotgun_event::getNumInscriptions($mysqli, $idShot) >= $shotgun->nb_places)
+        if($shotgun->nb_places == 0 ? false : (shotgun_event::getNumInscriptions($mysqli, $idShot) >= $shotgun->nb_places))
             return false;
 
         //insertReponseUtilisateur($mysqli, $mailUser, $idReponse, $texte)
