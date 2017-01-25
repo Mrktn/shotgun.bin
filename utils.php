@@ -97,17 +97,17 @@ function displayShotgunAVenir($mysqli, $shotguns){
     echo'<div class="container fiftycent">
   <h2>Les prochains shotguns à ne pas rater</h2>
   <p>Be on time!</p>            
-  <table class="table table-hover">
+  <table class="table table-hover dynamic table-fill">
     <thead>
       <tr>
         <th>Organisateur</th>
         <th>Titre</th>
-        <th>Date de l'."'évènement</th>
+        <th>Date</th>
         <th >Début Shotgun</th>
                 <th>Prix</th>
       </tr>
     </thead>
-    <tbody>";
+    <tbody>';
     foreach($shotguns as $currShotgun) {
            echo'<tr>
         <td>'.htmlspecialchars(utf8_encode($currShotgun->au_nom_de)).'</td>
@@ -126,17 +126,17 @@ function displayMonAgenda($mysqli, $shotguns){
         echo'<div class="container fiftycent">
   <h2>Mon agenda</h2>
   <p>Sois présent si tu ne veux pas te faire Balestrer!</p>            
-  <table class="table table-hover">
+  <table class="table table-hover dynamic table-fill">
     <thead>
       <tr>
         <th>Organisateur</th>
         <th>Titre</th>
-        <th>Date de l'."'évènement</th>
+        <th>Date</th>
         <th>Prix</th>
         <th>Inscrits</th>
       </tr>
     </thead>
-    <tbody>";
+    <tbody>';
     foreach($shotguns as $currShotgun) { // Faire le truc du ? de pro
         $n = shotgun_event::getNumInscriptions($mysqli,$currShotgun->id);
         $nbplaces = htmlspecialchars(utf8_encode($currShotgun->nb_places));
@@ -146,7 +146,7 @@ function displayMonAgenda($mysqli, $shotguns){
         <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
         <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>';
            echo'<td>';
-          if ($nbplaces != 0) { echo ($n.'/'.$nbplaces);} else { echo ($nbplaces);};
+          if ($nbplaces != 0) { echo ($n.'/'.$nbplaces);} else { echo ($n);};
           echo'</td>
       </tr>';
     }

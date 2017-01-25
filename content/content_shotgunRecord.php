@@ -160,7 +160,7 @@ echo '<h3><strong>Liste des participants</strong></h3>
 
 if($shotgun->anonymous && !($_SESSION['mailUser'] == $shotgun->mail_crea))
 {
-    echo '<p>L\'auteur du shotgun n\'a pas souhaité rendre la liste des participants visibles !</p>';
+    echo '<p>L\'auteur du shotgun n\'a pas souhaité rendre la liste des participants visible !</p>';
 }
 else
 {

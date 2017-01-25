@@ -83,6 +83,7 @@ body {
 .questionStyle {
     border-style :solid;
     background-color:#FFEBCD;
+    border-radius:10px;
 }
 .titreQuestion {
     font-weight: bold;    
@@ -121,3 +122,42 @@ body {
 .fiftycent {
    width: 100%; 
 }
+.fontgrisContour {
+    background-color:#F5F5F5;
+    border-style:solid;
+    padding-bottom:15px;
+    border-radius:10px;
+
+} 
+.indexcol{
+    flex:1;
+    padding: 1em;
+    border:solid;
+}
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.padleft{
+    padding-left:50px;
+}
+.padright{
+    padding-right:50px;
+}
+
+#footer {
+
+    text-align:center;
+    background-color: white;
+    margin:auto;
+    padding:5px;
+    margin-top:50px;
+    border-top : 1px black solid;
+}
+h1 
+{ 
+color: black; 
+margin:auto; 
+} ;
