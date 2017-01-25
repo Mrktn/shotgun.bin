@@ -145,8 +145,9 @@ function displayMonAgenda($mysqli, $shotguns){
         <td>'.htmlspecialchars(utf8_encode($currShotgun->titre)).'</td>
         <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
         <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>';
-           if ($nbplaces == 0) { echo ($n.'/'.$nbplaces);} else { echo ($nbplaces);};
-        echo'<td>'.$n.'/'.htmlspecialchars(utf8_encode($currShotgun->nb_places)).'</td> 
+           echo'<td>';
+          if ($nbplaces != 0) { echo ($n.'/'.$nbplaces);} else { echo ($nbplaces);};
+          echo'</td>
       </tr>';
     }
     echo'    </tbody>
