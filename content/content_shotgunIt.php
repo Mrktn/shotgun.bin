@@ -55,7 +55,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
         {
             // Ici on va envoyer une requête pour inscrire le pax.
             $formattedArray = array();
-            var_dump($_POST);
+
             foreach($_POST as $q => $r)
             {
                 if($q != "submitting")
@@ -97,11 +97,10 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 }
             }
 
-            if(inscription::doInscription(DBi::$mysqli, $idShot, $_SESSION['mailUser'], $formattedArray)){
+            if(inscription::doInscription(DBi::$mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
                 header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
-            }
             else
-                header("Location: index.php?activePage=error&msg=Impossible de vous inscrire à l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" !");
+                header("Location: index.php?activePage=error&msg=Shotgun de l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" raté :'( !");
         }
 
 
@@ -133,12 +132,17 @@ if($_GET['todoShotgunIt'] == 'suscribe')
             if(count($questions) == 0)
             {
                 echo '<div class="alert alert-info">
-  <strong>Bonne nouvelle !</strong> L\'auteur du shotgun n\'a pas souhaité poser de question. Vous pouvez appuyer sur le bouton "Shotgun!" pour terminer l\'inscription.
+  <strong>Bonne nouvelle !</strong> L\'auteur du shotgun n\'a pas souhaité poser de question. Vous pouvez appuyer sur le bouton "Confirmer" pour terminer l\'inscription.
 </div>';
+                echo '<form method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">';
+                
+                echo '<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
+                echo '<input type="hidden" name="submitting" value="true" />';
+                echo '</form>';
             }
             else
             {
-                echo '<form data-toggle="validator" method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">'; ///////// ******* IL FAUT UNE METHOD ET RÉFLÉCHIR À L'ACTION *****////
+                echo '<form data-toggle="validator" method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">';
                 foreach($questions as $q)
                 {
                     echo '<div class="panel panel-primary  center-block" style="align:center">

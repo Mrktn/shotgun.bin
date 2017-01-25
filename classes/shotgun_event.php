@@ -302,8 +302,8 @@ class shotgun_event
             return $isAdmin || ($shotgun->mail_crea == $mailUser);
     }
     
-    // En fait c'est exactement la même condition que pour ouvrir / fermer, il faut être admin
-    // ou créateur !
+    // En fait c'est exactement la même condition que pour ouvrir / fermer, il faut être admin...
+    // ...ou créateur !
     public static function userMayDeleteShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
     {
         return shotgun_event::userMayCloseOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin);

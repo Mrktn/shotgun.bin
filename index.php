@@ -96,6 +96,7 @@ if(isset($_GET['todoShotgunIt']))
         header('Location: index.php?activePage=error&msg=Action interdite !');
 }
 
+// FIXME: clean this mess
 elseif(isset($_GET['todoCreate']))
 {
     if($_GET['todoCreate'] == "createShotgun")

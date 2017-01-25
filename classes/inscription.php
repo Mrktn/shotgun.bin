@@ -48,6 +48,16 @@ class inscription
     // $answers est associatif $idquestion => array{[$idréponse, $texte si libre]} et déjà vérifié
     public static function doInscription($mysqli, $idShot, $mailUser, $answers)
     {
+        $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
+        
+        // Au cas où le shotgun aurait été retiré dans l'intervalle de temps.
+        if($shotgun == null)
+            return false;
+        
+        // Si on est à la limite du nombre de places, ce n'est pas la peine d'essayer !
+        if(shotgun_event::getNumInscriptions($mysqli, $idShot) >= $shotgun->nb_places)
+            return false;
+
         //insertReponseUtilisateur($mysqli, $mailUser, $idReponse, $texte)
         $currdate = date("Y-m-d H:i:s");
         // Étape 1 : ajouter une ligne à inscription (aka shotgunner)
@@ -57,7 +67,7 @@ class inscription
         
         if(!$stmt->execute())
             return false;
-        
+
         // The id of the newly created inscription !
         $idCreatedInscription = $stmt->insert_id;
         // À partir d'ici on est bons, c'est parti pour l'étape 2 :
@@ -66,22 +76,18 @@ class inscription
         //FIXME: checker que les requêtes se passent bien
         foreach($answers as $idq => $r_array)
         {
-            echo "<br/>Pour la question d'id $idq<br/>";
             foreach($r_array as $idr)
-            {
-                echo 'Voilà une sacré réponse : <pre>';var_dump($idr);echo '</pre><br/>';
                 reponse_de_utilisateur::insertReponseUtilisateur($mysqli, $idCreatedInscription, $mailUser, $idr[0], $idr[1]);
-            }
         }
         
         return true;
     }
-    
+
     public static function doDesinscription($mysqli, $idShot, $mailUser)
     {
         $stmt = $mysqli->prepare("DELETE FROM inscription WHERE id_shotgun = ? AND mail_user = ? ");
         $stmt->bind_param('is', $idShot, $mailUser);
-        
+
         if(!$stmt->execute())
             return false;
         
