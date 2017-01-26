@@ -100,7 +100,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
             if(inscription::doInscription(DBi::$mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
                 header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
             else
-                header("Location: index.php?activePage=error&msg=Shotgun de l'évènement \"" . htmlspecialchars($shotgun->titre) . "\" raté :'( !");
+                header("Location: index.php?activePage=error&msg=Shotgun de l'évènement \"" . htmlspecialchars(utf8_encode($shotgun->titre)) . "\" raté :'( !");
         }
 
 

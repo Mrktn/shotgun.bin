@@ -76,11 +76,27 @@ else
 {
     // Si je suis inscrit, on me propose de me désinscrire
     if(inscription::userIsRegistered(DBi::$mysqli, $shotgun->id, $_SESSION['mailUser']))
-        $button = '<a href="index.php?activePage=shotgunIt&todoShotgunIt=unsuscribe&idShotgun='. $shotgun->id .'" class="btn btn-danger" unsuscribe-confirm="Êtes-vous certain de vouloir vous désinscrire ? :-O" role="button">Désinscription</a><br/>';
+        $button = '<a href="index.php?activePage=shotgunIt&todoShotgunIt=unsuscribe&idShotgun=' . $shotgun->id . '" class="btn btn-danger" unsuscribe-confirm="Êtes-vous certain de vouloir vous désinscrire ? :-O" role="button">Désinscription</a><br/>';
 
-    // Sinon, de shotgun
+    // Sinon, de shotgun, à condition que la limite ne soit pas dépassée
     else
-        $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="Shoootgun!" class="btn btn-danger"></form>';
+    {
+        // Si c'est illimité, on écrit "s'inscrire" plutôt que "shotgun"
+        if($n == 0)
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="S\'inscrire" class="btn btn-danger"></form>';
+        
+        // Sinon si c'est limité mais qu'il y a de la place
+        elseif($k < $n)
+        {
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
+        }
+        
+        // En revanche, s'il n'y a pas de place...
+        else
+        {
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger" disabled></form>';
+        }
+    }
 }
 
 echo '
@@ -221,14 +237,12 @@ else
 
         echo "];";
         echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>  ";
-        
     }
-    
+
     if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
-        echo '<a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun='. $shotgun->id .'" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a>';
+        echo '<a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun=' . $shotgun->id . '" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a>';
 //echo '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" type="submit" value="Supprimer" class="btn btn-danger"></form>';
-        
-            }
+}
 echo '
     </div>
 </div>
