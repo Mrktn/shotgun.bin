@@ -33,7 +33,6 @@ echo'
 </div> </div>';
 };
 
-echo '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="42"><input id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger"></form>';
 echo"       <blockquote  class='blockquote-reverse'>
                         <i>L'avenir appartient à ceux qui shotgun tôt...</i>
                         <footer>Balestrat-san dans <cite title='Kravmagazine'>Kravmagazine</cite></footer>
