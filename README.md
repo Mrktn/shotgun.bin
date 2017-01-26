@@ -6,4 +6,4 @@ TODO
 * Changer complètement le système d'info / error. Passer ça dans des POSTs et ne pas rediriger vers une page dédiée à chaque fois, il suffit de l'ajouter en haut de la page courante.
 * Tester que updateShotgun renvoie true partout où on l'utilise
 * [DONE] Coder la vérification de non dépassement des inscriptions... !
-* Changer la progressbar en quelque chose de joli (et qui ne divise pas par 0) quand les inscriptions sont illimitées !
+* [DONE] Changer la progressbar en quelque chose de joli (et qui ne divise pas par 0) quand les inscriptions sont illimitées !
