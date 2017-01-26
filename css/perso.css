@@ -126,7 +126,8 @@ body {
     background-color:#F5F5F5;
     border-style:solid;
     padding-bottom:15px;
-    border-radius:10px;
+    border-radius:3px;
+    border-width:1px;
 
 } 
 .indexcol{
@@ -161,3 +162,23 @@ h1
 color: black; 
 margin:auto; 
 } ;
+.centrimage{
+        margin-left:0auto;
+    margin-right:0auto;
+        display: block;
+        margin-bottom:10px;
+        background-color:#FFFAFA;
+        height:10px;
+}
+th {
+    color:#000000;
+    background:#5389ba;
+    border-bottom:4px solid #9ea7af;
+    border-right: 1px solid #343a45;
+    font-size:16px;
+    font-weight: 100;
+    padding:5px;
+    text-align:center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    vertical-align:middle;
+}
