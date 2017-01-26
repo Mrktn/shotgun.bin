@@ -9,3 +9,4 @@ TODO
 * Mettre un message de confirmation inscription shotgun , création shotgun, suppression shotgun...
 * [DONE] Coder la vérification de non dépassement des inscriptions... !
 * [DONE] Changer la progressbar en quelque chose de joli (et qui ne divise pas par 0) quand les inscriptions sont illimitées !
+* Partout où on fait un listing des shotguns, mettre des petites icônes pour dire si je suis le créateur ou si j'ai shotguné
