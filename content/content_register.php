@@ -37,9 +37,8 @@ else
                     <input pattern=".+@polytechnique\.edu" class="form-control" name="inputEmailRegister" placeholder="Adresse mail @polytechnique.edu" data-error="Seules les adresses en polytechnique.edu sont tolérées" required/>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
+        
             <label for="password" class="cols-sm-2 control-label">Mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
@@ -47,9 +46,7 @@ else
                     <input pattern=".+" type="password" data-minlength="6" class="form-control" name="inputPasswordRegister" id="inputPasswordRegister" placeholder="Mot de passe" required/>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
             <label for="confirm" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
