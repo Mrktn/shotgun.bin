@@ -69,8 +69,6 @@ if($_GET['todoShotgunIt'] == 'suscribe')
 
                         $repieces = explode("-", $r);
                         $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
-
-                        //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
                     }
                     elseif($pieces[0] == "mquest")
                     {
@@ -80,8 +78,6 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         {
                             $repieces = explode("-", $vrep);
                             $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), "");
-
-                            //echo "Ok donc la question `{$pieces[1]}` prend pour réponse {$repieces[1]}<br/>";
                         }
                     }
                     elseif($pieces[0] == "fquest")
@@ -136,7 +132,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
 </div>';
                 echo '<form method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">';
                 
-                echo '<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
+                echo '<button id="sendShotgunButton" idShotgun="'.$idShot.'" type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
                 echo '<input type="hidden" name="submitting" value="true" />';
                 echo '</form>';
             }
@@ -185,7 +181,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         </div>';
                 }
 
-                echo '<button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
+                echo '<button id="sendShotgunButton" idShotgun="'.$idShot.'" type="submit" class="btn btn-primary btn-lg btn-block">Envoyer</button>';
 
 
                 /* Quand on clique sur le bouton, on renvoie tout à cette page avec $_POST['submitting'] = "true" de sorte qu'on sait
