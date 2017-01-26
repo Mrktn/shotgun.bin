@@ -12,6 +12,19 @@ $(document).ready(function () {
 		$('#dataConfirmModal').find('.modal-body').text($(this).attr('delete-confirm'));
 		$('#dataConfirmOK').attr('href', href);
 		$('#dataConfirmModal').modal({show:true});
+                
+		
+		return false;
+	});
+        
+        $('a[unsuscribe-confirm]').click(function(ev) {
+		var href = $(this).attr('href');
+		if (!$('#dataConfirmModal').length) {
+			$('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Action irréversible</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Annuler</button><a class="btn btn-danger" id="dataConfirmOK">Confirmer</a></div></div></div></div>');
+		}
+		$('#dataConfirmModal').find('.modal-body').text($(this).attr('unsuscribe-confirm'));
+		$('#dataConfirmOK').attr('href', href);
+		$('#dataConfirmModal').modal({show:true});
 		
 		return false;
 	});
