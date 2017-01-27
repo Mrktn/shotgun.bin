@@ -9,7 +9,8 @@ if(!isset($_SESSION['mailUser']))
 
 
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
-echo "<h1>Mes shotguns</h1>";
+echo "<div class ='container titlepage' > <h1>Mes shotguns</h1>
+ </div>";
 echo '<div class="container center-block" style="padding:15px">';
 
 displayShotgunList(DBi::$mysqli, shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUser']));

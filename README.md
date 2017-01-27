@@ -9,3 +9,6 @@ TODO
 * Mettre un message de confirmation inscription shotgun , création shotgun, suppression shotgun...
 * [DONE] Coder la vérification de non dépassement des inscriptions... !
 * [DONE] Changer la progressbar en quelque chose de joli (et qui ne divise pas par 0) quand les inscriptions sont illimitées !
+* couleur possibles titre #2a679e #13395b
+*echo "<div class ='container titlepage' > <h1>Shotguns postés</h1><hr />
+ </div>"; Pour comparaison de style
