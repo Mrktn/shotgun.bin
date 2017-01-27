@@ -59,6 +59,8 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 }
 else
 {
+    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1>
+ </div>";
     echo<<<END
     <div class="container">
     <br/>
@@ -97,14 +99,14 @@ else
             <div class="form-group">
                 <label for="inputDate_event3" class="col-sm-2 control-label">Date de l'évènement</label>
                 <div class='col-sm-6 date input-group' id='inputDate_event3'>
-                    <input type='datetime' required="true" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
+                    <input type='datetime' name ='date_event' required="true" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
                 </div>
             </div>
     
     <div class="form-group">
                 <label for="inputDate_shotgun3" class="col-sm-2 control-label">Ouverture du shotgun</label>
                 <div class='col-sm-6 date input-group' id='inputDate_shotgun3'>
-                    <input type='text' placeholder="Laisser vide pour une ouverture immédiate" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
+                    <input type='text' name ='date_publi' placeholder="Laisser vide pour une ouverture immédiate" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
                 </div>
             </div>
     

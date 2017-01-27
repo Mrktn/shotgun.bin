@@ -95,7 +95,7 @@ function displayShotgunList($mysqli, $shotguns)
 }
 function displayShotgunAVenir($mysqli, $shotguns){
     echo'<div class="container fiftycent">
-  <h2>Les prochains shotguns à ne pas rater</h2>
+  <h2>Prochains shotguns à ne pas rater</h2>
   <p>Be on time!</p>            
   <table class="table table-hover dynamic table-fill">
     <thead>
@@ -103,7 +103,7 @@ function displayShotgunAVenir($mysqli, $shotguns){
         <th>Organisateur</th>
         <th>Titre</th>
         <th>Date</th>
-        <th >Début Shotgun</th>
+        <th >Shotgun</th>
                 <th>Prix</th>
       </tr>
     </thead>

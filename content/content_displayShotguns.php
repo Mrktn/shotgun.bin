@@ -1,7 +1,8 @@
 <?php
 
-echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
-echo "<h1>Shotguns ouverts</h1>";
+echo '<div class="container-fluid center-block" style="width:100%; background-color: #ffffff">';
+echo "<div class ='container titlepage' > <h1>Shotguns ouverts</h1>
+ </div>";
 echo '<div class="container center-block" style="padding:15px">';
 
 // On récupère les shotguns qui sont visibles, aka ouverts et actifs et non périmés

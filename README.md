@@ -8,5 +8,7 @@ TODO
 * Mettre un message de confirmation inscription shotgun , création shotgun, suppression shotgun...
 * [DONE] Coder la vérification de non dépassement des inscriptions... !
 * [DONE] Changer la progressbar en quelque chose de joli (et qui ne divise pas par 0) quand les inscriptions sont illimitées !
+* couleur possibles titre #2a679e #13395b
 * Partout où on fait un listing des shotguns, mettre des petites icônes pour dire si je suis le créateur ou si j'ai shotguné
 * Juste avant l'insertion (après la form-submission) d'un nouveau shotgun, vérifier que ce qui doit être vérifié (la forme des adresses mails, le fait le thumbnail_url pointe vers une image etc...) soit correctement rempli. Par ailleurs, vérifier que les questions reçoivent bien un nombre suffisant de réponses.
+* Dynamiser la page d'accueil (quand on passe la souris sur un évènement à gauche la description apparait en bulle, quand on passe la souris sur le tableau de droite on peut cliquer pour accéder directement à l'évènement
