@@ -149,13 +149,13 @@ body {
 }
 
 #footer {
-
     text-align:center;
     background-color: white;
     margin:auto;
     padding:5px;
     margin-top:50px;
     border-top : 1px black solid;
+    width: 90%;
 }
 h1 
 { 

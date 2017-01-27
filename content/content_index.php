@@ -5,10 +5,10 @@
     </div>
     <h1 class="col-sm-4 col-md-4" >Bienvenue sur le site de shotgun de l'X !</h1>
     <div class="col-sm-4 col-md-4 ">
-    <img src="images/fusilsretoucheresize_transparent.png" class="Photoright img-responsive">
+    <img alt="Canons croisés" src="images/fusilsretoucheresize_transparent.png" class="Photoright img-responsive">
     </div>
  </div>
-<?php             
+<?php
 if (!isset($_SESSION['mailUser']))
 { // Page d'accueil pour les non inscrits
     echo'
@@ -43,7 +43,4 @@ echo'
 echo"       <blockquote  class='blockquote-reverse' style='margin-top:10px'>
                         <i>L'avenir appartient à ceux qui shotgun tôt...</i>
                         <footer>Louis Vaneau </footer>
-                    </blockquote>";
-echo'            <div id="footer">
-	<p> Réalisé par Antoine Balestrat et Marc Revol, élèves de la promotion X2015 </p> 	
-        </div></div>';
+                    </blockquote></div>";
