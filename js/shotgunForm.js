@@ -1,6 +1,6 @@
 // n est le numéro de la question cette fonction génère le script HTML associée à la n-eme question
 function htmlQ(n) {
-    return ('<div id="question' + n + '" class="questionStyle text-center">'
+    return ('<div id="question' + n + '" class="fontgrisContour text-center">'
             +'<br/>'
             +'<p class = "titreQuestion" id = "titreQ'+n+'"> Question n°'+n+'</p>'
             +'<img src="http://www.levivat.net/media/cache/vivat_thumbnail_view/media/vivat/12-croix-blanche-fond-noir-1.jpg" alt="SupprimerQuestion" class="enleve_boutonQ tailleQuestion" > '
