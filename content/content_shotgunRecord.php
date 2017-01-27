@@ -11,13 +11,19 @@
 require_once('classes/inscription.php');
 
 if(!isset($_GET['idShotgun']))
-    header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
+    //header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
+    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Identifiant invalide !"));
+        
 
 if(!isset($_SESSION['mailUser']))
-    header('Location: index.php?activePage=error&msg=Utilisateur non enregistré !');
+    //header('Location: index.php?activePage=error&msg=Utilisateur non enregistré !');
+    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il faut se connecter pour voir les shotguns !"));
+    
 
 if(!shotgun_event::userMayViewShotgunRecord(DBi::$mysqli, $_SESSION['mailUser'], $_GET['idShotgun'], $_SESSION['isAdmin']))
-    header('Location: index.php?activePage=error&msg=Accès interdit !');
+    //header('Location: index.php?activePage=error&msg=Accès interdit !');
+    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Accès interdit, privilèges insuffisants !"));
+    
 // À ce stade on sait que le shotgun est dans la database.
 $id = $_GET['idShotgun'];
 $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $id);

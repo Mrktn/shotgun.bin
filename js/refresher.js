@@ -39,7 +39,7 @@ var shotgunButtonRefresher = function(){
         
         $.get("/shotgun.bin/api/shotgunable.php?idShotgun="+idshot, function(data) {
             
-            if(data === '1')
+            if(data == 1 || data == '1' || data === '1')
             {
                 sendShotgunButton.removeAttr('disabled');
                 sendShotgunButton.html("Envoyer");

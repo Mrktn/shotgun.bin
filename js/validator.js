@@ -84,7 +84,7 @@
     custom: {},
     errors: {
       match: 'Does not match',
-      minlength: 'Not long enough'
+      minlength: 'Saisie pas assez longue'
     },
     feedback: {
       success: 'glyphicon-ok',

@@ -14,12 +14,14 @@ function logIn($mysqli)
         $_SESSION['loggedIn'] = true; // la variable va persister au fur et à mesure de la navigation
         $_SESSION['isAdmin'] = $user->admin;
         $_SESSION['mailUser'] = $user->mail;
-        header('Location: index.php?activePage=info&msg=Vous êtes maintenant connecté !');
+        redirectWithPost("index.php?activePage=index", array('tip' => 'success', 'msg' => "Vous êtes maintenant connecté !"));
+        //header('Location: index.php?activePage=info&msg=Vous êtes maintenant connecté !');
     }
     else
     {
         unset($_SESSION['loggedIn']); // on ne veut même pas set cette variable
-        header('Location: index.php?activePage=error&msg=Votre adresse mail ou votre mot de passe est invalide');
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Votre adresse mail ou votre mot de passe est invalide !"));
+        //header('Location: index.php?activePage=error&msg=Votre adresse mail ou votre mot de passe est invalide');
     };
 }
 

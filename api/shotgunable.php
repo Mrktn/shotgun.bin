@@ -11,8 +11,8 @@ include_once('../utils.php');
 DBi::connect();
 
 if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB(DBi::$mysqli, $_GET['idShotgun']))
-    //echo 'invalid shotgun provided : ' . $_GET['idShotgun'];
-    echo '0'; // contestable
+    echo 'invalid shotgun provided : ' . $_GET['idShotgun'];
+    //echo '0'; // contestable
 
 else
 {
