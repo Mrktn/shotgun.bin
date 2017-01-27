@@ -46,4 +46,4 @@ echo"       <blockquote  class='blockquote-reverse' style='margin-top:10px'>
                     </blockquote>";
 echo'            <div id="footer">
 	<p> Réalisé par Antoine Balestrat et Marc Revol, élèves de la promotion X2015 </p> 	
-        </div>';
+        </div></div>';
