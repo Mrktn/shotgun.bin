@@ -18,12 +18,12 @@ var shotgunButtonRefresher = function(){
         var idshot = $(this).attr('idShotgun');
         
         $.get("/shotgun.bin/api/shotgunable.php?idShotgun="+idshot, function(data) {
-            if(data === '1')
+            if(data == 1 || data === '1' || data == '1')
             {
                 buttonShotgun.removeAttr('disabled');
                 buttonShotgun.attr('value', "Shoootgun !");
             }
-            
+
             else
             {
                 buttonShotgun.attr('disabled', 'disabled');

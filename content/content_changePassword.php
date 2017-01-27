@@ -2,9 +2,7 @@
 
 require_once('utils.php');
 require_once('classes/utilisateur.php');
-//generateHTMLHeader("S'enregistrer");
-//generateMenu("content_changePassword.php");
-$_SESSION['mailUser'] = 'tesuto@polytechnique.edu';
+
 $mysqli = mysqli_connect();
 
 if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
