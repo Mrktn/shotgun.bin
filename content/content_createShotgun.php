@@ -18,6 +18,10 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
         $description = isset($description) ? $description : "";
         $link_thumbnail = isset($link_thumbnail) ? $link_thumbnail : "";
         $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : $date_publi;
+        
+        $date_event = preg_replace('/\//', '-', $date_event);
+        $date_event = date("Y-m-d H:i:s", strtotime($date_event));
+        
         $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
 
         $nQuest = count($intitule); // Nombre de questions
@@ -38,15 +42,12 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
     }
     
     else{
-        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il doit manquer des paramètres !"));
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
     }
-        //redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il doit manquer des paramètres !"));
-        
 }
 
 if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 {
-    var_dump($_POST);
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $date_event = $_POST['date_event'];
@@ -69,7 +70,7 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
             $qcmrep[$i][$j] = $_POST['qcmrep' . ($i + 1)][($j)];
         }
     }
-    echo 'lol ça part <br/>';
+
     doCreateShotgun(DBi::$mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
 }
 else
