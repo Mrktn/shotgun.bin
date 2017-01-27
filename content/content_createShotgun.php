@@ -59,6 +59,8 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 }
 else
 {
+    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1>
+ </div>";
     echo<<<END
     <div class="container">
     <br/>

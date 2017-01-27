@@ -7,10 +7,8 @@ if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
 if(!isset($_SESSION['mailUser']))
     header('Location: index.php?activePage=error&msg=Erreur inconnue !');
 
-
-echo '<div class="container center-block" style="width:10s0%; background-color: #ffffff">';
-echo "<div class ='container titlepage' > <h1>Mes shotguns crées</h1>
- </div>";
+echo "<div class ='container-fluid titlepage' > <h1>Mes shotguns crées</h1> </div>";
+echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 
 displayShotgunList(DBi::$mysqli, shotgun_event::getMyShotguns(DBi::$mysqli, $_SESSION['mailUser']));
