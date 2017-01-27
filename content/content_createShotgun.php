@@ -3,21 +3,29 @@
 require_once('classes/shotgun_event.php');
 require_once('classes/DBi.php');
 
-function doCreateShotgun($mysqli, $titre, $description, $mail_crea, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep)
+if(!isset($_SESSION['loggedIn']))
+    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Connectez-vous avant de créer un shotgun !"));
+
+function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep)
 {
     if(isset($titre) && $titre != "" &&
-            isset($description) && $description != "" &&
-            isset($mail_crea) && $mail_crea != "" &&
             isset($au_nom_de) && $au_nom_de != "" &&
             isset($date_event) && $date_event != "" &&
-            isset($date_publi) && $date_publi != "" &&
-            isset($anonymous) && ctype_digit($anonymous))
+            isset($anonymous) && ctype_digit($anonymous) &&
+            is_numeric($prix) &&
+            is_numeric($nb_places) && ctype_digit($nb_places))
     {
-        $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail);
+        $description = isset($description) ? $description : "";
+        $link_thumbnail = isset($link_thumbnail) ? $link_thumbnail : "";
+        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : $date_publi;
+        $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
+
         $nQuest = count($intitule); // Nombre de questions
+
         for($i = 0; $i < $nQuest; $i++)
-        { // Traitons la question i 
+        {
             $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
+
             if($typeReponse[$i] != question::$TYPE_REPONSELIBRE)
             {
                 reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
@@ -28,17 +36,23 @@ function doCreateShotgun($mysqli, $titre, $description, $mail_crea, $au_nom_de, 
             }
         }
     }
+    
+    else{
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il doit manquer des paramètres !"));
+    }
+        //redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il doit manquer des paramètres !"));
+        
 }
 
 if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 {
+    var_dump($_POST);
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $date_event = $_POST['date_event'];
     $date_publi = $_POST['date_publi'];
     $nb_places = $_POST['nb_places'];
     $prix = $_POST['prix'];
-    $mail_crea = $_POST['mail_crea'];
     $au_nom_de = $_POST['au_nom_de'];
     $anonymous = $_POST['anonymous'];
     $link_thumbnail = $_POST['link_thumbnail'];
@@ -55,7 +69,8 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
             $qcmrep[$i][$j] = $_POST['qcmrep' . ($i + 1)][($j)];
         }
     }
-    doCreateShotgun(DBi::$mysqli, $titre, $description, $mail_crea, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
+    echo 'lol ça part <br/>';
+    doCreateShotgun(DBi::$mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
 }
 else
 {
@@ -84,14 +99,6 @@ else
                 <input type="text" name="au_nom_de" class="form-control" id="inputOrganisateur3" placeholder="Binet &#x0153;no, moi, mon cousin, ... (requis)" required>
             </div>
         </div>
-    
-        <div class="form-group">
-            <label for="inputMailCrea3"  class="col-sm-2 control-label">Mail du responsable</label>
-            <div class="col-sm-6">
-                <input type="<strong>email</strong>" name="mail_crea" class="form-control" id="inputMailCrea3" placeholder="Mail (requis)" required>
-            </div>
-        </div>
-    
          
     
     
@@ -106,7 +113,7 @@ else
     <div class="form-group">
                 <label for="inputDate_shotgun3" class="col-sm-2 control-label">Ouverture du shotgun</label>
                 <div class='col-sm-6 date input-group' id='inputDate_shotgun3'>
-                    <input type='text' name ='date_publi' placeholder="Laisser vide pour une ouverture immédiate" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
+                    <input type='text' name ='date_publi' placeholder="Vide pour une ouverture immédiate (modulo approbation de l'administrateur)" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
                 </div>
             </div>
     
