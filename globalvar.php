@@ -5,13 +5,13 @@
 $title = array("index" => "shotgun.bin", "register" => "S'enregistrer", "error" => "Erreur", "info" => "Information", "displayShotguns" => "Shotguns ouverts", "manageShotguns" => "Gérer les shotguns", "shotgunRecord" => "Consulter un shotgun", "myShotguns" => "Mes shotguns créés", "shotgunIt" => "Inscription", "createShotgun" => "Créer un nouveau shotgun","myShotgunsReserves" => "Mes shotguns");
 
 // Quel est le nom de chaque page dans la navbar ?
-$titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "displayShotguns" => "Shotguns en cours", "placeholderloggedin" => "Réservé aux utilisateurs enregistrés", "manageShotguns" => "Administrer", "myShotguns" => "Mes shotguns créés", "createShotgun" => "Poster un shotgun","myShotgunsReserves" => "Mes shotguns");
+$titleNavbar = array("index" => "Accueil", "register" => "S'enregistrer", "displayShotguns" => "Shotguns en cours", "placeholderloggedin" => "Réservé aux utilisateurs enregistrés", "manageShotguns" => "Administrer", "myShotguns" => "Administrer", "createShotgun" => "Poster un shotgun","myShotgunsReserves" => "Mes inscriptions");
 
 // Quelles sont les pages dans la navbar quand je suis pas logged in ?
 $navbarLoggedOut = array("index", "register");
 
 // Quelles sont les pages dans la navbar quand je suis simple user ?
-$navbarSimpleUser = array("index", "displayShotguns","myShotgunsReserves", "myShotguns", "createShotgun");
+$navbarSimpleUser = array("index", "displayShotguns","myShotgunsReserves", "createShotgun", "myShotguns");
 
 // Quelles sont les pages dans la navbar quand je suis admin ?
 $navbarAdmin = array("index", "displayShotguns");
