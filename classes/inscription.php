@@ -18,12 +18,12 @@ class inscription
         $stmt = $mysqli->prepare("SELECT * FROM inscription AS ins WHERE ins.id_shotgun = ? ORDER BY ins.date_shotgunned ASC;");
 
         if(!$stmt || !($stmt->bind_param('i', $idShot)) || !$stmt->execute())
-            return null;
+            die('Erreur irrécupérable dans getInscriptionsIn');
 
         $result = $stmt->get_result();
 
         if(!$result)
-            return null;
+            die('Erreur irrécupérable dans getInscriptionsIn');
 
         $stmt->close();
 
@@ -66,10 +66,8 @@ class inscription
         // Étape 1 : ajouter une ligne à inscription (aka shotgunner)
         $stmt = $mysqli->prepare("INSERT INTO inscription (id_shotgun, mail_user, date_shotgunned) VALUES (?, ?, ?)");
 
-        $stmt->bind_param('iss', $idShot, $mailUser, $currdate);
-
-        if(!$stmt->execute())
-            return false;
+        if(!$stmt || !($stmt->bind_param('iss', $idShot, $mailUser, $currdate)) || !($stmt->execute()))
+            die('Erreur fatale dans doInscription');
 
         // L'id du shotgun nouvellement créé
         $idCreatedInscription = $stmt->insert_id;
@@ -92,9 +90,9 @@ class inscription
     public static function doDesinscription($mysqli, $idShot, $mailUser)
     {
         $stmt = $mysqli->prepare("DELETE FROM inscription WHERE id_shotgun = ? AND mail_user = ? ");
-        
+
         if(!$stmt || !($stmt->bind_param('is', $idShot, $mailUser)) || !($stmt->execute()))
-            return false;
+            die("Erreur fatale dans doDesinscription");
 
         return true;
     }
@@ -104,21 +102,23 @@ class inscription
     // Diablement efficace pour créer l'array des données à télécharger
     public static function getComprehensiveInscription($mysqli, $idShot, $mailUser)
     {
+        $a = array();
         $stmt = $mysqli->prepare(
                 "SELECT ins.date_shotgunned,quest.id,quest.intitule AS intitule_question,quest.type AS question_type,rep.id,GROUP_CONCAT(rep.intitule SEPARATOR ';') AS intitule_reponses,repuser.texte
-        FROM inscription AS ins, question AS quest, reponse AS rep, reponse_de_utilisateur AS repuser
-        WHERE ins.mail_user = ? AND quest.id_shotgun = ? AND rep.id_question=quest.id AND repuser.id_reponse=rep.id AND repuser.id_inscription=ins.id
-        GROUP BY quest.id
-        ORDER BY quest.id ASC");
+                    FROM inscription AS ins, question AS quest, reponse AS rep, reponse_de_utilisateur AS repuser
+                    WHERE ins.mail_user = ? AND quest.id_shotgun = ? AND rep.id_question=quest.id AND repuser.id_reponse=rep.id AND repuser.id_inscription=ins.id
+                    GROUP BY quest.id
+                    ORDER BY quest.id ASC"
+        );
 
-        $stmt->bind_param('si', $mailUser, $idShot);
-        $a = array();
-        if(!$stmt->execute())
-            die($stmt->error);
+        if(!$stmt || !($stmt->bind_param('si', $mailUser, $idShot)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die("Erreur fatale dans getComprehensiveInscription");
 
-        $result = $stmt->get_result();
+        $stmt->close();
+
         while($row = $result->fetch_array(MYSQLI_ASSOC))
             $a[] = $row;
+
         return $a;
     }
 
