@@ -231,13 +231,5 @@ function redirectWithPost($url, $arrpost, $preheader = false)
     if($preheader)
         echo '</body></html>';
     exit();
-    /*. 'redirectPost("'.$url.'", {"placeholder":null';
-    foreach($arrpost as $key => $val)
-        echo ',"'.$key.'":"'.$val.'"';
-    echo '});</script>';
-
-    if ($preheader)
-        echo '</body></html>';*/
 }
 ?>
-}
