@@ -147,23 +147,25 @@ function generateHTMLHeader($title)
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>$title</title>
 
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
         <link href="css/perso.css" rel="stylesheet">
         <link href="css/dynatable.css" rel="stylesheet">
         <link href="css/animate.css" rel="stylesheet">
 
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="js/jquery191.js"></script>
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
         <script type="text/javascript" src="js/refresher.js"></script>
         <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
         <script type="text/javascript" src="js/shotgunForm.js"></script>
-        <script type="text/javascript" src="https://fastcdn.org/Readmore.js/2.1.0/readmore.min.js"></script>
+        <script type="text/javascript" src="js/readmore.min.js"></script>
         <script type="text/javascript" src="js/moment-with-locales.min.js"></script> 
         <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script> 
         <script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
+        <script type="text/javascript" src="js/redirect.js"></script>
    
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" defer></script>

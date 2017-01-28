@@ -3,21 +3,23 @@
 
 if(isset($_POST['submittedRegister']))
 {
-    if(($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]))
+    if(!isset($_POST['inputPasswordRegister']) || !isset($_POST["inputPasswordConfirmRegister"]) || !isset($_POST['inputEmailRegister']) || ($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]))
     {
         redirectWithPost("index.php?activePage=register", array('tip' => 'error', 'msg' => "Merci de réessayer avec des valeurs correctes !")); 
     }
     else
     {
-        
-        $password = DBi::$mysqli->real_escape_string($_POST['inputPasswordRegister']);
-        $email = DBi::$mysqli->real_escape_string($_POST['inputEmailRegister']);
-        
+        $password = $_POST['inputPasswordRegister'];
+        $email = $_POST['inputEmailRegister'];
+
         // Clé secrète de l'utilisateur, en théorie pour vérifier l'adresse mail
         $key = md5($password . $email . date('mY'));
-        
+
         if(utilisateur::insererUtilisateur(DBi::$mysqli, $email, 0, $key, $password, 0))
             redirectWithPost("index.php?activePage=index", array('tip' => 'success', 'msg' => "Votre compte a été créé, vous pouvez maintenant vous connecter !"));
+        else
+           redirectWithPost("index.php?activePage=register", array('tip' => 'error', 'msg' => "Impossible de créer un compte utilisateur avec ces identifiants !"));
+         
     }
 }
 else

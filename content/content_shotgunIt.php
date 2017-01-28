@@ -199,9 +199,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
         }
     }
     else
-    {
-        header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous inscrire à ce shotgun !');
-    }
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous inscrire à ce shotgun !"));
 }
 
 // C'est forcément unsuscribe, on l'a déjà testé dans l'index
@@ -218,17 +216,17 @@ else
         $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $idShot);
 
         if(inscription::doDesinscription(DBi::$mysqli, $idShot, $_SESSION['mailUser']))
-            header('Location: index.php?activePage=shotgunRecord&idShotgun=' . $shotgun->id);
+            redirectWithPost('index.php?activePage=shotgunRecord&idShotgun=' . $shotgun->id, array('tip' => 'success', 'msg' => "Désinscription réussie !"));
         else
-            header('Location: index.php?activePage=error&msg=Impossible de vous désinscrire de ce shotgun !');
-    }
+            redirectWithPost('index.php?activePage=index', array('tip' => 'error', 'msg' => "Impossible de se désinscrire !"));
+}
     else
     {
-        header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
+        redirectWithPost('index.php?activePage=index' . $shotgun->id, array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous désinscrire de ce shotgun !"));
+        //header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
     }
 }
 
-echo '</div>';
 
 
 

@@ -217,29 +217,27 @@ function redirectWithPost($url, $arrpost, $preheader = false)
         echo '<!DOCTYPE html>
                 <html>
                     <head>
-                        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                        <script type="text/javascript" src="js/jquery191.js"></script>
+                        <script type="text/javascript" src="js/redirect.js"></script>
                     </head>
                     <body>';
     }
-    echo '<script type="text/javascript">function redirectPost(url, data) {
-    var form = document.createElement("form");
-    form.method = "post";
-    form.action = url;
-    for(var name in data) {
-        var input = document.createElement("input");
-        input.type = "hidden";
-        input.name = name;
-        input.value = data[name];
-        form.appendChild(input);
-    }
-    form.submit();
-}; redirectPost("' . $url . '", {"placeholder":null';
-    foreach ($arrpost as $key => $val)
-        echo ',"' . $key . '":"' . $val . '"';
+    
+    echo '<script>$.redirect("' . $url . '",{placeholder:"a"';
+    foreach($arrpost as $key => $val)
+        echo ','.$key.':"'.$val.'"';
+    echo '});</script>';
+    if($preheader)
+        echo '</body></html>';
+    exit();
+    /*. 'redirectPost("'.$url.'", {"placeholder":null';
+    foreach($arrpost as $key => $val)
+        echo ',"'.$key.'":"'.$val.'"';
     echo '});</script>';
 
     if ($preheader)
-        echo '</body></html>';
+        echo '</body></html>';*/
 }
 ?>
-
+}
