@@ -49,7 +49,6 @@ $(document).ready(function () {
         if (xQ < max_fields) { //vérifie qu'on a le droit de rajouter un champ
             xQ++; //text box increment
             $(wrapperQ).append(htmlQ(xQ)); //Ajoute le HTML associé à la question xQ
-            $(wrapperQ).append("<br/>");
         }
     });
     $(wrapperQ).on("click", ".enleve_boutonQ", function (e) { //Bouton de suppression de question
