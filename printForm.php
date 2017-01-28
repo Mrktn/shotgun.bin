@@ -147,7 +147,7 @@ function generateHTMLHeader($title)
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>$title</title>
 
-        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="resources/favicon.ico" />
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
         <link href="css/perso.css" rel="stylesheet">
