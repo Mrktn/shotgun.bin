@@ -10,7 +10,7 @@
 </div>
 <?php
 //Page d'accueil pour les non inscrits
-if(!isset($_SESSION['mailUser']))
+if(!isset($_SESSION['mailUser']) || $_SESSION['isAdmin'])
 {
     echo'
    <div class="container">
