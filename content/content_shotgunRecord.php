@@ -222,21 +222,19 @@ else
         $allQuestions = question::getQuestions(DBi::$mysqli, $shotgun->id);
 
         foreach($allQuestions as $q)
-        {
-            $formattedheader .= ",'" . addslashes(htmlspecialchars($q->intitule)) . "'";
-        }
+            $formattedheader .= ",'" . addslashes(preg_replace('/\s/', ' ', htmlspecialchars($q->intitule))) . "'";
 
         $formattedheader .= "]";
 
         echo "<script type=\"text/javascript\">var data = [";
         for($j = 0; $j < count($arrayInscriptions); $j = $j + 1)
         {
-            $newline = "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(htmlentities($arrayInscriptions[$j]->mail_user)) . "'";
+            $newline = "['$i','" . preg_replace('/\s/', ' ', $arrayInscriptions[$j]->date_shotgunned) . "','" . preg_replace('/\s/', ' ', addslashes(htmlentities($arrayInscriptions[$j]->mail_user))) . "'";
             $currInscription = inscription::getComprehensiveInscription(DBi::$mysqli, $shotgun->id, $arrayInscriptions[$j]->mail_user);
 
             foreach($currInscription as $row)
             {
-                $newline .= ", '" . htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'], ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8') . "'";
+                $newline .= ", '" . preg_replace('/\s/', ' ', htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'], ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8')) . "'";
             }
             $newline .= "]";
             if($j < (count($arrayInscriptions) - 1))
