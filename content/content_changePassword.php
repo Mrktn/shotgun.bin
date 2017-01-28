@@ -48,7 +48,7 @@ echo <<<FIN
                 <label for="inputFormerPassword" class="cols-sm-2 control-label">Mot de passe actuel</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input type="password" data-minlength="6" class="form-control" name="formerPassword" id="inputFormerPassword" placeholder="Mot de passe" required/>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ echo <<<FIN
                 <label for="inputNewPassword" class="cols-sm-2 control-label">Mot de passe</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input pattern=".+" type="password" data-minlength="6" class="form-control" name="inputNewPassword" id="inputNewPassword" placeholder="Mot de passe" required/>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ echo <<<FIN
                 <label for="inputPasswordConfirm" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input pattern=".+" type="password" class="form-control" id="inputPasswordConfirm" name="inputNewPasswordConfirm" data-match="#inputNewPassword" data-match-error="Les deux mots de passe ne coïncident pas" placeholder="Confirmer le mot de passe" required/>
                     </div>
                     <div class="help-block with-errors"></div>

@@ -74,18 +74,35 @@ function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
     return true;
 }
 
-function displayShotgunList($mysqli, $shotguns)
+function displayShotgunList($mysqli, $shotguns, $mailUser)
 {
     foreach($shotguns as $currShotgun)
     {
+        $isCreateur = $currShotgun->mail_crea == $mailUser;
+        $hasShotgunned = inscription::userIsRegistered($mysqli, $currShotgun->id, $mailUser);
+
         echo '<div idShotgun="' . $currShotgun->id . '" class="panel panel-default center-block shotgunPanel" style="align:center; width: 80%">
-  <div class="panel-heading">
-    <h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars($currShotgun->titre) . '</strong> par <i>' . htmlspecialchars($currShotgun->au_nom_de) . '</i></h3>
+  <div class="panel-heading"><p style="float:left;">';
+        
+        if($hasShotgunned)
+            echo '<span title="Vous avez shotgun cet évènement !" style="font-size:18px" class="glyphicon glyphicon-ok"></span>   ';
+
+        if($isCreateur)
+            echo '<span title="Vous êtes l\'auteur de ce shotgun" style="font-size:18px" class="glyphicon glyphicon-user"></span>   ';
+
+        // Si pas autorisé par l'admin
+        if(!$currShotgun->active)
+            echo '<span title="Shotgun en attente de révision par l\'administrateur" style="font-size:18px" class="glyphicon glyphicon-minus-sign"></span>   ';
+        
+        if(!$currShotgun->ouvert)
+            echo '<span title="Vous devez ouvrir ce shotgun pour qu\'il puisse apparaître dans la liste publique" style="font-size:18px" class="glyphicon glyphicon-lock"></span>   ';
+        
+        echo'</p><h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars($currShotgun->titre) . '</strong> par <i>' . htmlspecialchars($currShotgun->au_nom_de) . '</i></h3>
   <a href="index.php?activePage=shotgunRecord&idShotgun='.$currShotgun->id.'" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
   </div>
   <div class="panel-body">';
         $_GET['idShotgun'] = $currShotgun->id;
-        
+
         echo '<div class="progress progress-shotgun" idShotgun="' . $currShotgun->id . '">';
         include('./api/progressbar.php');
         echo '</div>';

@@ -105,7 +105,7 @@ END;
     
       <a class="navbar-brand" href="#">
     <audio style="display:none" id="sound1" src="resources/thunder.mp3" preload="auto"></audio>
-                    <span onclick="document.getElementById('sound1').play();" class="glyphicon glyphicon-flash" aria-hidden="true" style="color:yellow"></span>
+                    <span onclick="document.getElementById('sound1').play();" class="glyphicon glyphicon-flash" style="color:yellow"></span>
                 </a>
     </div>
     <div class="collapse navbar-collapse">

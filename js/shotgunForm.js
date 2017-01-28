@@ -1,7 +1,7 @@
 // n est le numéro de la question cette fonction génère le script HTML associée à la n-eme question
 function htmlQ(n) {
     return ('<div class="panel panel-primary" id="question' + n + '">'
-            + '<div class="panel-heading" id = "titreQ'+n+'">Question n°'+n+' <span style="float:right" class="hoverCursor enleve_boutonQ tailleQuestion glyphicon glyphicon-remove" aria-hidden="true"></span></div>'
+            + '<div class="panel-heading" id = "titreQ'+n+'">Question n°'+n+' <span style="float:right" class="hoverCursor enleve_boutonQ tailleQuestion glyphicon glyphicon-remove"></span></div>'
             +'<div class="panel-body">'
             + '<textarea class="form-control" name = "intitule[]" placeholder="Poser votre question"></textarea> <br/>'
             + '<div class="form-group" id="type_reponse' + n + '" style="padding-left:20px">'
@@ -84,7 +84,7 @@ $(document).ready(function () {
                 refresh_attr($(this).attr("id"),"id",i-1);
             });
             refresh_attr('type_reponse'+i,'id',i-1);
-            $('#titreQ'+i).replaceWith('<div class="panel-heading" id = "titreQ'+(i-1)+'">Question n°'+(i-1)+' <span style="float:right" class="hoverCursor enleve_boutonQ tailleQuestion glyphicon glyphicon-remove" aria-hidden="true"></span></div>');
+            $('#titreQ'+i).replaceWith('<div class="panel-heading" id = "titreQ'+(i-1)+'">Question n°'+(i-1)+' <span style="float:right" class="hoverCursor enleve_boutonQ tailleQuestion glyphicon glyphicon-remove"></span></div>');
             refresh_attr('question'+i,'id',i-1);
         }}
         xQ--; // Il faut actualiser le nombre de choix pour chaque question
@@ -100,7 +100,7 @@ function ajout(s) {
     var n = s.match(/\d+/);  // On récupère le numéro de la question
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="question'+n+'Choix' +x[n]+ '"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><span id="suppr'+x[n]+'" onclick="suppr(this.id,this)" class="enleve_bouton taille glyphicon glyphicon-remove" aria-hidden="true"></span></div>');  
+        $($(wrapper + n)).append('<div id="question'+n+'Choix' +x[n]+ '"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><span id="suppr'+x[n]+'" onclick="suppr(this.id,this)" class="enleve_bouton taille glyphicon glyphicon-remove"></span></div>');  
     }                                                                                                                                                   
 }
 
