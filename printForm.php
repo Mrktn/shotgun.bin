@@ -13,7 +13,7 @@ function printLoginForm()
                         <div class="form-group">
                             <input type="password" class="form-control" name="password"  placeholder="Mot de passe" required>
                         </div>
-                        <button class="btn btn-default" name="login" type="submit">Login</button>
+                        <button style="margin-right:10px" class="btn btn-default" name="login" type="submit">Login</button>
 END;
                         //echo '<button  class="btn btn-default">Login Frankizzz</button>';
     echo'</form>';
@@ -23,9 +23,12 @@ END;
 function printLogoutForm()
 {
     echo <<<FIN
+    <a href="index.php?activePage=changePassword"><span style="cursor:pointer;display:block;font-size:40px;color:#9ca5ad;margin-right:10px;padding-top:5px" class="navbar-right glyphicon glyphicon-cog"></span></a>
     <form class="navbar-form navbar-right" action="index.php?activePage=index&todo=logout" method="post">
-    <button name="logout" type="submit" class="btn btn-default">Déconnexion</button>
+    <button style="margin-right:10px" name="logout" type="submit" class="btn btn-default"> Déconnexion </button>
     </form>
+    
+    
 FIN;
 }
 
@@ -63,7 +66,9 @@ function generateNavbarSimpleUser($activePage)
 
     echo <<<END
             </ul>
+    
             <div class="nav navbar-nav navbar-right">
+            
 END;
 
     printLogoutForm();
@@ -97,7 +102,7 @@ function generateNavBar($activePage, $loggedin)
 {
     echo <<<END
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <div class="container-fluid">
 END;
 
     echo <<<END
@@ -147,7 +152,7 @@ function generateHTMLHeader($title)
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>$title</title>
 
-        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="resources/favicon.ico" />
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="dynatable/jquery.dynatable.css" rel="stylesheet">
         <link href="css/perso.css" rel="stylesheet">

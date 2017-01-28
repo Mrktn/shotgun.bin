@@ -208,6 +208,22 @@ function displayMonAgenda($mysqli, $shotguns)
     }
 }
 
+function endsWith($haystack, $needle)
+{
+    return (substr($haystack, -strlen($needle)) === $needle);
+}
+
+function isLinkToPicture($url)
+{
+    $extensionList = array('gif', 'png', 'jpg', 'jpeg');
+    $fineAsUrl = filter_var($url, FILTER_VALIDATE_URL);
+    $fineAsExt = false;
+
+    foreach($extensionList as $ext)
+        $fineAsExt = $fineAsExt || endsWith($url, $ext);
+
+    return $fineAsUrl && $fineAsExt;
+}
 // Si on set preheader, c'est que la fonction est appelée avant un include de content
 // Du coup, comme on est encore en train de parser la variable $_GET pour savoir si l'userinput est valide
 // on n'a encore rien envoyé. On ajoute donc les balises nécessaires pour que le navigateur ait de quoi travailler

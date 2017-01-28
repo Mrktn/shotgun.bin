@@ -12,6 +12,11 @@ echo "<div class ='container-fluid titlepage' > <h1>Shotguns postés</h1> </div>
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 
-displayShotgunList(DBi::$mysqli, shotgun_event::getMyShotguns(DBi::$mysqli, $_SESSION['mailUser']), $_SESSION['mailUser']);
+$shotguns = shotgun_event::getMyShotguns(DBi::$mysqli, $_SESSION['mailUser']);
+
+if(count($shotguns) != 0)
+    displayShotgunList(DBi::$mysqli, $shotguns, $_SESSION['mailUser']);
+else
+    echo "<h2>Il n'y a rien à afficher !</h2></div></div></div>";
 
 ?>

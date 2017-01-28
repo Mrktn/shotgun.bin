@@ -82,37 +82,39 @@ else
 {
     // Si je suis inscrit, on me propose de me désinscrire
     if(inscription::userIsRegistered(DBi::$mysqli, $shotgun->id, $_SESSION['mailUser']))
-        $button = '<a href="index.php?activePage=shotgunIt&todoShotgunIt=unsuscribe&idShotgun=' . $shotgun->id . '" class="btn btn-danger" unsuscribe-confirm="Êtes-vous certain de vouloir vous désinscrire ? :-O" role="button">Désinscription</a><br/>';
+        $button = '<a href="index.php?activePage=shotgunIt&todoShotgunIt=unsuscribe&idShotgun=' . $shotgun->id . '" class="btn btn-danger" unsuscribe-confirm="Êtes-vous certain de vouloir vous désinscrire ? :-O">Désinscription</a><br/>';
 
     // Sinon, de shotgun, à condition que la limite ne soit pas dépassée
     else
     {
         // Si c'est illimité, on écrit "s'inscrire" plutôt que "shotgun"
         if($n == 0)
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input type="submit" value="S\'inscrire" class="btn btn-danger"></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" value="S\'inscrire" class="btn btn-danger"></form>';
         
         // Sinon si c'est limité mais qu'il y a de la place
         elseif($k < $n)
         {
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
         }
         
         // En revanche, s'il n'y a pas de place...
         else
         {
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger" disabled></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger" disabled></form>';
         }
     }
 }
 
+echo "<div class ='container-fluid titlepage' > <h1>" . htmlspecialchars($shotgun->titre) . '</h1> </div><br/><br/>';
+
+
 echo '
 <div class="container">
-    <header class="page-header">
-    <h1 class="page-title">' . htmlspecialchars($shotgun->titre) . " $frontNote</h1>" . $button . '
-    <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
-  </header>
-<div class="row">
+   </header>
+<div class="row"><div class="text-center">
+   '.$button.'</div><br/>
   <div class="container" style="width:85%">
+   <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
     <div class="panel panel-default">
       <div class="panel-heading resume-heading">
         <div class="row">
@@ -222,21 +224,19 @@ else
         $allQuestions = question::getQuestions(DBi::$mysqli, $shotgun->id);
 
         foreach($allQuestions as $q)
-        {
-            $formattedheader .= ",'" . addslashes(htmlspecialchars($q->intitule)) . "'";
-        }
+            $formattedheader .= ",'" . addslashes(preg_replace('/\s/', ' ', htmlspecialchars($q->intitule))) . "'";
 
         $formattedheader .= "]";
 
         echo "<script type=\"text/javascript\">var data = [";
         for($j = 0; $j < count($arrayInscriptions); $j = $j + 1)
         {
-            $newline = "['$i','" . $arrayInscriptions[$j]->date_shotgunned . "','" . addslashes(htmlentities($arrayInscriptions[$j]->mail_user)) . "'";
+            $newline = "['$i','" . preg_replace('/\s/', ' ', $arrayInscriptions[$j]->date_shotgunned) . "','" . preg_replace('/\s/', ' ', addslashes(htmlentities($arrayInscriptions[$j]->mail_user))) . "'";
             $currInscription = inscription::getComprehensiveInscription(DBi::$mysqli, $shotgun->id, $arrayInscriptions[$j]->mail_user);
 
             foreach($currInscription as $row)
             {
-                $newline .= ", '" . htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'], ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8') . "'";
+                $newline .= ", '" . preg_replace('/\s/', ' ', htmlspecialchars($row["question_type"] == question::$TYPE_REPONSELIBRE ? $row["texte"] : $row['intitule_reponses'], ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8')) . "'";
             }
             $newline .= "]";
             if($j < (count($arrayInscriptions) - 1))

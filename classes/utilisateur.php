@@ -28,6 +28,8 @@ class utilisateur
 
             if(!$stmt || !($stmt->bind_param('sissi', $mail, $active, $code_secret, $mdp, $admin)) || !($stmt->execute()))
                 return false;
+            else
+                return true;
         }
         else
             return false;

@@ -41,8 +41,11 @@ else{
 
 echo <<<FIN
 
-        <div class="container">
-            <form data-toggle="validator" role="form" id='register' action='content_changePassword.php' method='post'>
+        <div class ='container-fluid titlepage' > <h1>Changer de mot de passe</h1> </div><br/><br/>
+       <div class="container center-block" style="width:100%; background-color: #ffffff">
+          <div class="container center-block" style="padding:15px">
+    
+            <form data-toggle="validator" id='register' action='content_changePassword.php' method='post'>
         
             <div class="form-group">
                 <label for="inputFormerPassword" class="cols-sm-2 control-label">Mot de passe actuel</label>
@@ -53,6 +56,7 @@ echo <<<FIN
                     </div>
                 </div>
             </div>
+            <br/>
         
             <div class="form-group">
                 <label for="inputNewPassword" class="cols-sm-2 control-label">Mot de passe</label>
@@ -63,7 +67,8 @@ echo <<<FIN
                     </div>
                 </div>
             </div>
-        
+            <br/>
+
             <div class="form-group">
                 <label for="inputPasswordConfirm" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
                 <div class="cols-sm-10">
@@ -76,15 +81,12 @@ echo <<<FIN
             </div>
 
         <div class="form-group ">
-            <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Enregistrer</button>
         </div>
 
             </form>
         </div>
+        </div>
 FIN;
 }
-?>
-
-<?php
-//generateHTMLFooter();
 ?>

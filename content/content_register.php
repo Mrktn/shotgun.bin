@@ -25,30 +25,31 @@ if(isset($_POST['submittedRegister']))
 else
 {
     echo <<<END
-<div class="container center-block" style="width:100%; background-color: #ffffff">
-    <h1>S'enregistrer</h1>
- <div class="container center-block" style="padding:30px; width:70%">
-    <form data-toggle="validator" role="form" id='register' action='index.php?activePage=register' method='post'>
+    <div class ='container-fluid titlepage' > <h1>S'enregistrer</h1> </div><br/><br/>
+       <div class="container center-block" style="width:100%; background-color: #ffffff">
+          <div class="container center-block" style="padding:15px">
+    <form data-toggle="validator" id='register' action='index.php?activePage=register' method='post'>
         <input type='hidden' name='submittedRegister' id='submittedRegister' value='1'/>
         <div class="form-group">
-            <label for="email" class="cols-sm-2 control-label">Votre adresse mail @polytechnique.edu</label>
+            <label for="inputEmailRegister" class="cols-sm-2 control-label">Votre adresse mail @polytechnique.edu</label>
             <div class="cols-sm-10">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                    <input pattern=".+@polytechnique\.edu" class="form-control" name="inputEmailRegister" placeholder="Adresse mail @polytechnique.edu" data-error="Seules les adresses en polytechnique.edu sont tolérées" required/>
+                    <input pattern=".+@polytechnique\.edu" class="form-control" id="inputEmailRegister" name="inputEmailRegister" placeholder="Adresse mail @polytechnique.edu" data-error="Seules les adresses en polytechnique.edu sont tolérées" required/>
                 </div>
             </div>
-
+            <br/>
         
-            <label for="password" class="cols-sm-2 control-label">Mot de passe</label>
+            <label for="inputPasswordRegister" class="cols-sm-2 control-label">Mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input pattern=".+" type="password" data-minlength="6" class="form-control" name="inputPasswordRegister" id="inputPasswordRegister" placeholder="Mot de passe" required/>
                 </div>
             </div>
-
-            <label for="confirm" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
+            <br/>
+    
+            <label for="inputPasswordConfirmRegister" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -63,7 +64,8 @@ else
         </div>
 
     </form>
-</div>
+
+    </div>
     </div>
 END;
 }
