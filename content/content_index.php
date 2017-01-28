@@ -12,11 +12,11 @@
 if (!isset($_SESSION['mailUser']))
 { // Page d'accueil pour les non inscrits
     echo'
-   <div class="container-fluid">
+   <div class="container">
     <div class="row" >
-        <div class="col-sm-12 col-md-12 control-label fondColor">
+        <div class="col-sm-12 col-md-12 control-label fongrisContour">
 ';
-displayShotgunAVenir(DBi::$mysqli, shotgun_event::getActiveAVenirShotguns(DBi::$mysqli)); 
+displayShotgunAVenir(DBi::$mysqli, shotgun_event::getActiveAVenirShotguns(DBi::$mysqli));
 } else
 { // Page d'accueil pour les inscrits
 
