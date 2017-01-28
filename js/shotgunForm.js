@@ -1,18 +1,16 @@
 // n est le numéro de la question cette fonction génère le script HTML associée à la n-eme question
 function htmlQ(n) {
-    return ('<div id="question' + n + '" class="fontgrisContour text-center">'
-            +'<br/>'
-            +'<p class = "titreQuestion" id = "titreQ'+n+'"> Question n°'+n+'</p>'
-            +'<img src="http://www.levivat.net/media/cache/vivat_thumbnail_view/media/vivat/12-croix-blanche-fond-noir-1.jpg" alt="SupprimerQuestion" class="enleve_boutonQ tailleQuestion" > '
-            +'<br/>'
+    return ('<div class="panel panel-primary" id="question' + n + '">'
+            + '<div class="panel-heading" id = "titreQ'+n+'">Question n°'+n+' <span style="float:right" class="enleve_boutonQ tailleQuestion glyphicon glyphicon-remove" aria-hidden="true"></span></div>'
+            +'<div class="panel-body">'
             + '<textarea class="form-control" name = "intitule[]" placeholder="Poser votre question"></textarea> <br/>'
-            + '<div class="form-group" id="type_reponse' + n + '">'
-            + "<label for='typeReponse"+n+"' class=' control-label'>Quel type de réponse attendez-vous?</label>"
+            + '<div class="form-group" id="type_reponse' + n + '" style="padding-left:20px">'
+            + "<label for='typeReponse"+n+"' class=' control-label'>Quel type de question ?</label>"
             + '<div class="col-sm-12" id="Choix_Multiple_REPU' + n + '">'
-            + '<input type="radio" id = "run' + n + '" name="typeReponse'+n+'" value= 1 ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Choix multiple à une réponse <br/>"
+            + '<input type="radio" id = "run' + n + '" name="typeReponse'+n+'" value= 1 ' + "onclick='$(" + '"#choix' + n + '").show();' + "'  required>   Une réponse à choisir parmi plusieurs <br/>"
             + '</div>'
             + '<div class="col-sm-12" id="Choix_Multiple_REPM' + n + '">'
-            + '<input type="radio" id ="rdeux' + n + '" name="typeReponse'+n+'" value= 0 ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Choix multiple à plusieurs réponses"
+            + '<input type="radio" id ="rdeux' + n + '" name="typeReponse'+n+'" value= 0 ' + "onclick='$(" + '"#choix' + n + '").show();' + "' >   Plusieurs réponses possibles"
             + '</div>'
             + '<div class="col-sm-12" id="Reponse_libre' + n + '">'
             + '<input type="radio"  id ="rtrois' + n + '" name="typeReponse'+n+'" value= 2 ' + "onclick='$(" + '"#choix' + n + '").hide();' + "'  >   Réponse libre"
@@ -25,6 +23,7 @@ function htmlQ(n) {
             + '</div>'
             + '<div id ="question'+n+'Choix2">'
             + '<input type="text"  name="qcmrep' + n + '[]" placeholder="Choix 2"> <img src="http://www.invitedemarc.com/wp-content/uploads/2013/01/path_choices-300x225.jpg" alt="Decoration" class="tailledec" >' 
+            + '</div>'
             + '</div>'
             + '</div>'
             + '</div>'
@@ -54,9 +53,10 @@ $(document).ready(function () {
         }
     });
     $(wrapperQ).on("click", ".enleve_boutonQ", function (e) { //Bouton de suppression de question
+        console.log(htmlQ(12));
         e.preventDefault();
-        var numQ = parseInt($(this).parent('div').attr('id').match(/\d+/));// Savoir quelle question on retire
-        $(this).parent('div').remove();
+        var numQ = parseInt($(this).parent().parent('div').attr('id').match(/\d+/));// Savoir quelle question on retire
+        $(this).parent().parent('div').remove();
         // Actualisation des id
         for ( var i = (numQ + 1); i< (xQ+2); i++){ // Traitons la question numéro i s'il elle n'existe pas, rien n'est fait
                 if ((typeof ($('#question'+i).attr('id'))) !== 'undefined'){
@@ -85,7 +85,7 @@ $(document).ready(function () {
                 refresh_attr($(this).attr("id"),"id",i-1);
             });
             refresh_attr('type_reponse'+i,'id',i-1);
-            $('#titreQ'+i).replaceWith('<p class = "titreQuestion" id = "titreQ'+(i-1)+'"> Question n°'+(i-1)+'</p>');
+            $('#titreQ'+i).replaceWith('<div class="panel-heading" id = "titreQ'+(i-1)+'">Question n°'+(i-1)+' <span style="float:right" class="enleve_boutonQ tailleQuestion glyphicon glyphicon-remove" aria-hidden="true"></span></div>');
             refresh_attr('question'+i,'id',i-1);
         }}
         xQ--; // Il faut actualiser le nombre de choix pour chaque question

@@ -26,13 +26,13 @@ class shotgun_event
         $stmt = $mysqli->prepare($query);
 
         if(!$stmt)
-            die($stmt->error);
+            return null;
 
         $stmt->bind_param('ssssidssisiis', $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $active, $date_crea);
+        
         if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
+            return null;
+
         $idShotgun = $stmt->insert_id;
         return $idShotgun;
     }
