@@ -8,9 +8,9 @@ function stripTheMail($mail)
 
 function labelFromPercentage($r)
 {
-    if($r < 0.5)
+    if ($r < 0.5)
         return "progress-bar-success";
-    if($r < 0.8)
+    if ($r < 0.8)
         return "progress-bar-warning";
 
     return "progress-bar-danger";
@@ -31,20 +31,20 @@ function isValidPolytechniqueEmail($mail)
 function userMaySuscribe($mysqli, $idShot, $isAdmin, $mail)
 {
     // L'administrateur ne peut pas shotgunner
-    if($isAdmin)
+    if ($isAdmin)
     {
         return false;
     }
 
     // Il doit être visible, aka ouvert, actif, et de date de publi (programmée) dépassée
     // Et pas périmé, aka la date de l'évènement n'est pas dépassée.
-    if(!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
+    if (!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
         return false;
 
     $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
 
     // Si l'utilisateur est le créateur ou qu'il est déjà enregistré, c'est aussi interdit...
-    if(($mail == $shotgun->mail_crea) || inscription::userIsRegistered($mysqli, $idShot, $mail))
+    if (($mail == $shotgun->mail_crea) || inscription::userIsRegistered($mysqli, $idShot, $mail))
         return false;
 
     return true;
@@ -58,17 +58,17 @@ function userMaySuscribe($mysqli, $idShot, $isAdmin, $mail)
 // inscrit
 function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
 {
-    if($isAdmin)
+    if ($isAdmin)
         return false;
 
     // Il doit être visible, aka ouvert, actif, et de date de publi (programmée) dépassée
     // Et pas périmé, aka la date de l'évènement n'est pas dépassée.
-    if(!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
+    if (!shotgun_event::shotgunIsVisible($mysqli, $idShot) || shotgun_event::shotgunIsPerime($mysqli, $idShot))
         return false;
 
     $shotgun = shotgun_event::shotgunGet($mysqli, $idShot);
 
-    if(($mail == $shotgun->mail_crea) || !inscription::userIsRegistered($mysqli, $idShot, $mail))
+    if (($mail == $shotgun->mail_crea) || !inscription::userIsRegistered($mysqli, $idShot, $mail))
         return false;
 
     return true;
@@ -76,29 +76,29 @@ function userMayUnsuscribe($mysqli, $idShot, $isAdmin, $mail)
 
 function displayShotgunList($mysqli, $shotguns, $mailUser)
 {
-    foreach($shotguns as $currShotgun)
+    foreach ($shotguns as $currShotgun)
     {
         $isCreateur = $currShotgun->mail_crea == $mailUser;
         $hasShotgunned = inscription::userIsRegistered($mysqli, $currShotgun->id, $mailUser);
 
         echo '<div idShotgun="' . $currShotgun->id . '" class="panel panel-default center-block shotgunPanel" style="align:center; width: 80%">
   <div class="panel-heading"><p style="float:left;">';
-        
-        if($hasShotgunned)
+
+        if ($hasShotgunned)
             echo '<span title="Vous avez shotgun cet évènement !" style="font-size:18px" class="glyphicon glyphicon-ok"></span>   ';
 
-        if($isCreateur)
+        if ($isCreateur)
             echo '<span title="Vous êtes l\'auteur de ce shotgun" style="font-size:18px" class="glyphicon glyphicon-user"></span>   ';
 
         // Si pas autorisé par l'admin
-        if(!$currShotgun->active)
+        if (!$currShotgun->active)
             echo '<span title="Shotgun en attente de révision par l\'administrateur" style="font-size:18px" class="glyphicon glyphicon-minus-sign"></span>   ';
-        
-        if(!$currShotgun->ouvert)
+
+        if (!$currShotgun->ouvert)
             echo '<span title="Vous devez ouvrir ce shotgun pour qu\'il puisse apparaître dans la liste publique" style="font-size:18px" class="glyphicon glyphicon-lock"></span>   ';
-        
+
         echo'</p><h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars($currShotgun->titre) . '</strong> par <i>' . htmlspecialchars($currShotgun->au_nom_de) . '</i></h3>
-  <a href="index.php?activePage=shotgunRecord&idShotgun='.$currShotgun->id.'" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
+  <a href="index.php?activePage=shotgunRecord&idShotgun=' . $currShotgun->id . '" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
   </div>
   <div class="panel-body">';
         $_GET['idShotgun'] = $currShotgun->id;
@@ -110,74 +110,109 @@ function displayShotgunList($mysqli, $shotguns, $mailUser)
         echo '</p></div><br/><br/>';
     }
 }
-function displayShotgunAVenir($mysqli, $shotguns){
+
+function displayShotgunAVenir($mysqli, $shotguns)
+{
     echo'<div class="container fiftycent">
-  <h2>Prochains shotguns à ne pas rater</h2>
+  <h2>Prochains shotguns à ne pas rater</h2>';
+    if (count($shotguns) == 0)
+    {
+        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.s";
+    } else
+    {
+        echo'
   <p>Tiens-toi prêt!</p>            
-  <table class="table table-hover dynamic table-fill">
+  <table class="table table-hover dynamic table-fill tableaccueil">
     <thead>
       <tr>
-        <th>Organisateur</th>
-        <th>Titre</th>
-        <th>Date</th>
-        <th >Shotgun</th>
-                <th>Prix</th>
+        <th class="thaccueil">Organisateur</th>
+        <th class="thaccueil">Titre</th>
+        <th class="thaccueil">Date</th>
+        <th class="thaccueil" >Shotgun</th>
+                <th class="thaccueil">Prix</th>
       </tr>
     </thead>
     <tbody>';
-    foreach($shotguns as $currShotgun) {
-           echo'<tr>
-        <td>'.htmlspecialchars($currShotgun->au_nom_de).'</td>
-        <td>'.htmlspecialchars($currShotgun->titre).'</td>
-        <td>'.htmlspecialchars($currShotgun->date_event).'</td>
-        <td>'.htmlspecialchars($currShotgun->date_publi).'</td>
-        <td>'.$currShotgun->prix.'€</td>
+        $compteur = 0;
+        foreach ($shotguns as $currShotgun)
+        {
+            if ($compteur < 5)
+            {
+                echo'<tr>
+        <td>' . htmlspecialchars($currShotgun->au_nom_de) . '</td>
+        <td>' . htmlspecialchars($currShotgun->titre) . '</td>
+        <td>' . htmlspecialchars($currShotgun->date_event) . '</td>
+        <td>' . htmlspecialchars($currShotgun->date_publi) . '</td>
+        <td>' . $currShotgun->prix . '€</td>
       </tr>';
-    }
-    echo'    </tbody>
+                $compteur = $compteur + 1;
+            }
+        }
+        echo'    </tbody>
   </table>
 </div>';
+    }
 }
 
-function displayMonAgenda($mysqli, $shotguns){
-        echo'<div class="container fiftycent">
-  <h2>Mon agenda</h2>
+function displayMonAgenda($mysqli, $shotguns)
+{ // Affiche les 5 plus proches évènements sur la page d'accueil
+    echo'<div class="container fiftycent">
+  <h2>Mon agenda</h2>';
+    if (count($shotguns) == 0)
+    {
+        echo"<p> Tu n'as actuellement rien shotgun. <br/> Inscris-toi vite!</p>";
+    } else
+    {
+        echo'
   <p>Voici la liste de tes prochains évènements. Sois présent!</p>            
-  <table class="table table-hover dynamic table-fill">
+  <table class="table table-hover dynamic table-fill tableaccueil">
     <thead>
       <tr>
-        <th>Organisateur</th>
-        <th>Titre</th>
-        <th>Date</th>
-        <th>Prix</th>
-        <th>Inscrits</th>
+        <th class="thaccueil">Organisateur</th>
+        <th class="thaccueil">Titre</th>
+        <th class="thaccueil">Date</th>
+        <th class="thaccueil">Prix</th>
+        <th class="thaccueil">Inscrits</th>
       </tr>
     </thead>
     <tbody>';
-    foreach($shotguns as $currShotgun) { // Faire le truc du ? de pro
-        $n = shotgun_event::getNumInscriptions($mysqli,$currShotgun->id);
-        $nbplaces = $currShotgun->nb_places;
-           echo'<tr>
-        <td>'.htmlspecialchars($currShotgun->au_nom_de).'</td>
-        <td>'.htmlspecialchars($currShotgun->titre).'</td>
-        <td>'.htmlspecialchars($currShotgun->date_event).'</td>
-        <td>'.$currShotgun->prix.'€</td>';
-           echo'<td>';
-          if ($nbplaces != 0) { echo ($n.'/'.$nbplaces);} else { echo ($n);};
-          echo'</td>
+        $compteur = 0;
+        foreach ($shotguns as $currShotgun)
+        { // Faire le truc du ? de pro
+            if ($compteur < 5)
+            {
+                $n = shotgun_event::getNumInscriptions($mysqli, $currShotgun->id);
+                $nbplaces = $currShotgun->nb_places;
+                echo'<tr>
+        <td>' . htmlspecialchars($currShotgun->au_nom_de) . '</td>
+        <td>' . htmlspecialchars($currShotgun->titre) . '</td>
+        <td>' . htmlspecialchars($currShotgun->date_event) . '</td>
+        <td>' . $currShotgun->prix . '€</td>';
+                echo'<td>';
+                if ($nbplaces != 0)
+                {
+                    echo ($n . '/' . $nbplaces);
+                } else
+                {
+                    echo ($n);
+                };
+                echo'</td>
       </tr>';
-    }
-    echo'    </tbody>
+                $compteur = $compteur + 1;
+            }
+        }
+        echo'    </tbody>
   </table>
 </div>';
+    }
 }
 
 // Si on set preheader, c'est que la fonction est appelée avant un include de content
 // Du coup, comme on est encore en train de parser la variable $_GET pour savoir si l'userinput est valide
 // on n'a encore rien envoyé. On ajoute donc les balises nécessaires pour que le navigateur ait de quoi travailler
-function redirectWithPost($url, $arrpost, $preheader=false)
+function redirectWithPost($url, $arrpost, $preheader = false)
 {
-    if($preheader)
+    if ($preheader)
     {
         echo '<!DOCTYPE html>
                 <html>
@@ -187,7 +222,6 @@ function redirectWithPost($url, $arrpost, $preheader=false)
                         <script type="text/javascript" src="js/redirect.js"></script>
                     </head>
                     <body>';
-                    
     }
     
     echo '<script>$.redirect("' . $url . '",{placeholder:"a"';
@@ -201,10 +235,9 @@ function redirectWithPost($url, $arrpost, $preheader=false)
     foreach($arrpost as $key => $val)
         echo ',"'.$key.'":"'.$val.'"';
     echo '});</script>';
-    
-   
-    
-    exit();*/
+
+    if ($preheader)
+        echo '</body></html>';*/
 }
 ?>
-
+}

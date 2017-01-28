@@ -178,7 +178,8 @@ class shotgun_event
         $a = array();
 
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
-        $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user = ? AND inscription.id_shotgun = shotgun_event.id ORDER BY shotgun_event.date_crea DESC;";
+        $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user = ? AND inscription.id_shotgun = shotgun_event.id ORDER BY shotgun_event.date_event ASC;";
+
         $stmt = $mysqli->prepare($query);
 
         if(!$stmt || !($stmt->bind_param('s', $mailCrea)) || !($stmt->execute()) || !($result = $stmt->get_result()))
@@ -246,7 +247,7 @@ class shotgun_event
         $a = array();
 
         // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
-        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_publi AND ev.active=1 ORDER BY ev.date_crea ASC;";
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_publi AND ev.active=1 ORDER BY ev.date_publi ASC;";
 
         $result = $mysqli->query($query);
 
