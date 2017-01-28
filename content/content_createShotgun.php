@@ -60,8 +60,8 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
     $description = $_POST['description'];
     $date_event = $_POST['date_event'];
     $date_publi = $_POST['date_publi'];
-    $nb_places = (!isset($_POST["placeLimBool"]) || !$_POST["placeLimBool"]) ? 0 : $_POST["nb_places"];
-    $prix = (!isset($_POST["payantBool"]) || !$_POST["payantBool"]) ? 0 : $_POST["prix"];
+    $nb_places = (!isset($_POST["placeLimBool"]) || !$_POST["placeLimBool"]) ? "0" : $_POST["nb_places"];
+    $prix = (!isset($_POST["payantBool"]) || !$_POST["payantBool"]) ? "0" : $_POST["prix"];
     $au_nom_de = $_POST['au_nom_de'];
     $anonymous = $_POST['anonymous'];
     $link_thumbnail = $_POST['link_thumbnail'];
