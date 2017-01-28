@@ -1,11 +1,11 @@
 
 <div class ='container-fluid titlepage' >
     <div class="col-sm-4 col-md-4 ">
-        <img alt="Canons croisés" src="images/fusilsretoucheresize_transparent.png" class="img-responsive Photoleft">
+        <img alt="Canons croisés" src="resources/fusilsretoucheresize_transparent.png" class="img-responsive Photoleft">
     </div>
     <h1 class="col-sm-4 col-md-4" >Bienvenue sur le site de shotgun de l'X !</h1>
     <div class="col-sm-4 col-md-4 ">
-        <img alt="Canons croisés" src="images/fusilsretoucheresize_transparent.png" class="Photoright img-responsive">
+        <img alt="Canons croisés" src="resources/fusilsretoucheresize_transparent.png" class="Photoright img-responsive">
     </div>
 </div>
 <?php
