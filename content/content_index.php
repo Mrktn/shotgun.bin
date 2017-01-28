@@ -1,7 +1,7 @@
 
 <div class ='container-fluid titlepage' >
     <div class="col-sm-4 col-md-4 ">
-        <img src="images/fusilsretoucheresize_transparent.png" class="img-responsive Photoleft">
+        <img alt="Canons croisés" src="images/fusilsretoucheresize_transparent.png" class="img-responsive Photoleft">
     </div>
     <h1 class="col-sm-4 col-md-4" >Bienvenue sur le site de shotgun de l'X !</h1>
     <div class="col-sm-4 col-md-4 ">
@@ -18,6 +18,7 @@ if(!isset($_SESSION['mailUser']))
         <div class="col-sm-12 col-md-12 control-label fongrisContour">
 ';
     displayShotgunAVenir(DBi::$mysqli, shotgun_event::getActiveAVenirShotguns(DBi::$mysqli));
+    echo '</div></div>';
 }
 else
 { // Page d'accueil pour les inscrits
