@@ -19,7 +19,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
 
         $description = isset($description) ? $description : "";
         $link_thumbnail = isset($link_thumbnail) ? $link_thumbnail : "";
-        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : $date_publi;
+        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : date("Y-m-d H:i:s", strtotime(preg_replace('/\//', '-', $date_publi)));
         
         $date_event = preg_replace('/\//', '-', $date_event);
         $date_event = date("Y-m-d H:i:s", strtotime($date_event));
