@@ -8,7 +8,7 @@ if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
 if(!isset($_SESSION['mailUser']))
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur !"));
 
-echo "<div class ='container-fluid titlepage' > <h1>Shotguns postés</h1> </div>";
+echo "<div class ='container-fluid titlepage' > <h1>Shotguns postés</h1> </div><br/><br/>";
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 

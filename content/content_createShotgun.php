@@ -83,11 +83,9 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 }
 else
 {
-    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1>
- </div>";
+    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1></div><br/><br/>";
     echo<<<END
     <div class="container">
-    <br/>
     <h2>Informations générales</h2><br/>
     <form data-toggle="validator" class="form-horizontal" action="index.php?activePage=createShotgun&todoCreate=createShotgun" method="post" >
         <div class="form-group">
