@@ -18,11 +18,11 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
 
         $description = isset($description) ? $description : "";
         $link_thumbnail = isset($link_thumbnail) ? $link_thumbnail : "";
-        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : $date_publi;
-        
+        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : date("Y-m-d H:i:s", strtotime(preg_replace('/\//', '-', $date_publi)));
+
         $date_event = preg_replace('/\//', '-', $date_event);
         $date_event = date("Y-m-d H:i:s", strtotime($date_event));
-        
+
         $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
 
         if($idShotgun == null)
@@ -40,7 +40,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
                 echo '<b>ça a raté !!</b>';
 
             if(!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
-                 $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
+                $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
             else
                 $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
         }
@@ -49,10 +49,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
         else
             redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que vous l'ayez <b>ouvert</b> et que l'administrateur l'ait <b>autorisé</b> !"));
-        
-        
-        }
-    
+    }
     else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
 }
@@ -85,11 +82,9 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 }
 else
 {
-    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1>
- </div>";
+    echo "<div class ='container-fluid titlepage' > <h1>Formulaire de création</h1></div><br/><br/>";
     echo<<<END
     <div class="container">
-    <br/>
     <h2>Informations générales</h2><br/>
     <form data-toggle="validator" class="form-horizontal" action="index.php?activePage=createShotgun&todoCreate=createShotgun" method="post" >
         <div class="form-group">
@@ -173,10 +168,11 @@ else
     <br/><h2>Ajouter des questions</h2><br/>
     
         <div  class="form-group">
-            <input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default ajout_boutonQ col-sm-2 ' />
-            <div class=" col-sm-6 input_fields_wrapQ" id="question">
+            <div style="width:80%" class="center-block input_fields_wrapQ" id="question">
                 
             </div>
+            <input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default ajout_boutonQ' />
+            
         </div>
         <div class="form-group">
             <div style="float:right">

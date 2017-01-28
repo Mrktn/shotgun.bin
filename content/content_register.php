@@ -32,7 +32,7 @@ else
             <label for="email" class="cols-sm-2 control-label">Votre adresse mail @polytechnique.edu</label>
             <div class="cols-sm-10">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i></span>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                     <input pattern=".+@polytechnique\.edu" class="form-control" name="inputEmailRegister" placeholder="Adresse mail @polytechnique.edu" data-error="Seules les adresses en polytechnique.edu sont tolérées" required/>
                 </div>
             </div>
@@ -41,7 +41,7 @@ else
             <label for="password" class="cols-sm-2 control-label">Mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input pattern=".+" type="password" data-minlength="6" class="form-control" name="inputPasswordRegister" id="inputPasswordRegister" placeholder="Mot de passe" required/>
                 </div>
             </div>
@@ -49,7 +49,7 @@ else
             <label for="confirm" class="cols-sm-2 control-label">Confirmer le mot de passe</label>
             <div class="cols-sm-10">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input pattern=".+" type="password" class="form-control" id="inputPasswordConfirmRegister" name="inputPasswordConfirmRegister" data-match="#inputPasswordRegister" data-match-error="Les deux mots de passe ne coïncident pas" placeholder="Confirmer le mot de passe" required/>
                 </div>
                 <div class="help-block with-errors"></div>

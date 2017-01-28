@@ -93,10 +93,9 @@ if(isset($_GET['todoShotgunIt']))
         if(shotgun_event::userMayActivateDisableShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
         {
             if(shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action))
-            {
-                $_POST['tip'] = 'success';
-                $_POST['msg'] = ($action == 'activateShotgun' ? "Vous avez autorisé ce shotgun !" : "Le shotgun a bien été désactivé !");
-            }   
+                redirectWithPost("index.php?activePage=manageShotguns", array('tip' => 'success', 'msg' => ($action == 'activateShotgun' ? "Vous avez autorisé un shotgun !" : "Le shotgun a bien été désactivé !")), true);
+            else
+                redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur inconnue, contactez un administrateur."), true);
         }
         else
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Il faut être administrateur pour activer / désactiver un shotgun !'), true);
@@ -204,7 +203,7 @@ if(isset($_POST['tip']))
     if(!isset($_POST['msg']))
         $msgNotif = "Message";
     else
-        $msgNotif = htmlspecialchars($_POST['msg']);
+        $msgNotif = $_POST['msg'];
 
     echo '<script type="text/javascript">$.notify({
 	title: "<strong>' . $titleNotif . '</strong>",
