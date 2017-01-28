@@ -41,7 +41,7 @@ else
 </div> ';
 };
 
-echo" </div> <div class='container'> <blockquote  class='blockquote-reverse' style='margin-top:10px'>
+echo" </div> </div><div class='container'> <blockquote  class='blockquote-reverse' style='margin-top:10px'>
                         <i>L'avenir appartient à ceux qui shotgun tôt...</i>
                         <footer>Louis Vaneau </footer> 
                     </blockquote></div>";

@@ -219,7 +219,7 @@ function isLinkToPicture($url)
     $fineAsExt = false;
 
     foreach($extensionList as $ext)
-        $fineAsExt = $fineAsExt || endWith($url, $ext);
+        $fineAsExt = $fineAsExt || endsWith($url, $ext);
 
     return $fineAsUrl && $fineAsExt;
 }

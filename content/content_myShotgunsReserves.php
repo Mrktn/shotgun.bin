@@ -13,7 +13,10 @@ echo "<div class ='container-fluid titlepage' > <h1>Mes shotguns</h1> </div><br/
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 
-displayShotgunList(DBi::$mysqli, shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUser']), $_SESSION['mailUser']);
+$shotguns = shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUser']);
 
-//echo '<script src="js/refresher.js"></script>';
+if(count($shotguns) != 0)
+    displayShotgunList(DBi::$mysqli, $shotguns, $_SESSION['mailUser']);
+else
+    echo "<h2>Il n'y a rien à afficher !</h2></div></div></div>"
 ?>
