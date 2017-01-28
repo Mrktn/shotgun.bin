@@ -2,7 +2,6 @@
 
 require_once('classes/shotgun_event.php');
 require_once('classes/DBi.php');
-
 if(!isset($_SESSION['loggedIn']))
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Connectez-vous avant de créer un shotgun !"));
 
@@ -61,8 +60,8 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
     $description = $_POST['description'];
     $date_event = $_POST['date_event'];
     $date_publi = $_POST['date_publi'];
-    $nb_places = $_POST['nb_places'];
-    $prix = $_POST['prix'];
+    $nb_places = (!isset($_POST["placeLimBool"]) || !$_POST["placeLimBool"]) ? "0" : $_POST["nb_places"];
+    $prix = (!isset($_POST["payantBool"]) || !$_POST["payantBool"]) ? "0" : $_POST["prix"];
     $au_nom_de = $_POST['au_nom_de'];
     $anonymous = $_POST['anonymous'];
     $link_thumbnail = $_POST['link_thumbnail'];
@@ -126,7 +125,7 @@ else
             <div class="col-sm-offset-2 col-sm-6">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="placeLimBool" onclick='$("#Nb_places").toggle();'><strong>Nombre de places limitées ?</strong>
+                        <input type="checkbox" name="placeLimBool" value="true" onclick='$("#Nb_places").toggle();'><strong>Nombre de places limitées ?</strong>
                     </label>
                 </div>
             </div>
@@ -141,7 +140,7 @@ else
             <div class="col-sm-offset-2 col-sm-6">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="payantBool" onclick='$("#PrixQ").toggle();'> <strong>Payant ?</strong>
+                        <input type="checkbox" name="payantBool" value = "true" onclick='$("#PrixQ").toggle();'> <strong>Payant ?</strong>
                     </label>
                 </div>
             </div>

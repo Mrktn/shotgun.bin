@@ -113,7 +113,7 @@ function displayShotgunList($mysqli, $shotguns, $mailUser)
 function displayShotgunAVenir($mysqli, $shotguns){
     echo'<div class="container fiftycent">
   <h2>Prochains shotguns à ne pas rater</h2>
-  <p>Be on time!</p>            
+  <p>Tiens-toi prêt!</p>            
   <table class="table table-hover dynamic table-fill">
     <thead>
       <tr>
@@ -142,7 +142,7 @@ function displayShotgunAVenir($mysqli, $shotguns){
 function displayMonAgenda($mysqli, $shotguns){
         echo'<div class="container fiftycent">
   <h2>Mon agenda</h2>
-  <p>Sois présent si tu ne veux pas te faire Balestrer!</p>            
+  <p>Voici la liste de tes prochains évènements. Sois présent!</p>            
   <table class="table table-hover dynamic table-fill">
     <thead>
       <tr>
