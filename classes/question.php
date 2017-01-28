@@ -15,30 +15,25 @@ class question
     {
         $stmt = $mysqli->prepare("INSERT INTO `question` (`intitule`, `type`, `id_shotgun`) VALUES(?,?,?)");
 
-        if(!$stmt)
-            return null;
-
-        $stmt->bind_param('sii', $intitule, $type, $id_shotgun);
-
-        if(!$stmt->execute())
-            return null;
+        if(!$stmt || !($stmt->bind_param('sii', $intitule, $type, $id_shotgun)) || !($stmt->execute()))
+            die("Erreur fatale dans insererQuestion");
 
         $idQuestion = $stmt->insert_id;
+        $stmt->close();
+
         return $idQuestion;
     }
 
     // Récupère la question à partir de son id
     public static function getQuestionFromId($mysqli, $id)
     {
-        $query = "SELECT * FROM question WHERE id = ?";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('i', $id);
-        if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
-        $result = $stmt->get_result();
+        $stmt = $mysqli->prepare("SELECT * FROM question WHERE id = ?");
+
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die("Erreur fatale dans getQuestionFromId");
+
         $row = $result->fetch_object('question');
+
         $stmt->close();
         return $row;
     }
@@ -48,39 +43,35 @@ class question
     {
         $a = array();
 
-        // On sélectionne ceux qui ne sont pas ecore publiés à cause de leur date de publi, mais qui sont actifs
-        $query = "SELECT * FROM question AS quest WHERE quest.id_shotgun='$idShot' ORDER BY quest.id ASC;";
+        $stmt = $mysqli->prepare("SELECT * FROM question AS quest WHERE quest.id_shotgun = ? ORDER BY quest.id ASC;");
 
-        $result = $mysqli->query($query);
-
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('i', $idShot)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die("Erreur fatale dans getQuestions");
 
         while(($row = $result->fetch_object('question')))
-        {
             $a[] = $row;
-        }
 
+        $stmt->close();
         return $a;
     }
 
+    // Donne la question associée à la réponse id
     public static function getQuestion_Rep($mysqli, $id)
-    { // Donne la question associée à la réponse id
-        $query = "SELECT question.* FROM question,reponse WHERE reponse.id =? AND question.id = id_question ";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('i', $id);
-        if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
-        $result = $stmt->get_result();
+    {
+        $stmt = $mysqli->prepare("SELECT question.* FROM question,reponse WHERE reponse.id = ? AND question.id = reponse.id_question");
+        
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die("Erreur fatale dans getQuestion_Rep");
+    
         $row = $result->fetch_object('question');
         $stmt->close();
+    
         return $row;
     }
 
+    // Insere la question i du formulaire dans la BDD
     public static function traiteQuestionForm($mysqli, $intitule, $typeReponse, $id_shotgun, $i)
-    { // Insere la question i du formulaire dans la BDD
+    {
         return question::insererQuestion($mysqli, $intitule[$i], $typeReponse[$i], $id_shotgun);
     }
 

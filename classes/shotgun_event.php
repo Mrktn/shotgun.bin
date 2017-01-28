@@ -25,41 +25,13 @@ class shotgun_event
         $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
 
-        if(!$stmt)
-            return null;
-
-        $stmt->bind_param('ssssidssisiis', $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $active, $date_crea);
-
-        if(!$stmt->execute())
+        if(!$stmt || !($stmt->bind_param('ssssidssisiis', $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $active, $date_crea)) || !($stmt->execute()))
             return null;
 
         $idShotgun = $stmt->insert_id;
-        return $idShotgun;
-    }
-
-    // Renvoie le shotgun d'id id et null sinon , fait-on la même avec en paramètre titre?
-    public static function getShotgun($mysqli, $id)
-    {
-        $query = "SELECT * FROM `shotgun_event` WHERE id = ?;";
-        $stmt = $mysqli->prepare($query);
-
-        if(!$stmt)
-            return null;
-
-        $stmt->bind_param('i', $id);
-
-        if(!$stmt->execute())
-            return null;
-
-        $result = $stmt->get_result();
-
-        // Renvoie false si le shotgun n'existe pas
-        if(!($shotgun = $result->fetch_object('shotgun_event')))
-            return null;
 
         $stmt->close();
-
-        return $shotgun;
+        return $idShotgun;
     }
 
     public static function updateShotgun($mysqli, $idShotgun, $action)
@@ -70,21 +42,22 @@ class shotgun_event
             return false;
 
         if($action == 'deleteShotgun')
-            $query = "DELETE FROM shotgun_event WHERE id=$idShotgun;";
+            $query = "DELETE FROM shotgun_event WHERE id = ?;";
         else if($action == 'closeShotgun')
-            $query = "UPDATE shotgun_event SET ouvert=0 WHERE id='$idShotgun';";
+            $query = "UPDATE shotgun_event SET ouvert=0 WHERE id = ?;";
         else if($action == 'openShotgun')
-            $query = "UPDATE shotgun_event SET ouvert=1 WHERE id=$idShotgun;";
+            $query = "UPDATE shotgun_event SET ouvert=1 WHERE id = ?;";
         else if($action == 'activateShotgun')
-            $query = "UPDATE shotgun_event SET active=1 WHERE id=$idShotgun;";
+            $query = "UPDATE shotgun_event SET active=1 WHERE id = ?;";
         else if($action == 'disableShotgun')
-            $query = "UPDATE shotgun_event SET active=0 WHERE id=$idShotgun;";
+            $query = "UPDATE shotgun_event SET active=0 WHERE id = ?;";
 
-        $result = $mysqli->query($query);
+        $stmt = $mysqli->prepare($query);
 
-        if(!$result)
+        if(!$stmt || !($stmt->bind_param('i', $idShotgun)) || !($stmt->execute()))
             return false;
 
+        $stmt->close();
         return true;
     }
 
@@ -109,16 +82,11 @@ class shotgun_event
             return false;
 
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('i', $iid);
 
-        if(!$stmt->execute())
-            die($stmt->error);
+        if(!$stmt || !($stmt->bind_param('i', $iid)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans shotgunIsInDB');
 
-        $result = $stmt->get_result();
-
-        if(!$result)
-            die($mysqli->error);
-
+        $stmt->close();
         return ($result->num_rows != 0);
     }
 
@@ -127,12 +95,13 @@ class shotgun_event
         if(!shotgun_event::shotgunIsInDB($mysqli, $id))
             return false;
 
-        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND ev.ouvert=1 AND ev.active=1 AND NOW() > ev.date_publi LIMIT 1;";
-        $result = $mysqli->query($query);
+        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = ? AND ev.ouvert=1 AND ev.active=1 AND NOW() > ev.date_publi LIMIT 1;";
+        $stmt = $mysqli->prepare($query);
 
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans shotgunIsVisible');
 
+        $stmt->close();
         return ($result->num_rows != 0);
     }
 
@@ -141,12 +110,13 @@ class shotgun_event
         if(!shotgun_event::shotgunIsInDB($mysqli, $id))
             return false;
 
-        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = $id AND NOW() >= ev.date_event LIMIT 1;";
-        $result = $mysqli->query($query);
+        $query = "SELECT ev.id FROM shotgun_event AS ev WHERE ev.id = ? AND NOW() >= ev.date_event LIMIT 1;";
+        $stmt = $mysqli->prepare($query);
 
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans shotgunIsPerime');
 
+        $stmt->close();
         return ($result->num_rows != 0);
     }
 
@@ -155,14 +125,15 @@ class shotgun_event
         if(!shotgun_event::shotgunIsInDB($mysqli, $id))
             return null;
 
-        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.id = $id LIMIT 1;";
-        $result = $mysqli->query($query);
+        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.id = ? LIMIT 1;";
+        $stmt = $mysqli->prepare($query);
 
-        // If you can't do it quick, at least do it dirty
-        while(($row = $result->fetch_object('shotgun_event')))
-            return $row;
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans shotgunGet');
 
-        return null;
+        $row = $result->fetch_object('shotgun_event');
+        $stmt->close();
+        return $row;
     }
 
     // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
@@ -170,20 +141,16 @@ class shotgun_event
     {
         $a = array();
 
-        // FIXME: optionnel ?
-        if(!isValidPolytechniqueEmail($mailUser))
-            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
+        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 AND ev.mail_crea != ? ORDER BY ev.date_crea DESC;";
+        $stmt = $mysqli->prepare($query);
 
-        $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 AND ev.mail_crea!=\"$mailUser\" ORDER BY ev.date_crea DESC;";
-
-        $result = $mysqli->query($query);
-
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('s', $mailUser)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getVisibleShotgunsNotMine');
 
         while(($row = $result->fetch_object('shotgun_event')))
             $a[] = $row;
 
+        $stmt->close();
         return $a;
     }
 
@@ -191,20 +158,17 @@ class shotgun_event
     {
         $a = array();
 
-        if(!isValidPolytechniqueEmail($mailCrea))
-            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
-
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
-        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.mail_crea=\"$mailCrea\" ORDER BY ev.date_crea DESC;";
+        $query = "SELECT * FROM shotgun_event AS ev WHERE ev.mail_crea = ? ORDER BY ev.date_crea DESC;";
+        $stmt = $mysqli->prepare($query);
 
-        $result = $mysqli->query($query);
-
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('s', $mailCrea)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getMyShotguns');
 
         while(($row = $result->fetch_object('shotgun_event')))
             $a[] = $row;
 
+        $stmt->close();
         return $a;
     }
 
@@ -213,44 +177,32 @@ class shotgun_event
     {
         $a = array();
 
-        if(!isValidPolytechniqueEmail($mailCrea))
-            header('Location: index.php?activePage=error&msg=Votre adresse est mal formée :o !');
-
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
         $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user = ? AND inscription.id_shotgun = shotgun_event.id ORDER BY shotgun_event.date_crea DESC;";
-
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('s', $mailCrea);
 
-        if(!$stmt->execute())
-            die($stmt->error);
-
-        $result = $stmt->get_result();
-
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('s', $mailCrea)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getMyShotgunsReserves');
 
         while(($row = $result->fetch_object('shotgun_event')))
             $a[] = $row;
 
+        $stmt->close();
         return $a;
     }
 
     // Retourne le nombre de paxs associés au shotgun d'id $id dans la db
     public static function getNumInscriptions($mysqli, $id)
     {
-        $query = "SELECT * FROM inscription WHERE id_shotgun=" . $id . ";";
+        $query = "SELECT * FROM inscription WHERE id_shotgun = ?;";
 
-        $result = $mysqli->query($query);
+        $stmt = $mysqli->prepare($query);
+        
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getNumInscriptions');
 
-        if($result)
-        {
-            return $result->num_rows;
-        }
-        else
-        {
-            die($mysqli->error);
-        }
+        $stmt->close();
+        return $result->num_rows;
     }
 
     public static function getInactiveShotguns($mysqli)
@@ -259,15 +211,15 @@ class shotgun_event
 
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
         $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND ev.active=0 ORDER BY ev.date_crea ASC;";
-        $result = $mysqli->query($query);
+        $stmt = $mysqli->prepare($query);
 
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getInactiveShotguns');
+
         while(($row = $result->fetch_object('shotgun_event')))
-        {
             $a[] = $row;
-        }
 
+        $stmt->close();
         return $a;
     }
 
@@ -275,16 +227,17 @@ class shotgun_event
     public static function getVisibleShotguns($mysqli)
     {
         $a = array();
+
         $query = "SELECT * FROM shotgun_event AS ev WHERE NOW() < ev.date_event AND NOW() > ev.date_publi AND ev.active=1 AND ev.ouvert=1 ORDER BY ev.date_crea DESC;";
-        $result = $mysqli->query($query);
+        $stmt = $mysqli->prepare($query);
 
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur fatale dans getVisibleShotguns');
+
         while(($row = $result->fetch_object('shotgun_event')))
-        {
             $a[] = $row;
-        }
 
+        $stmt->close();
         return $a;
     }
 
@@ -344,24 +297,8 @@ class shotgun_event
         return (shotgun_event::shotgunIsVisible($mysqli, $idShotgun) && !shotgun_event::shotgunIsPerime($mysqli, $idShotgun));
     }
 
-    public static function getShotgunFromQuestion($mysqli, $id)
-    {
-        $query = "SELECT shotgun_event.* FROM question,shotgun_event WHERE question.id =? AND shotgun_event.id = id_shotgun ";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('i', $id);
-        if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
-        $result = $stmt->get_result();
-        $row = $result->fetch_object('shotgun_event');
-        $stmt->close();
-        return $row;
-    }
-
     public static function traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail)
     {
         return shotgun_event::insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, 0, 0);
     }
-
 }

@@ -9,16 +9,11 @@ class reponse // Réponse = Choix
 
     public static function getReponseFromId($mysqli, $id)
     {
-        $query = "SELECT * FROM reponse WHERE id = ?";
-        $stmt = $mysqli->prepare($query);
-        
-        if(!$stmt)
-            die($mysqli->error);
+        $stmt = $mysqli->prepare("SELECT * FROM reponse WHERE id = ?");
 
-        $stmt->bind_param('i', $id);
-        if(!$stmt->execute())
-            die($stmt->error);
-        $result = $stmt->get_result();
+        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die("Erreur irrécupérable dans getReponseFromId");
+
         $row = $result->fetch_object('reponse');
         $stmt->close();
         return $row;
@@ -26,16 +21,12 @@ class reponse // Réponse = Choix
 
     public static function insererReponse($mysqli, $id_question, $intitule)
     {
-        $query = "INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)";
-        $stmt = $mysqli->prepare($query);
+        $stmt = $mysqli->prepare("INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)");
 
-        if(!$stmt)
-            return false;
+        if(!$stmt || !($stmt->bind_param('is', $id_question, $intitule)) || !($stmt->execute()))
+            die("Erreur irrécupérable dans insererReponse");
 
-        $stmt->bind_param('is', $id_question, $intitule);
-        if(!$stmt->execute())
-            return false;
-
+        $stmt->close();
         return true;
     }
 
@@ -44,33 +35,26 @@ class reponse // Réponse = Choix
         $a = array();
 
         $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id_question = ?;");
-        $stmt->bind_param('i', $idQuest);
 
-        if(!$stmt->execute())
-            die($stmt->error);
-
-        $result = $stmt->get_result();
-
-        if(!$result)
-            die($mysqli->error);
+        if(!$stmt || !($stmt->bind_param('i', $idQuest)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur irrécupérable dans getReponses');
 
         while(($row = $result->fetch_object('reponse')))
             $a[] = $row;
 
+        $stmt->close();
         return $a;
     }
 
-// Vérifie que la réponse n°nr est bien associée à la question n°nq
+    // Vérifie que la réponse n°nr est bien associée à la question n°nq
     public static function repIsValid($mysqli, $nq, $nr)
     {
-        // J'ai déjà vérifié avant chaque appel que $nq et $nr sont des entiers avec ctype !!!
-        $query = "SELECT * FROM reponse AS rep WHERE rep.id='$nr' AND rep.id_question='$nq';";
+        $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id = ? AND rep.id_question = ?");
 
-        $result = $mysqli->query($query);
+        if(!$stmt || !($stmt->bind_param('ii', $nr, $nq)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+            die('Erreur irrécupérable dans repIsValid');
 
-        if(!$result)
-            die($mysqli->error);
-
+        $stmt->close();
         return ($result->num_rows != 0);
     }
 
@@ -79,8 +63,8 @@ class reponse // Réponse = Choix
     {
         $failed = false;
         $nChoix = count($qcmrep[$nQuestion]); // Nombre de Choix pour la question nQuestion
-        
-// Traitons le choix j pour la question nQuest
+
+        // Traitons le choix j pour la question nQuest
         for($j = 0; ($j < $nChoix) && !$failed; $j++)
             $failed = $failed || !reponse::insererReponse($mysqli, $idQuestion, $qcmrep[$nQuestion][$j]);
 
