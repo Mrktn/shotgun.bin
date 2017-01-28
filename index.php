@@ -52,39 +52,54 @@ if(isset($_GET['todoShotgunIt']))
     $action = $_GET['todoShotgunIt'];
 
     if(!isset($_GET['idShotgun']) || !isset($_SESSION['loggedIn']))
-        //header('Location: index.php?activePage=error&msg=Accès non autorisé !');
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Requête mal formée !'), true);
 
     elseif($action == "closeShotgun" || $action == 'openShotgun')
     {
         if(shotgun_event::userMayCloseOpenShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
-            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
+        {
+            if(shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action))
+            {
+                $_POST['tip'] = 'success';
+                $_POST['msg'] = ($action == 'openShotgun' ? "Le shotgun a bien été ouvert !" : "Vous avez bien fermé le shotgun !");
+            }
+            else
+            {
+                $_POST['tip'] = 'error';
+                $_POST['msg'] = "Impossible d'effectuer cette action... Contactez l'administrateur.";
+            }
+        }
         else
-            redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Vous n\'avez pas les droits nécessaires pour ouvrir/fermer ce shotgun ! !'), true);
-}
+            redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Vous n\'avez pas les droits nécessaires pour ouvrir/fermer ce shotgun !'), true);
+    }
 
     // Seuls les admins peuvent delete
     elseif($action == 'deleteShotgun')
     {
         if(shotgun_event::userMayDeleteShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
-            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], 'deleteShotgun');
+        {
+            if(shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], 'deleteShotgun'))
+                redirectWithPost("index.php?activePage=index", array('tip' => 'success', 'msg' => 'Le shotgun a bien été supprimé.'), true);
+            else
+                redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Impossible de supprimer le shotgun... Contactez un administrateur.'), true);
+        }
         else
-            //header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions nécessaires pour supprimer un shotgun !');
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Vous n\'avez pas les permissions nécessaires pour supprimer ce shotgun !'), true);
-
-            
     }
 
     // Il faut être admin pour activer / désactiver (autoriser / interdire)
     elseif($action == 'activateShotgun' || $action == 'disableShotgun')
     {
         if(shotgun_event::userMayActivateDisableShotgun(DBi::$mysqli, $_GET['idShotgun'], $_SESSION['mailUser'], $_SESSION['isAdmin']))
-            shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action);
+        {
+            if(shotgun_event::updateShotgun(DBi::$mysqli, $_GET['idShotgun'], $action))
+            {
+                $_POST['tip'] = 'success';
+                $_POST['msg'] = ($action == 'activateShotgun' ? "Vous avez autorisé ce shotgun !" : "Le shotgun a bien été désactivé !");
+            }   
+        }
         else
-            //header('Location: index.php?activePage=error&msg=Il faut être admin pour activer / désactiver un shotgun !');
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Il faut être administrateur pour activer / désactiver un shotgun !'), true);
-
-            
     }
 
     elseif($action == 'suscribe' || $action == 'unsuscribe')
@@ -93,7 +108,6 @@ if(isset($_GET['todoShotgunIt']))
     }
     else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Action invalide !'), true);
-
 }
 
 // FIXME: clean this mess
@@ -171,8 +185,6 @@ if(isset($_GET['activePage']))
             else
             {
                 redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Vous devez être connecté pour voir cette page !'), true);
-
-                //header('Location: index.php?activePage=error&msg=Vous devez être connecté pour voir cette page');
             }
         }
     }

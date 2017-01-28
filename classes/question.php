@@ -14,13 +14,15 @@ class question
     public static function insererQuestion($mysqli, $intitule, $type, $id_shotgun)
     {
         $stmt = $mysqli->prepare("INSERT INTO `question` (`intitule`, `type`, `id_shotgun`) VALUES(?,?,?)");
-        echo "$intitule<br/>$type<br/>$id_shotgun";
-        
+
+        if(!$stmt)
+            return null;
+
         $stmt->bind_param('sii', $intitule, $type, $id_shotgun);
-        if (!$stmt->execute())
-        {
-            die($stmt->error);
-        }
+
+        if(!$stmt->execute())
+            return null;
+
         $idQuestion = $stmt->insert_id;
         return $idQuestion;
     }
@@ -31,7 +33,7 @@ class question
         $query = "SELECT * FROM question WHERE id = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute())
+        if(!$stmt->execute())
         {
             die($stmt->error);
         }
@@ -51,10 +53,10 @@ class question
 
         $result = $mysqli->query($query);
 
-        if (!$result)
+        if(!$result)
             die($mysqli->error);
 
-        while (($row = $result->fetch_object('question')))
+        while(($row = $result->fetch_object('question')))
         {
             $a[] = $row;
         }
@@ -67,7 +69,7 @@ class question
         $query = "SELECT question.* FROM question,reponse WHERE reponse.id =? AND question.id = id_question ";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute())
+        if(!$stmt->execute())
         {
             die($stmt->error);
         }

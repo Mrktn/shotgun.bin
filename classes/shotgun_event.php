@@ -19,32 +19,46 @@ class shotgun_event
     public $active;
     public $date_crea;
 
-    public static function insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active)
-    { // créer un nouveau shotgun
+    public static function insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $active)
+    {
         $date_crea = date("Y-m-d H:i:s");
-        $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`contacte`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO `shotgun_event` (`titre`, `description`, `date_event`, `date_publi`, `nb_places`, `prix`, `mail_crea`, `au_nom_de`,`anonymous`,`link_thumbnail`,`ouvert`,`active`,`date_crea`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('ssssiissisiiis', $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $contacte, $active, $date_crea);
+
+        if(!$stmt)
+            return null;
+
+        $stmt->bind_param('ssssidssisiis', $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, $ouvert, $active, $date_crea);
+
         if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
+            return null;
+
         $idShotgun = $stmt->insert_id;
         return $idShotgun;
     }
 
+    // Renvoie le shotgun d'id id et null sinon , fait-on la même avec en paramètre titre?
     public static function getShotgun($mysqli, $id)
-    { // renvoie le shotgun d'id id et faux sinon , fait-on la même avec en paramètre titre?
+    {
         $query = "SELECT * FROM `shotgun_event` WHERE id = ?;";
         $stmt = $mysqli->prepare($query);
+
+        if(!$stmt)
+            return null;
+
         $stmt->bind_param('i', $id);
+
         if(!$stmt->execute())
-        {
-            die($stmt->error);
-        }
+            return null;
+
         $result = $stmt->get_result();
-        $shotgun = $result->fetch_object('shotgun_event'); // Renvoie false si le shotgun n'existe pas
+
+        // Renvoie false si le shotgun n'existe pas
+        if(!($shotgun = $result->fetch_object('shotgun_event')))
+            return null;
+
         $stmt->close();
+
         return $shotgun;
     }
 
@@ -69,8 +83,8 @@ class shotgun_event
         $result = $mysqli->query($query);
 
         if(!$result)
-            die($mysqli->error);
-        
+            return false;
+
         return true;
     }
 
@@ -96,7 +110,7 @@ class shotgun_event
 
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param('i', $iid);
-        
+
         if(!$stmt->execute())
             die($stmt->error);
 
@@ -147,7 +161,7 @@ class shotgun_event
         // If you can't do it quick, at least do it dirty
         while(($row = $result->fetch_object('shotgun_event')))
             return $row;
-        
+
         return null;
     }
 
@@ -301,14 +315,14 @@ class shotgun_event
         else
             return $isAdmin || ($shotgun->mail_crea == $mailUser);
     }
-    
+
     // En fait c'est exactement la même condition que pour ouvrir / fermer, il faut être admin...
     // ...ou créateur !
     public static function userMayDeleteShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
     {
         return shotgun_event::userMayCloseOpenShotgun($mysqli, $idShotgun, $mailUser, $isAdmin);
     }
-    
+
     public static function userMayActivateDisableShotgun($mysqli, $idShotgun, $mailUser, $isAdmin)
     {
         return $isAdmin && shotgun_event::shotgunIsInDB($mysqli, $idShotgun);
@@ -347,7 +361,7 @@ class shotgun_event
 
     public static function traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail)
     {
-        return shotgun_event::insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, 1, 0, 1);
+        return shotgun_event::insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, 0, 0);
     }
 
 }
