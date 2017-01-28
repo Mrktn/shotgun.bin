@@ -106,8 +106,8 @@ function displayShotgunList($mysqli, $shotguns, $mailUser)
         echo '<div class="progress progress-shotgun" idShotgun="' . $currShotgun->id . '">';
         include('./api/progressbar.php');
         echo '</div>';
-        echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars($currShotgun->description));
-        echo '</p></div>';
+        echo  '</div><p class="readingmore" style="padding-left:10px">' . nl2br(htmlspecialchars($currShotgun->description));
+        echo '</p></div><br/><br/>';
     }
 }
 function displayShotgunAVenir($mysqli, $shotguns){

@@ -148,9 +148,9 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 echo '<form data-toggle="validator" method="post" action="index.php?activePage=shotgunIt&todoShotgunIt=suscribe&idShotgun=' . $idShot . '">';
                 foreach($questions as $q)
                 {
-                    echo '<div class="panel panel-primary  center-block" style="align:center">
+                    echo '<div class="panel panel-primary center-block" style="align:center">
                             <div class="panel-heading">
-                              <h3 class="panel-title"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
+                              <h3 style="font-size: 1vw" class="panel-title"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
                             </div>
                             <div class="panel-body">';
 

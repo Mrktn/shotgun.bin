@@ -212,3 +212,7 @@ table {
     cursor:pointer;
     color:red;
 }
+
+.panel-default{
+    border-color:#9ea7af;
+}
