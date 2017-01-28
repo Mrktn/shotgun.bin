@@ -188,6 +188,10 @@ if($shotgun->anonymous && !($_SESSION['mailUser'] == $shotgun->mail_crea))
 else
 {
     $arrayInscriptions = inscription::getInscriptionsIn(DBi::$mysqli, $shotgun->id);
+    
+    if(is_null($arrayInscriptions))
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur inconnue, veuillez contacter un administrateur !"));
+
     $tableInscriptions = array();
 
     echo '<div style="margin:50px"><table style="margin-bottom:10px" id="oklm" class="dynamic table-fill">

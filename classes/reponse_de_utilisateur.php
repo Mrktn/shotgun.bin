@@ -16,9 +16,11 @@ class reponse_de_utilisateur
     {
         $stmt = $mysqli->prepare("INSERT INTO reponse_de_utilisateur (id_reponse, texte, mail_utilisateur, id_inscription) VALUES (?, ?, ?, ?)");
 
-        $stmt->bind_param('issi', $idReponse, $texte, $mailUser, $idInscription);
+        if(!$stmt || !($stmt->bind_param('issi', $idReponse, $texte, $mailUser, $idInscription)) || !$stmt->execute())
+            return false;
 
-        return ($stmt->execute());
+        $stmt->close();
+        return true;
     }
 
     public static function getReponseUtilisateur($mysqli, $id)
