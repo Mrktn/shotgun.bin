@@ -20,10 +20,10 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
         $description = isset($description) ? $description : "";
         $link_thumbnail = isset($link_thumbnail) ? $link_thumbnail : "";
         $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : date("Y-m-d H:i:s", strtotime(preg_replace('/\//', '-', $date_publi)));
-        
+
         $date_event = preg_replace('/\//', '-', $date_event);
         $date_event = date("Y-m-d H:i:s", strtotime($date_event));
-        
+
         $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
 
         if($idShotgun == null)
@@ -41,7 +41,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
                 echo '<b>ça a raté !!</b>';
 
             if(!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
-                 $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
+                $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
             else
                 $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
         }
@@ -50,10 +50,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
         else
             redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que vous l'ayez <b>ouvert</b> et que l'administrateur l'ait <b>autorisé</b> !"));
-        
-        
-        }
-    
+    }
     else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
 }
