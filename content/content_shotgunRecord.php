@@ -108,7 +108,7 @@ else
 echo '
 <div class="container">
     <header class="page-header">
-    <h1 class="page-title">' . htmlspecialchars(utf8_encode($shotgun->titre)) . " $frontNote</h1>" . $button . '
+    <h1 class="page-title">' . htmlspecialchars($shotgun->titre) . " $frontNote</h1>" . $button . '
     <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
   </header>
 <div class="row">
@@ -125,7 +125,7 @@ echo '
 
             <div class="col-xs-12 col-sm-8">
               <ul class="list-group">
-                <li class="list-group-item"><strong>Auteur:</strong> ' . htmlspecialchars(utf8_encode($shotgun->au_nom_de)) . '</li>
+                <li class="list-group-item"><strong>Auteur:</strong> ' . htmlspecialchars($shotgun->au_nom_de) . '</li>
                 <li class="list-group-item"><strong>Date:</strong> le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_event))) . '</li>
                 <li class="list-group-item">' . '<div class="row"> 
                 <span class="col-sm-3"><strong >Effectifs:</strong> </span>';
@@ -143,7 +143,7 @@ echo '</div></li>
       <div style="margin:10px">
         <h3><strong>Description</strong></h3>
         <p>
-         ' . nl2br(htmlspecialchars(utf8_encode($shotgun->description))) .
+         ' . nl2br(htmlspecialchars($shotgun->description)) .
  '</p><br/>';
 
 if($isCreateur)
@@ -156,7 +156,7 @@ if($isCreateur)
 
     foreach($allQuestions as $q)
     {
-        echo "<li style=\"list-style-type:none \"><strong>" . htmlspecialchars(utf8_encode($q->intitule)) . "</strong>";
+        echo "<li style=\"list-style-type:none \"><strong>" . htmlspecialchars($q->intitule) . "</strong>";
 
         if($q->type != question::$TYPE_REPONSELIBRE)
         {
@@ -165,7 +165,7 @@ if($isCreateur)
             $stylePuce = 'style="list-style-type:' . ($q->type == question::$TYPE_CHOIXMULTIPLE ? "square" : "circle" ) . '"';
             foreach($reponses as $r)
             {
-                echo "<li>" . htmlspecialchars(utf8_encode($r->intitule)) . "</li>";
+                echo "<li>" . htmlspecialchars($r->intitule) . "</li>";
             }
 
             echo "</ul>";
@@ -201,7 +201,7 @@ else
     $i = 1;
     foreach($arrayInscriptions as $ins)
     {
-        echo "<tr class=\"dynamic\"><td class=\"dynamic\">$i</td><td class=\"dynamic\">" . utf8_encode($ins->mail_user) . '</td></tr>';
+        echo "<tr class=\"dynamic\"><td class=\"dynamic\">$i</td><td class=\"dynamic\">" . htmlspecialchars($ins->mail_user) . '</td></tr>';
         $i = $i + 1;
     }
 
@@ -219,7 +219,7 @@ else
 
         foreach($allQuestions as $q)
         {
-            $formattedheader .= ",'" . addslashes(htmlspecialchars(utf8_encode($q->intitule))) . "'";
+            $formattedheader .= ",'" . addslashes(htmlspecialchars($q->intitule)) . "'";
         }
 
         $formattedheader .= "]";

@@ -62,7 +62,7 @@ body {
 }
 
 .readingmore {
-  max-height: 30px;
+    max-height: 30px;
 }
 
 .panel-heading h3 {
@@ -105,22 +105,22 @@ body {
 }
 
 ::-webkit-input-placeholder {
-   text-align: center;
+    text-align: center;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   text-align: center;  
+    text-align: center;  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   text-align: center;  
+    text-align: center;  
 }
 
 :-ms-input-placeholder {  
-   text-align: center; 
+    text-align: center; 
 }
 .fiftycent {
-   width: 100%; 
+    width: 100%; 
 }
 .fontgrisContour {
     background-color:#F5F5F5;
@@ -136,10 +136,10 @@ body {
     border:solid;
 }
 .row-eq-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display:         flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
 }
 .padleft{
     padding-left:50px;
@@ -159,15 +159,15 @@ body {
 }
 h1 
 { 
-color: #13395b; 
-margin-top:20px; text-align:center
+    color: #13395b; 
+    margin-top:20px; text-align:center
 } ;
 .centrimage{
-        display: block;
-        margin-bottom:10px;
-        background-color:#FFFAFA;
-        height:10px;
-        width:50%;
+    display: block;
+    margin-bottom:10px;
+    background-color:#FFFAFA;
+    height:10px;
+    width:50%;
 }
 th {
     color:#000000;
@@ -191,19 +191,24 @@ th {
     color: #13395b;
 }
 table {
- border-width:1px; 
- border-color:black;
- width:50%;
- }
- .Photoleft{
+    border-width:1px; 
+    border-color:black;
+    width:50%;
+}
+.Photoleft{
     display:inline-block;
     float:right;
     width:45%;
     padding-top:10px;
 }
- .Photoright{
+.Photoright{
     display:inline-block;
     float:left;
     width:45%;
     padding-top:10px;
+}
+
+.hoverCursor{
+    cursor:pointer;
+    color:red;
 }

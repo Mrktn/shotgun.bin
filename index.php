@@ -204,7 +204,7 @@ if(isset($_POST['tip']))
     if(!isset($_POST['msg']))
         $msgNotif = "Message";
     else
-        $msgNotif = htmlspecialchars($_POST['msg']);
+        $msgNotif = $_POST['msg'];
 
     echo '<script type="text/javascript">$.notify({
 	title: "<strong>' . $titleNotif . '</strong>",

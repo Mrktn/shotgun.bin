@@ -80,7 +80,7 @@ function displayShotgunList($mysqli, $shotguns)
     {
         echo '<div idShotgun="' . $currShotgun->id . '" class="panel panel-default center-block shotgunPanel" style="align:center; width: 80%">
   <div class="panel-heading">
-    <h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars(utf8_encode($currShotgun->titre)) . '</strong> par <i>' . htmlspecialchars(utf8_encode($currShotgun->au_nom_de)) . '</i></h3>
+    <h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars($currShotgun->titre) . '</strong> par <i>' . htmlspecialchars($currShotgun->au_nom_de) . '</i></h3>
   <a href="index.php?activePage=shotgunRecord&idShotgun='.$currShotgun->id.'" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
   </div>
   <div class="panel-body">';
@@ -89,7 +89,7 @@ function displayShotgunList($mysqli, $shotguns)
         echo '<div class="progress progress-shotgun" idShotgun="' . $currShotgun->id . '">';
         include('./api/progressbar.php');
         echo '</div>';
-        echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars(utf8_encode($currShotgun->description)));
+        echo  '</div><p class="readingmore">' . nl2br(htmlspecialchars($currShotgun->description));
         echo '</p></div>';
     }
 }
@@ -110,11 +110,11 @@ function displayShotgunAVenir($mysqli, $shotguns){
     <tbody>';
     foreach($shotguns as $currShotgun) {
            echo'<tr>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->au_nom_de)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->titre)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_publi)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>
+        <td>'.htmlspecialchars($currShotgun->au_nom_de).'</td>
+        <td>'.htmlspecialchars($currShotgun->titre).'</td>
+        <td>'.htmlspecialchars($currShotgun->date_event).'</td>
+        <td>'.htmlspecialchars($currShotgun->date_publi).'</td>
+        <td>'.$currShotgun->prix.'€</td>
       </tr>';
     }
     echo'    </tbody>
@@ -139,12 +139,12 @@ function displayMonAgenda($mysqli, $shotguns){
     <tbody>';
     foreach($shotguns as $currShotgun) { // Faire le truc du ? de pro
         $n = shotgun_event::getNumInscriptions($mysqli,$currShotgun->id);
-        $nbplaces = htmlspecialchars(utf8_encode($currShotgun->nb_places));
+        $nbplaces = $currShotgun->nb_places;
            echo'<tr>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->au_nom_de)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->titre)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->date_event)).'</td>
-        <td>'.htmlspecialchars(utf8_encode($currShotgun->prix)).'</td>';
+        <td>'.htmlspecialchars($currShotgun->au_nom_de).'</td>
+        <td>'.htmlspecialchars($currShotgun->titre).'</td>
+        <td>'.htmlspecialchars($currShotgun->date_event).'</td>
+        <td>'.$currShotgun->prix.'€</td>';
            echo'<td>';
           if ($nbplaces != 0) { echo ($n.'/'.$nbplaces);} else { echo ($n);};
           echo'</td>

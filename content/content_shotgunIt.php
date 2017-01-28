@@ -101,10 +101,8 @@ if($_GET['todoShotgunIt'] == 'suscribe')
             }
 
             if(inscription::doInscription(DBi::$mysqli, $idShot, $_SESSION['mailUser'], $formattedArray))
-                //header("Location: index.php?activePage=shotgunRecord&idShotgun=$idShot");
                 redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShot", array('tip' => 'success', 'msg' => "Inscription réussie !"));
             else
-                //header("Location: index.php?activePage=error&msg=Shotgun de l'évènement \"" . htmlspecialchars(utf8_encode($shotgun->titre)) . "\" raté :'( !");
                 redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShot", array('tip' => 'error', 'msg' => "Shotgun raté :'("));
         }
 
@@ -152,7 +150,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 {
                     echo '<div class="panel panel-primary  center-block" style="align:center">
                             <div class="panel-heading">
-                              <h3 class="panel-title"><strong>' . utf8_encode($q->intitule) . '</strong></h3>
+                              <h3 class="panel-title"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
                             </div>
                             <div class="panel-body">';
 
@@ -162,7 +160,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $reponses = reponse::getReponses(DBi::$mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="checkbox" id="rep' . $rep->id . '" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="checkbox" id="rep' . $rep->id . '" name="mquest-' . $q->id . '[]" value="rep-' . $rep->id . '" required/> <label for="rep' . $rep->id . '">' . htmlspecialchars($rep->intitule) . '</label><br />';
                         }
                         echo '</div>';
                     }
@@ -172,7 +170,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $reponses = reponse::getReponses(DBi::$mysqli, $q->id);
                         foreach($reponses as $rep)
                         {
-                            echo '<input type="radio" id="rep' . $rep->id . '" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '"  required/> <label for="rep' . $rep->id . '">' . utf8_encode($rep->intitule) . '</label><br />';
+                            echo '<input type="radio" id="rep' . $rep->id . '" name="uquest-' . $q->id . '" value="rep-' . $rep->id . '"  required/> <label for="rep' . $rep->id . '">' . htmlspecialchars($rep->intitule) . '</label><br />';
                         }
                         echo '</div>';
                     }

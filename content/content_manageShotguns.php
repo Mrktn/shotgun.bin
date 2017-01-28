@@ -45,7 +45,7 @@ else
 {
     foreach($shotgunsInactive as $s)
     {
-        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . $s->au_nom_de . '] </strong>' . $s->titre . '</a>';
+        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . htmlspecialchars($s->au_nom_de) . '] </strong>' . htmlspecialchars($s->titre) . '</a>';
     }
 }
 
@@ -71,7 +71,7 @@ else
 {
     foreach($shotgunsUpAndRunning as $s)
     {
-        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . utf8_encode($s->au_nom_de) . '] </strong>' . utf8_encode($s->titre) . '</a>';
+        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . htmlspecialchars($s->au_nom_de) . '] </strong>' . htmlspecialchars($s->titre) . '</a>';
     }
 }
 
@@ -101,7 +101,7 @@ else
 {
     foreach($shotgunsAVenir as $s)
     {
-        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . utf8_encode($s->au_nom_de) . '] </strong>' . utf8_encode($s->titre) . ' (sera publié le : ' . strftime("%d %B %Y à %Hh%Mm%Ss)", strtotime($s->date_publi)). '</a>';
+        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . htmlspecialchars($s->au_nom_de) . '] </strong>' . htmlspecialchars($s->titre) . ' (sera publié le : ' . strftime("%d %B %Y à %Hh%Mm%Ss)", strtotime($s->date_publi)). '</a>';
     }
 }
 

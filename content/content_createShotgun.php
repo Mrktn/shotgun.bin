@@ -174,10 +174,11 @@ else
     <br/><h2>Ajouter des questions</h2><br/>
     
         <div  class="form-group">
-            <input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default ajout_boutonQ col-sm-2 ' />
             <div class=" col-sm-6 input_fields_wrapQ" id="question">
                 
             </div>
+            <input type='button' id='ajouteQuestion' value='Ajouter une question' class='btn btn-default ajout_boutonQ' />
+            
         </div>
         <div class="form-group">
             <div style="float:right">
