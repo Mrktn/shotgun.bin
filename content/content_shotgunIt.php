@@ -223,7 +223,23 @@ else
     else
     {
         redirectWithPost('index.php?activePage=index' . $shotgun->id, array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous désinscrire de ce shotgun !"));
+        //header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
     }
 }
 
 echo '</div>';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//echo '<script type="text/javascript">function myConfirmation(){return \'\';} window.onbeforeunload = myConfirmation;</script>';
