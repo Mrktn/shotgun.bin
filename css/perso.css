@@ -169,7 +169,7 @@ h1
     height:10px;
     width:50%;
 }
-th {
+.thaccueil {
     color:#000000;
     background:#5389ba;
     border-bottom:4px solid #9ea7af;
@@ -190,7 +190,7 @@ th {
 .bluefont{
     color: #13395b;
 }
-table {
+.tableaccueil {
     border-width:1px; 
     border-color:black;
     width:50%;

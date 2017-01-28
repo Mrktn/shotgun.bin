@@ -24,7 +24,7 @@ else
 { // Page d'accueil pour les inscrits
     echo'
 <div class="container">
-    <div class="row row-eq-height" style="">
+    <div class="row row-eq-height" >
         <div class=" col-sm-5 col-md-5 control-label fontgrisContour">
 
 ';
@@ -41,7 +41,7 @@ else
 </div> ';
 };
 
-echo"       <blockquote  class='blockquote-reverse' style='margin-top:10px'>
+echo" </div> <div class='container'> <blockquote  class='blockquote-reverse' style='margin-top:10px'>
                         <i>L'avenir appartient à ceux qui shotgun tôt...</i>
-                        <footer>Louis Vaneau </footer>
+                        <footer>Louis Vaneau </footer> 
                     </blockquote></div>";
