@@ -48,7 +48,11 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
 
         if($failedFlag)
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
-    }
+        else
+            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que vous l'ayez <b>ouvert</b> et que l'administrateur l'ait <b>autorisé</b> !"));
+        
+        
+        }
     
     else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));

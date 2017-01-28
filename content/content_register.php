@@ -17,11 +17,7 @@ if(isset($_POST['submittedRegister']))
         $key = md5($password . $email . date('mY'));
         
         if(utilisateur::insererUtilisateur(DBi::$mysqli, $email, 0, $key, $password, 0))
-        {
             redirectWithPost("index.php?activePage=index", array('tip' => 'success', 'msg' => "Votre compte a été créé, vous pouvez maintenant vous connecter !"));
-        
-            //header('Location: index.php?activePage=info&msg=Votre compte a été créé, vous pouvez maintenant vous connecter !');
-        }
     }
 }
 else
