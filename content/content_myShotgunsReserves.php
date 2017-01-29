@@ -17,5 +17,7 @@ $shotguns = shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUs
 if(count($shotguns) != 0)
     displayShotgunList(DBi::$mysqli, $shotguns, $_SESSION['mailUser']);
 else
-    echo "<h2>Il n'y a rien à afficher !</h2></div></div>";
+    echo "<h2>Il n'y a rien à afficher !</h2>";
+
+echo '</div></div>';
 ?>

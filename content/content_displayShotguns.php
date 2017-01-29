@@ -7,8 +7,12 @@ echo "<div class ='container-fluid titlepage' > <h1>Shotguns ouverts</h1> </div>
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 
-// On récupère les shotguns qui sont visibles, aka ouverts et actifs et non périmés
-displayShotgunList(DBi::$mysqli, shotgun_event::getVisibleShotguns(DBi::$mysqli, $_SESSION['mailUser']), $_SESSION['mailUser']);
+$shotguns = shotgun_event::getVisibleShotguns(DBi::$mysqli, $_SESSION['mailUser']);
+
+if(count($shotguns) != 0)
+    displayShotgunList(DBi::$mysqli, $shotguns, $_SESSION['mailUser']);
+else
+    echo "<h2>Il n'y a rien à afficher !</h2>";
 
 echo '</div></div>';
 ?>
