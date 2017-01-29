@@ -246,10 +246,10 @@ else
         echo "];";
         echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>  ";
     }
-    echo '</div></div>';
+    echo '</div>';
 }
 
-echo '</div></div>';
+echo '</div></div></div>';
 if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
     echo '<div class="text-center"> <a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun=' . $shotgun->id . '" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a></div>';
 
