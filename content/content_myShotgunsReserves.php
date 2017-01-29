@@ -1,6 +1,6 @@
 <?php
 
-//Récupèration des shotguns que j'ai sécurrisé et affichage
+//Récupèration des shotguns que j'ai sécurisé et affichage
 
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "L'administrateur ne peut pas s'inscrire !"));
