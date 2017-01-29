@@ -117,7 +117,7 @@ echo '
 <div class="row"><div class="text-center">
    ' . $button . '</div><br/>
   <div class="container" style="width:85%">
-   <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
+   <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . htmlspecialchars(stripTheMail($shotgun->mail_crea)) . '</small>
     <div class="panel panel-default">
       <div class="panel-heading resume-heading">
         <div class="row">
@@ -175,16 +175,11 @@ if($isCreateur)
 
             echo "</ul>";
         }
-
-        echo "</li><br/>";
+        echo "<br/></li>";
     }
-
-    echo "</ul>";
-
-    echo "<br/>";
+    echo "</ul><br/>";
 }
-echo '<h3><strong>Liste des participants</strong></h3>
-        ';
+echo '<h3><strong>Liste des participants</strong></h3>';
 
 if($shotgun->anonymous && !($_SESSION['mailUser'] == $shotgun->mail_crea))
 {
@@ -249,14 +244,14 @@ else
         }
 
         echo "];";
-        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button></div>  ";
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>  ";
     }
-    echo '</div>';
+    echo '</div></div>';
 }
 
 echo '</div></div>';
 if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
     echo '<div class="text-center"> <a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun=' . $shotgun->id . '" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a></div>';
 
-echo '</div></div></div>';
+echo '</div></div>';
 ?>
