@@ -1,52 +1,57 @@
 <?php
 
-require_once('utils.php');
-require_once('classes/utilisateur.php');
-
-$mysqli = mysqli_connect();
-
-if (isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
-        isset($_POST["inputNewPassword"]) && $_POST["inputNewPassword"] != "" &&
-        isset($_POST["inputNewPasswordConfirm"]) && $_POST["inputNewPasswordConfirm"] != "")
+if(isset($_POST['submittedRegister']))
 {
-    $user = utilisateur::getUtilisateur($mysqli, $_SESSION["mail"]); // Comment avoir accès à son login s'il est connecté
-
-    if ($user)
+    if(isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&
+            isset($_POST["inputNewPassword"]) && strlen($_POST["inputNewPassword"]) >= 6 &&
+            isset($_POST["inputNewPasswordConfirm"]) && strlen($_POST["inputNewPasswordConfirm"] != "") >= 6)
     {
-        if ($_POST["up2"] == $_POST["up3"])
-        {
+        $user = utilisateur::getUtilisateur($mysqli, $_SESSION["mailUser"]); // Comment avoir accès à son login s'il est connecté
 
-            if (utilisateur::testerMdp($mysqli, $user, $_POST['formerPassword'])) // Tout se passe bien
+        if($user)
+        {
+            if($_POST["up2"] == $_POST["up3"])
             {
-                $stmt = $mysqli->prepare("UPDATE `utilisateurs` SET `mdp`=? WHERE mail=?");
-                $stmt->bind_param('ss',md5($_POST['inputNewPassword']), $_SESSION["mailUser"]);
-                $stmt->execute();
-                echo("mot de passe modifié");
-                $stmt->close();
-                header('Location: http://127.0.0.1/shotgun.bin/index.php?activePage=index');
-                exit();
-            } else // Mot de passe incorrect
-            {
-                echo("Mot de passe invalide");
+                if(utilisateur::testerMdp($mysqli, $user, $_POST['formerPassword'])) // Tout se passe bien
+                {
+                    $stmt = $mysqli->prepare("UPDATE `utilisateurs` SET `mdp`=? WHERE mail=?");
+                    $stmt->bind_param('ss', md5($_POST['inputNewPassword']), $_SESSION["mailUser"]);
+                    $stmt->execute();
+                    echo("mot de passe modifié");
+                    $stmt->close();
+                    header('Location: http://127.0.0.1/shotgun.bin/index.php?activePage=index');
+                    exit();
+                }
+                else // Mot de passe incorrect
+                {
+                    echo("Mot de passe invalide");
+                }
             }
-        } else // Echec concordancent des mdp
-        {
-            echo('Les mots de passe ne correspondent pas');
-    }} else
-        {
-         echo ("Votre compte n'est pas référencé");   
+            else // Echec concordancent des mdp
+            {
+                echo('Les mots de passe ne correspondent pas');
+            }
         }
+        else
+        {
+            echo ("Votre compte n'est pas référencé");
+        }
+    }
+    
+    else
+        redirectWithPost("index.php?activePage=changePassword", array('tip' => 'error', 'msg' => "Impossible de créer un compte utilisateur avec ces identifiants !"));
 }
-else{
+else
+{
 
-echo <<<FIN
+    echo <<<FIN
 
         <div class ='container-fluid titlepage' > <h1>Changer de mot de passe</h1> </div><br/><br/>
        <div class="container center-block" style="width:100%; background-color: #ffffff">
           <div class="container center-block" style="padding:15px">
     
-            <form data-toggle="validator" id='register' action='content_changePassword.php' method='post'>
-        
+            <form data-toggle="validator" id='register' action='index.php?activePage=content_changePassword' method='post'>
+            <input type='hidden' name='submittedRegister' id='submittedRegister' value='1'/>
             <div class="form-group">
                 <label for="inputFormerPassword" class="cols-sm-2 control-label">Mot de passe actuel</label>
                 <div class="cols-sm-10">
