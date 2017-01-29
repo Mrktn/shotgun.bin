@@ -150,7 +150,7 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 {
                     echo '<div class="panel panel-primary center-block" style="align:center">
                             <div class="panel-heading" style="height:auto">
-                              <h3 class="panel-title"><p title="'. addcslashes(htmlspecialchars($q->intitule), '"').'"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
+                              <h3 class="panel-title" title="'. addcslashes(htmlspecialchars($q->intitule), '"').'"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
                             </div>
                             <div class="panel-body">';
 
@@ -197,6 +197,8 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 echo '</form>';
             }
         }
+        
+        echo '</div>';
     }
     else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous inscrire à ce shotgun !"));

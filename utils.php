@@ -119,7 +119,7 @@ function displayShotgunAVenir($mysqli, $shotguns)
   <h2>Prochains shotguns à ne pas rater</h2>';
     if (count($shotguns) == 0)
     {
-        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.";
+        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.</p>";
     } else
     {
         echo'
