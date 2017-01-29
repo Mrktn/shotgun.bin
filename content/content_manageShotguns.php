@@ -12,7 +12,7 @@ $shotgunsUpAndRunning = shotgun_event::getVisibleShotguns(DBi::$mysqli);
 $shotgunsAVenir = shotgun_event::getActiveAVenirShotguns(DBi::$mysqli);
 
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
-echo "<h1>Administration</h1>";
+echo "<div class ='container-fluid titlepage' > <h1>Administration</h1> </div><br/><br/>";
 echo '<div class="container center-block" style="padding:15px">';
 echo <<<END
 <div id="menu">
