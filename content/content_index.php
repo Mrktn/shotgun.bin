@@ -18,7 +18,7 @@ if(!isset($_SESSION['mailUser']) || $_SESSION['isAdmin'])
         <div class="col-sm-12 col-md-12 control-label fongrisContour">
 ';
     displayShotgunAVenir(DBi::$mysqli, shotgun_event::getActiveAVenirShotguns(DBi::$mysqli));
-    echo '</div></div>';
+    echo '</div></div></div>';
 }
 else
 { // Page d'accueil pour les inscrits
@@ -38,10 +38,10 @@ else
 
     displayMonAgenda(DBi::$mysqli, $_SESSION['mailUser']);
     echo'       </div>
-</div> ';
+</div></div></div> ';
 };
 
-echo" </div> </div><div class='container'> <blockquote  class='blockquote-reverse' style='margin-top:10px'>
+echo"<div class='container'> <blockquote  class='blockquote-reverse' style='margin-top:10px'>
                         <i>L'avenir appartient à ceux qui shotgun tôt...</i>
                         <footer>Louis Vaneau, X1829</footer> 
                     </blockquote></div>";

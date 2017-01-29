@@ -119,7 +119,7 @@ function displayShotgunAVenir($mysqli, $shotguns)
   <h2>Prochains shotguns à ne pas rater</h2>';
     if (count($shotguns) == 0)
     {
-        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.";
+        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.</p>";
     } else
     {
         echo'
@@ -251,5 +251,12 @@ function redirectWithPost($url, $arrpost, $preheader = false)
     if($preheader)
         echo '</body></html>';
     exit();
+}
+
+// Vérifie que la chaîne est vide
+function stringIsBlank($str)
+{
+    // Plus jamais ça ! c'est vraiment du chinois...
+    return preg_match("/^[\s]*$/", $str);
 }
 ?>

@@ -1,70 +1,96 @@
 <?php
 require_once('classes/shotgun_event.php');
 require_once('classes/DBi.php');
-if (!isset($_SESSION['loggedIn']))
+if(!isset($_SESSION['loggedIn']))
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Connectez-vous avant de créer un shotgun !"));
 
 function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep)
 {
-    if (isset($titre) && $titre != "" &&
-            isset($au_nom_de) && $au_nom_de != "" &&
-            isset($date_event) && $date_event != "" &&
+    // Si ce qu'on avait requis dans le formulaire est satisfait, on va travailler
+    if(isset($titre) && !stringIsBlank($titre) &&
+            isset($au_nom_de) && !stringIsBlank($au_nom_de) &&
+            isset($date_event) && !stringIsBlank($date_event) &&
             isset($anonymous) && ctype_digit($anonymous) &&
             is_numeric($prix) &&
             is_numeric($nb_places) && ctype_digit($nb_places))
     {
+        // Sera set à true dès que l'on aura eu un problème, ce qui permettra d'arrêter l'exécution des requêtes
         $failedFlag = false;
 
         $description = isset($description) ? $description : "";
-        $link_thumbnail = (isset($link_thumbnail) && isLinkToPicture($link_thumbnail)) ? $link_thumbnail : "";
-        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : date("Y-m-d H:i:s", strtotime(preg_replace('/\//', '-', $date_publi)));
 
+        // Si ce n'est pas un lien valide, hors de question qu'on l'ajoute à la DB
+        $link_thumbnail = (isset($link_thumbnail) && isLinkToPicture($link_thumbnail)) ? $link_thumbnail : "";
+
+        // Conversion en un format compréhensible par strtotime avant de l'envoyer à date
+        $date_publi = (!isset($date_publi) || $date_publi == "") ? date("Y-m-d H:i:s") : date("Y-m-d H:i:s", strtotime(preg_replace('/\//', '-', $date_publi)));
         $date_event = preg_replace('/\//', '-', $date_event);
         $date_event = date("Y-m-d H:i:s", strtotime($date_event));
 
+        // On crée notre shotgun
         $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
 
-        if ($idShotgun == null)
+        if($idShotgun == null)
             $failedFlag = true;
 
-        $nQuest = count($intitule); // Nombre de questions
+        // Nombre de questions
+        $nQuest = count($intitule);
 
-        for ($i = 0; ($i < $nQuest) && !$failedFlag; $i++) // On traite la question i
+        $questionNegligeeExists = false;
+
+        // On traite la question i
+        for($i = 0; ($i < $nQuest) && !$failedFlag; $i++)
         {
-
             // Vérifions tout d'abord qu'en cas de réponse de type QCM l'utilisateur a bien rentré au moins un choix
-            $ChoixValide = ($typeReponse[$i] == question::$TYPE_REPONSELIBRE);
-            $nChoix = count($qcmrep[$i]) - 1; // Nombre de Choix pour la question nQuestion
-            while (!($ChoixValide) && ($nChoix >= 0))
+            $choixValideExists = ($typeReponse[$i] == question::$TYPE_REPONSELIBRE);
+
+            // Nombre de choix pour la question nQuestion
+            $nChoix = count($qcmrep[$i]) - 1;
+
+            // La variable sera à true à la fin ssi il existe au moins un choix non vide
+            while(!($choixValideExists) && ($nChoix >= 0))
             {
-                $ChoixValide = ($qcmrep[$i][$nChoix] != "");
+                $choixValideExists = $choixValideExists || !stringIsBlank($qcmrep[$i][$nChoix]);
                 $nChoix = $nChoix - 1;
             }
-            if ($intitule[$i] != "" && ($typeReponse[$i] == '0' || $typeReponse[$i] == '1' || $typeReponse[$i] == '2') && ($ChoixValide)) // Vérifions que la question a un format correct.
+
+            if($choixValideExists)
             {
-                $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
+                // Vérifions que la question a un format correct.
+                if(!stringIsBlank($intitule[$i]) && ($typeReponse[$i] == '0' || $typeReponse[$i] == '1' || $typeReponse[$i] == '2'))
+                {
+                    $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
 
-                $failedFlag = $failedFlag || ($idQuestion == null);
+                    $failedFlag = $failedFlag || ($idQuestion == null);
 
-                if ($failedFlag)
-                    echo '<b>ça a raté !!</b>';
-
-                if (!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
-                    $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
+                    if(!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
+                        $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
+                    else
+                        $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
+                }
+                
                 else
-                    $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
+                    $questionNegligeeExists = true;
             }
+
+            else
+                $questionNegligeeExists = true;
         }
 
-        if ($failedFlag)
+        if($failedFlag)
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
+        elseif($questionNegligeeExists)
+            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'warning', 'msg' => "Shotgun créé avec succès ! <b>En revanche, certaines de vos questions n'ont pas pu être traitées. </b><br/>Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
         else
-            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
-    } else
+            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès !<br/>Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
+        
+        
+    }
+    else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
 }
 
-if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
+if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
@@ -80,16 +106,17 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
     $qcmrep = array();
     $nQuest = count($intitule); // Nombre de questions
 
-    for ($i = 0; $i < $nQuest; $i++)
+    for($i = 0; $i < $nQuest; $i++)
     {
         $typeReponse[$i] = isset($_POST['typeReponse' . ($i + 1)]) ? $_POST['typeReponse' . ($i + 1)] : '-1';
         $nChoix = count($_POST['qcmrep' . ($i + 1)]); // Nombre de questions
-        for ($j = 0; $j < $nChoix; $j++)
+        for($j = 0; $j < $nChoix; $j++)
             $qcmrep[$i][$j] = isset($_POST['qcmrep' . ($i + 1)][($j)]) ? $_POST['qcmrep' . ($i + 1)][($j)] : '';
     }
 
     doCreateShotgun(DBi::$mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
-} else
+}
+else
 {
     ?>
     <div class ='container-fluid titlepage' > <h1>Formulaire de création</h1></div><br/><br/>
@@ -113,7 +140,7 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
             <div class="form-group">
                 <label for="inputOrganisateur3" class="col-sm-2 control-label">Responsable</label>
                 <div class="col-sm-6">
-                    <input type="text" name="au_nom_de" class="form-control" id="inputOrganisateur3" placeholder="Binet &#x0153;no, moi, mon cousin, ... (requis)" required>
+                    <input type="text" name="au_nom_de" class="form-control" id="inputOrganisateur3" placeholder="Binet &#x0153;no, John Doe, ... (requis)" required>
                 </div>
             </div>
 

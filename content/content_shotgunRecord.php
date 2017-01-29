@@ -98,7 +98,7 @@ else
         // Sinon si c'est limité mais qu'il y a de la place
         elseif($k < $n)
         {
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" idShotgun="' . $id . '" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" idShotgun="' . $id . '" id="buttonShotgun" value="Shoootgun !" class="btn btn-danger"></form>';
         }
 
         // En revanche, s'il n'y a pas de place...
@@ -176,7 +176,7 @@ if($isCreateur)
             echo "</ul>";
         }
 
-        echo "</li>";
+        echo "</li><br/>";
     }
 
     echo "</ul>";
@@ -249,15 +249,14 @@ else
         }
 
         echo "];";
-        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button>  ";
+        echo "</script><button type=\"button\" class=\"btn btn-primary\" onclick=\"download_csv($formattedheader, data)\">Télécharger au format CSV</button></div>  ";
     }
-
-    //echo '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="closeShotgun"><input type="hidden" name="activePage" value="shotgunRecord"><input type="hidden" name="idShotgun" value="' . $id . '"><input delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" type="submit" value="Supprimer" class="btn btn-danger"></form>';
+    echo '</div>';
 }
 
-echo '</div></div></div>';
+echo '</div></div>';
 if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
     echo '<div class="text-center"> <a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun=' . $shotgun->id . '" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a></div>';
 
-echo '</div></div>';
+echo '</div></div></div>';
 ?>
