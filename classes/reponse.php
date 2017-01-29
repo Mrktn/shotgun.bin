@@ -11,7 +11,7 @@ class reponse // Réponse = Choix
     {
         $stmt = $mysqli->prepare("SELECT * FROM reponse WHERE id = ?");
 
-        if(!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+        if (!$stmt || !($stmt->bind_param('i', $id)) || !($stmt->execute()) || !($result = $stmt->get_result()))
             die("Erreur irrécupérable dans getReponseFromId");
 
         $row = $result->fetch_object('reponse');
@@ -23,7 +23,7 @@ class reponse // Réponse = Choix
     {
         $stmt = $mysqli->prepare("INSERT INTO `reponse` (`id_question`, `intitule`) VALUES(?,?)");
 
-        if(!$stmt || !($stmt->bind_param('is', $id_question, $intitule)) || !($stmt->execute()))
+        if (!$stmt || !($stmt->bind_param('is', $id_question, $intitule)) || !($stmt->execute()))
             die("Erreur irrécupérable dans insererReponse");
 
         $stmt->close();
@@ -36,10 +36,10 @@ class reponse // Réponse = Choix
 
         $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id_question = ?;");
 
-        if(!$stmt || !($stmt->bind_param('i', $idQuest)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+        if (!$stmt || !($stmt->bind_param('i', $idQuest)) || !($stmt->execute()) || !($result = $stmt->get_result()))
             die('Erreur irrécupérable dans getReponses');
 
-        while(($row = $result->fetch_object('reponse')))
+        while (($row = $result->fetch_object('reponse')))
             $a[] = $row;
 
         $stmt->close();
@@ -51,7 +51,7 @@ class reponse // Réponse = Choix
     {
         $stmt = $mysqli->prepare("SELECT * FROM reponse AS rep WHERE rep.id = ? AND rep.id_question = ?");
 
-        if(!$stmt || !($stmt->bind_param('ii', $nr, $nq)) || !($stmt->execute()) || !($result = $stmt->get_result()))
+        if (!$stmt || !($stmt->bind_param('ii', $nr, $nq)) || !($stmt->execute()) || !($result = $stmt->get_result()))
             die('Erreur irrécupérable dans repIsValid');
 
         $stmt->close();
@@ -63,10 +63,14 @@ class reponse // Réponse = Choix
     {
         $failed = false;
         $nChoix = count($qcmrep[$nQuestion]); // Nombre de Choix pour la question nQuestion
-
         // Traitons le choix j pour la question nQuest
-        for($j = 0; ($j < $nChoix) && !$failed; $j++)
-            $failed = $failed || !reponse::insererReponse($mysqli, $idQuestion, $qcmrep[$nQuestion][$j]);
+        for ($j = 0; ($j < $nChoix) && !$failed; $j++)
+        {
+            if ($qcmrep[$nQuestion][$j] != "")
+            {
+                $failed = $failed || !reponse::insererReponse($mysqli, $idQuestion, $qcmrep[$nQuestion][$j]);
+            }
+        }
 
         return !$failed;
     }

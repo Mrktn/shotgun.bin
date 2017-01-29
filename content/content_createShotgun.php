@@ -29,19 +29,31 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
 
         $nQuest = count($intitule); // Nombre de questions
 
-        for ($i = 0; ($i < $nQuest) && !$failedFlag; $i++)
+        for ($i = 0; ($i < $nQuest) && !$failedFlag; $i++) // On traite la question i
         {
-            $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
 
-            $failedFlag = $failedFlag || ($idQuestion == null);
+            // Vérifions tout d'abord qu'en cas de réponse de type QCM l'utilisateur a bien rentré au moins un choix
+            $ChoixValide = ($typeReponse[$i] == question::$TYPE_REPONSELIBRE);
+            $nChoix = count($qcmrep[$i]) - 1; // Nombre de Choix pour la question nQuestion
+            while (!($ChoixValide) && ($nChoix >= 0))
+            {
+                $ChoixValide = ($qcmrep[$i][$nChoix] != "");
+                $nChoix = $nChoix - 1;
+            }
+            if ($intitule[$i] != "" && ($typeReponse[$i] == '0' || $typeReponse[$i] == '1' || $typeReponse[$i] == '2') && ($ChoixValide)) // Vérifions que la question a un format correct.
+            {
+                $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
 
-            if ($failedFlag)
-                echo '<b>ça a raté !!</b>';
+                $failedFlag = $failedFlag || ($idQuestion == null);
 
-            if (!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
-                $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
-            else
-                $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
+                if ($failedFlag)
+                    echo '<b>ça a raté !!</b>';
+
+                if (!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
+                    $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
+                else
+                    $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
+            }
         }
 
         if ($failedFlag)
@@ -70,10 +82,10 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 
     for ($i = 0; $i < $nQuest; $i++)
     {
-        $typeReponse[$i] = $_POST['typeReponse' . ($i + 1)];
+        $typeReponse[$i] = isset($_POST['typeReponse' . ($i + 1)]) ? $_POST['typeReponse' . ($i + 1)] : '-1';
         $nChoix = count($_POST['qcmrep' . ($i + 1)]); // Nombre de questions
         for ($j = 0; $j < $nChoix; $j++)
-            $qcmrep[$i][$j] = $_POST['qcmrep' . ($i + 1)][($j)];
+            $qcmrep[$i][$j] = isset($_POST['qcmrep' . ($i + 1)][($j)]) ? $_POST['qcmrep' . ($i + 1)][($j)] : '';
     }
 
     doCreateShotgun(DBi::$mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
