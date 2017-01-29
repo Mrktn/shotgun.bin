@@ -24,7 +24,7 @@ else
 DBi::connect();
 // shotgunIsInDB va vérifier qu'ona bien un entier dans le $_GET !
 if(!isset($_GET['idShotgun']) || !shotgun_event::shotgunIsInDB(DBi::$mysqli, $_GET['idShotgun']))
-    echo 'invalid shotgun provided : ' . $_GET['idShotgun'];
+    echo 'invalid shotgun provided';
 else
 {
     $iid = $_GET['idShotgun'];
