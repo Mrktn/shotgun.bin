@@ -3,7 +3,7 @@ function htmlQ(n) {
     return ('<div class="panel panel-primary" id="question' + n + '">'
             + '<div class="panel-heading" id = "titreQ'+n+'">Question n°'+n+' <span style="float:right" class="hoverCursor enleve_boutonQ tailleQuestion glyphicon glyphicon-remove"></span></div>'
             +'<div class="panel-body">'
-            + '<textarea class="form-control" name = "intitule[]" placeholder="Poser votre question"></textarea> <br/>'
+            + '<textarea class="form-control" name = "intitule[]" placeholder="Intitulé de votre question (requis)"></textarea> <br/>'
             + '<div class="form-group" id="type_reponse' + n + '" style="padding-left:20px">'
             + "<label for='typeReponse"+n+"' class=' control-label'>Quel type de question ?</label>"
             + '<div class="col-sm-12" id="Choix_Multiple_REPU' + n + '">'
@@ -18,10 +18,10 @@ function htmlQ(n) {
             + '<div class="form-group cache choix input_fields_wrap input_fields_wrap' + n + '" id ="choix' + n + '" style="display: none;">' // choixn refere ici à la question n
             + "<input type='button' id='ajouteChoix" + n + "' value='Ajouter un choix' class='btn btn-default ajout_bouton ' onclick='(ajout(this.id))'/> "
             + "<br/>"
-            + '<div id ="question'+n+'Choix1">'
+            + '<div style="margin-left:50px;padding-bottom:10px" id ="question'+n+'Choix1">'
             + '<input type="text"  name="qcmrep' + n + '[]" placeholder="Choix 1">'
             + '</div>'
-            + '<div id ="question'+n+'Choix2">'
+            + '<div style="margin-left:50px;padding-bottom:10px" id ="question'+n+'Choix2">'
             + '<input type="text"  name="qcmrep' + n + '[]" placeholder="Choix 2">' 
             + '</div>'
             + '</div>'
@@ -100,7 +100,7 @@ function ajout(s) {
     var n = s.match(/\d+/);  // On récupère le numéro de la question
     if (x[n] < max_fields) { //vérifie qu'on a le droit de rajouter un champ
         x[n]++; //text box increment
-        $($(wrapper + n)).append('<div id="question'+n+'Choix' +x[n]+ '"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><span id="suppr'+x[n]+'" onclick="suppr(this.id,this)" class="enleve_bouton taille glyphicon glyphicon-remove"></span></div>');  
+        $($(wrapper + n)).append('<div style="margin-left:50px;padding-bottom:10px" id="question'+n+'Choix' +x[n]+ '"><input type="text" name="qcmrep' + n + '[]" placeholder="Choix ' + x[n] + ' "/><span id="suppr'+x[n]+'" onclick="suppr(this.id,this)" class="enleve_bouton taille glyphicon glyphicon-remove"></span></div>');  
     }                                                                                                                                                   
 }
 

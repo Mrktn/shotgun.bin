@@ -140,7 +140,7 @@ else
             <div class="form-group">
                 <label for="inputOrganisateur3" class="col-sm-2 control-label">Responsable</label>
                 <div class="col-sm-6">
-                    <input type="text" name="au_nom_de" class="form-control" id="inputOrganisateur3" placeholder="Binet &#x0153;no, moi, mon cousin, ... (requis)" required>
+                    <input type="text" name="au_nom_de" class="form-control" id="inputOrganisateur3" placeholder="Binet &#x0153;no, John Doe, ... (requis)" required>
                 </div>
             </div>
 
