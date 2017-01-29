@@ -3,10 +3,8 @@
 
 if(isset($_POST['submittedRegister']))
 {
-    if(!isset($_POST['inputPasswordRegister']) || !isset($_POST["inputPasswordConfirmRegister"]) || !isset($_POST['inputEmailRegister']) || ($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]))
-    {
-        redirectWithPost("index.php?activePage=register", array('tip' => 'error', 'msg' => "Merci de réessayer avec des valeurs correctes !")); 
-    }
+    if(!isset($_POST['inputPasswordRegister']) || !isset($_POST["inputPasswordConfirmRegister"]) || !isset($_POST['inputEmailRegister']) || ($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]) || (strlen($_POST['inputPasswordRegister']) < 6) || (strlen($_POST['inputPasswordConfirmRegister']) < 6))
+        redirectWithPost("index.php?activePage=register", array('tip' => 'error', 'msg' => "Merci de réessayer avec des valeurs correctes !"));
     else
     {
         $password = $_POST['inputPasswordRegister'];
@@ -19,7 +17,6 @@ if(isset($_POST['submittedRegister']))
             redirectWithPost("index.php?activePage=index", array('tip' => 'success', 'msg' => "Votre compte a été créé, vous pouvez maintenant vous connecter !"));
         else
            redirectWithPost("index.php?activePage=register", array('tip' => 'error', 'msg' => "Impossible de créer un compte utilisateur avec ces identifiants !"));
-         
     }
 }
 else

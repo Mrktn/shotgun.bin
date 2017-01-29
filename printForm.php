@@ -74,26 +74,37 @@ END;
     printLogoutForm();
 }
 
+// Affuche un formulaire de déconnexion
+function printLogoutAdminForm()
+{
+    echo <<<FIN
+    <a href="index.php?activePage=changePassword"><span style="cursor:pointer;display:block;font-size:40px;color:#9ca5ad;margin-right:10px;padding-top:5px" class="navbar-right glyphicon glyphicon-cog"></span></a>
+    <form class="navbar-form navbar-right" action="index.php?activePage=index&todo=logout" method="post">
+    <button style="margin-right:10px" name="logout" type="submit" class="btn btn-default"> Déconnexion </button>
+    </form>
+    
+    <form class="navbar-form navbar-right" action="index.php" method="get">
+    <a href="index.php?activePage=manageShotguns" class="btn btn-danger" role="button">Administrer</a>
+    </form>
+FIN;
+}
+
 // Génère la navbar quand on est logged in
 function generateNavbarAdmin($activePage)
 {
     global $navbarAdmin;
     global $titleNavbar;
-
     foreach($navbarAdmin as $p)
     {
         $t = $titleNavbar[$p];
         echo '<li' . ($p == $activePage ? ' class="active"' : '') . "><a href=\"?activePage=$p\">$t</a></li>";
     }
-
     echo <<<END
             </ul>
             
-            <div class="nav navbar-nav navbar-right"><form class="navbar-form navbar-right" action="index.php" method="get">
-    <a href="index.php?activePage=manageShotguns" class="btn btn-danger" role="button">Administrer</a>
-    </form>
+            <div class="nav navbar-nav navbar-right">
 END;
-    printLogoutForm();
+    printLogoutAdminForm();
 }
 
 // $loggedin est un booléen qui dit si on est logué
@@ -145,7 +156,7 @@ function generateHTMLHeader($title)
 {
     echo <<<END
     <!DOCTYPE html>
-    <html>
+    <html lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
