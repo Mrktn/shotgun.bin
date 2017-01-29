@@ -1,13 +1,15 @@
 <?php
+// Page d'affichage du formulaire d'inscription, les questions et les choix sont dans shotgunForm.js
 require_once('classes/shotgun_event.php');
 require_once('classes/DBi.php');
-if(!isset($_SESSION['loggedIn']))
+if (!isset($_SESSION['loggedIn']))
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Connectez-vous avant de créer un shotgun !"));
 
+// Fonction créant le shotgun a partir des données prises en entrée
 function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep)
 {
     // Si ce qu'on avait requis dans le formulaire est satisfait, on va travailler
-    if(isset($titre) && !stringIsBlank($titre) &&
+    if (isset($titre) && !stringIsBlank($titre) &&
             isset($au_nom_de) && !stringIsBlank($au_nom_de) &&
             isset($date_event) && !stringIsBlank($date_event) &&
             isset($anonymous) && ctype_digit($anonymous) &&
@@ -30,7 +32,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
         // On crée notre shotgun
         $idShotgun = shotgun_event::traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, intval($nb_places), floatval($prix), $_SESSION['mailUser'], $au_nom_de, $anonymous, $link_thumbnail);
 
-        if($idShotgun == null)
+        if ($idShotgun == null)
             $failedFlag = true;
 
         // Nombre de questions
@@ -39,7 +41,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
         $questionNegligeeExists = false;
 
         // On traite la question i
-        for($i = 0; ($i < $nQuest) && !$failedFlag; $i++)
+        for ($i = 0; ($i < $nQuest) && !$failedFlag; $i++)
         {
             // Vérifions tout d'abord qu'en cas de réponse de type QCM l'utilisateur a bien rentré au moins un choix
             $choixValideExists = ($typeReponse[$i] == question::$TYPE_REPONSELIBRE);
@@ -48,49 +50,43 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
             $nChoix = count($qcmrep[$i]) - 1;
 
             // La variable sera à true à la fin ssi il existe au moins un choix non vide
-            while(!($choixValideExists) && ($nChoix >= 0))
+            while (!($choixValideExists) && ($nChoix >= 0))
             {
                 $choixValideExists = $choixValideExists || !stringIsBlank($qcmrep[$i][$nChoix]);
                 $nChoix = $nChoix - 1;
             }
 
-            if($choixValideExists)
+            if ($choixValideExists)
             {
                 // Vérifions que la question a un format correct.
-                if(!stringIsBlank($intitule[$i]) && ($typeReponse[$i] == '0' || $typeReponse[$i] == '1' || $typeReponse[$i] == '2'))
+                if (!stringIsBlank($intitule[$i]) && ($typeReponse[$i] == '0' || $typeReponse[$i] == '1' || $typeReponse[$i] == '2'))
                 {
                     $idQuestion = question::traiteQuestionForm($mysqli, $intitule, $typeReponse, $idShotgun, $i); // Insertion de la question
 
                     $failedFlag = $failedFlag || ($idQuestion == null);
 
-                    if(!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
+                    if (!$failedFlag && $typeReponse[$i] != question::$TYPE_REPONSELIBRE)
                         $failedFlag = $failedFlag || !reponse::traiteChoixForm($mysqli, $idQuestion, $i, $qcmrep);
                     else
                         $failedFlag = $failedFlag || !reponse::insertChoixLibre($mysqli, $idQuestion);
-                }
-                
-                else
+                } else
                     $questionNegligeeExists = true;
-            }
-
-            else
+            } else
                 $questionNegligeeExists = true;
         }
 
-        if($failedFlag)
+        if ($failedFlag)
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
-        elseif($questionNegligeeExists)
+        elseif ($questionNegligeeExists)
             redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'warning', 'msg' => "Shotgun créé avec succès ! <b>En revanche, certaines de vos questions n'ont pas pu être traitées. </b><br/>Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
         else
             redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès !<br/>Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
-        
-        
-    }
-    else
+    } else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
 }
 
-if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
+// Créer les variables à rentrer dans la base de donnée à partir des données du formulaire
+if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
 {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
@@ -106,18 +102,18 @@ if(isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
     $qcmrep = array();
     $nQuest = count($intitule); // Nombre de questions
 
-    for($i = 0; $i < $nQuest; $i++)
+    for ($i = 0; $i < $nQuest; $i++)
     {
         $typeReponse[$i] = isset($_POST['typeReponse' . ($i + 1)]) ? $_POST['typeReponse' . ($i + 1)] : '-1';
         $nChoix = count($_POST['qcmrep' . ($i + 1)]); // Nombre de questions
-        for($j = 0; $j < $nChoix; $j++)
+        for ($j = 0; $j < $nChoix; $j++)
             $qcmrep[$i][$j] = isset($_POST['qcmrep' . ($i + 1)][($j)]) ? $_POST['qcmrep' . ($i + 1)][($j)] : '';
     }
 
     doCreateShotgun(DBi::$mysqli, $titre, $description, $au_nom_de, $date_event, $date_publi, $nb_places, $prix, $anonymous, $link_thumbnail, $intitule, $typeReponse, $qcmrep);
-}
-else
+} else
 {
+    // Affichage du formulaire de création de shotgun
     ?>
     <div class ='container-fluid titlepage' > <h1>Formulaire de création</h1></div><br/><br/>
 

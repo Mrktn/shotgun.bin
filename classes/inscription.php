@@ -1,5 +1,5 @@
 <?php
-
+// Sert à implémenter la classe question reliée à la base de donnée ainsi que toutes les fonctions utilisant la classe. Inscription permet de relier les utilisateurs aux shotguns_event afin de savoir qui est inscrit à quoi
 require('reponse_de_utilisateur.php');
 
 class inscription

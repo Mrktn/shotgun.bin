@@ -1,5 +1,5 @@
 <?php
-
+// Sert à implémenter la classe shotgun_event reliée à la base de donnée ainsi que toutes les fonctions utilisant la classe
 class shotgun_event
 {
 
@@ -61,7 +61,6 @@ class shotgun_event
         return true;
     }
 
-    // Ça devrait s'appeler shotgunIsInDBEtidEstBienFormé.
     public static function shotgunIsInDB($mysqli, $id)
     {
         $iid = 0;
@@ -136,7 +135,7 @@ class shotgun_event
         return $row;
     }
 
-    // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
+    // Est visible un shotgun ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
     public static function getVisibleShotgunsNotMine($mysqli, $mailUser)
     {
         $a = array();
@@ -154,7 +153,7 @@ class shotgun_event
         return $a;
     }
 
-    public static function getMyShotguns($mysqli, $mailCrea) // Renvoie la liste des shotguns que l'utilisateur a crée
+    public static function getMyShotguns($mysqli, $mailCrea) // Renvoie la liste des shotguns que l'utilisateur a créé
     {
         $a = array();
 
@@ -192,7 +191,7 @@ class shotgun_event
         return $a;
     }
 
-    // Retourne le nombre de paxs associés au shotgun d'id $id dans la db
+    // Retourne le nombre d'utilisateurs inscrits au shotgun d'id $id dans la db
     public static function getNumInscriptions($mysqli, $id)
     {
         $query = "SELECT * FROM inscription WHERE id_shotgun = ?;";
@@ -224,7 +223,7 @@ class shotgun_event
         return $a;
     }
 
-    // Est visible quiconque est ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
+    // Est visible un shotgun ouvert, actif, et pas encore périmé et dont la date d'apparition est dépassée
     public static function getVisibleShotguns($mysqli)
     {
         $a = array();

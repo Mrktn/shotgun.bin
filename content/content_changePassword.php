@@ -1,5 +1,5 @@
 <?php
-
+// Formulaire de changement de mot de passe
 if(isset($_POST['submittedRegister']))
 {
     if(isset($_POST["formerPassword"]) && $_POST["formerPassword"] != "" &&

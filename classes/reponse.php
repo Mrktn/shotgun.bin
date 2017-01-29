@@ -1,5 +1,5 @@
 <?php
-
+// Sert à implémenter la classe reponse reliée à la base de donnée ainsi que toutes les fonctions utilisant la classe
 class reponse // Réponse = Choix 
 {
 

@@ -1,8 +1,4 @@
 $(document).ready(function () {
-    /*$("div.shotgunPanel").css('cursor', 'pointer');
-     $("div.shotgunPanel").click(function () {
-     window.location.href = "index.php?activePage=shotgunRecord&idShotgun=".concat($(this).attr('idShotgun'));
-     });*/
     $(function () {
         $('a[delete-confirm]').click(function (ev) {
             var href = $(this).attr('href');
@@ -64,8 +60,6 @@ function download_csv(header, dat) {
         });
         csv += "\n";
     });
-
-    //csv = csv.replace(new RegExp("##", 'g'), ",");
 
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURI(csv);

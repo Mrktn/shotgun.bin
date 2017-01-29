@@ -1,4 +1,5 @@
 <?php
+// Page administration 
 
 // Les shotguns pas encore autorisés
 $shotgunsInactive = shotgun_event::getInactiveShotguns(DBi::$mysqli);
@@ -19,6 +20,7 @@ echo <<<END
         <a href="#" class="list-group-item" data-toggle="collapse" data-target="#sm" data-parent="#menu">
 END;
 
+// Shotguns pas encore approuvés
 if(count($shotgunsInactive) != 0)
 {
     echo '<span class="label label-danger">' . count($shotgunsInactive) . '</span>';
@@ -36,7 +38,6 @@ END;
 echo '<span class="glyphicon glyphicon-remove pull-right"></span></a>';
 echo '<div id="sm" class="sublinks collapse" style="margin-bottom: 40px">';
 
-
 if(count($shotgunsInactive) == 0)
 {
     echo '<a class="list-group-item small">Aucun shotgun à approuver !</a>';
@@ -51,6 +52,7 @@ else
 
 echo '</div><a href="#" class="list-group-item" data-toggle="collapse" data-target="#sl" data-parent="#menu">';
 
+// Tous les shotguns en cours
 if(count($shotgunsUpAndRunning) != 0)
 {
     echo '<span class="label label-success">' . count($shotgunsUpAndRunning) . '</span>';
@@ -78,6 +80,7 @@ else
 
 echo '</div><a href="#" class="list-group-item" data-toggle="collapse" data-target="#s2" data-parent="#menu">';
 
+// Shotguns à venir
 if(count($shotgunsAVenir) != 0)
 {
     echo '<span class="label label-success">' . count($shotgunsAVenir) . '</span>';

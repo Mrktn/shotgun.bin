@@ -1,5 +1,5 @@
 <?php
-
+// Sert à implémenter la classe question reliée à la base de donnée ainsi que toutes les fonctions utilisant la classe
 class question
 {
 

@@ -1,6 +1,6 @@
 <?php
 
-// On récupère les shotguns dont je suis le créateur
+//Récupération des shotguns que j'ai crée et affichage
 
 if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "L'administrateur ne peut pas poster de shotguns !"));

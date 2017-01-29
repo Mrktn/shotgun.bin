@@ -1,9 +1,9 @@
 <?php
-
+// Cette page contient le formulaire d'inscription à un évènement
+// Vérifie que les réponses données aux questions sont au bon format
 function checkRas($type, $nquest, $rep)
 {
     if(!ctype_digit($nquest) || ($type == "m" && !is_array($rep)) || false)
-        //header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Requête d'inscription mal formée !"));
      
 
@@ -11,7 +11,6 @@ function checkRas($type, $nquest, $rep)
     {
         $pieces = explode("-", $rep);
         if(!ctype_digit($pieces[1]) || !reponse::repIsValid(DBi::$mysqli, intval($nquest), intval($pieces[1])))
-            //header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
                 redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Requête d'inscription mal formée !"));
     }
 
@@ -22,7 +21,6 @@ function checkRas($type, $nquest, $rep)
             $pieces = explode("-", $vrep);
 
             if(!ctype_digit($pieces[1]) || !reponse::repIsValid(DBi::$mysqli, intval($nquest), intval($pieces[1])))
-                //header('Location: index.php?activePage=error&msg=Requête d\'inscription mal formée !');
                     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Requête d'inscription mal formée !"));
         }
     }
@@ -31,11 +29,9 @@ function checkRas($type, $nquest, $rep)
 $idShot = $_GET['idShotgun'];
 
 if(!isset($_GET['todoShotgunIt']))
-    //header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous inscrire à ce shotgun !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous inscrire à ce shotgun !"));
 
 if(!shotgun_event::shotgunIsInDB(DBi::$mysqli, $idShot))
-    //header('Location: index.php?activePage=error&msg=Ce shotgun n\'existe pas !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Ce shotgun n'existe pas !"));
 
 if($_GET['todoShotgunIt'] == 'suscribe')
@@ -59,14 +55,13 @@ if($_GET['todoShotgunIt'] == 'suscribe')
         // On a donc submitted les réponses.
         if(isset($_POST['submitting']) && $_POST['submitting'] == "true")
         {
-            // Ici on va envoyer une requête pour inscrire le pax.
+            // Ici on va envoyer une requête pour inscrire l'utilisateur.
             $formattedArray = array();
 
             foreach($_POST as $q => $r)
             {
                 if($q != "submitting")
                 {
-                    // FIXME: checker que tout se passe bien ici
                     $pieces = explode("-", $q);
 
                     if($pieces[0] == "uquest")
@@ -95,7 +90,6 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                         $formattedArray[intval($pieces[1])][] = array(intval($repieces[1]), $r[1]);
                     }
                     else
-                        //header("Location: index.php?activePage=error&msg=Requête d'inscription mal formée !");
                         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Requête d'inscription mal formée !"));
                 }
             }
@@ -105,27 +99,6 @@ if($_GET['todoShotgunIt'] == 'suscribe')
             else
                 redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShot", array('tip' => 'error', 'msg' => "Shotgun raté :'("));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -225,22 +198,6 @@ else
     else
     {
         redirectWithPost('index.php?activePage=index' . $shotgun->id, array('tip' => 'error', 'msg' => "Vous ne pouvez pas vous désinscrire de ce shotgun !"));
-        //header('Location: index.php?activePage=error&msg=Vous ne pouvez pas vous désinscrire de ce shotgun !');
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//echo '<script type="text/javascript">function myConfirmation(){return \'\';} window.onbeforeunload = myConfirmation;</script>';

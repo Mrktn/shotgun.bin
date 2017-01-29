@@ -6,15 +6,7 @@
 
 $filesDepuisContent = array('classes/DBi.php', 'classes/shotgun_event.php', 'utils.php');
 $filesDepuisjQuery = array('../classes/DBi.php', '../classes/shotgun_event.php', '../utils.php');
-/* // Si c'est depuis un content, ce seront ces fichiers
-  include_once('classes/DBi.php');
-  include_once('classes/shotgun_event.php');
-  include_once('utils.php');
 
-  // Sinon in faut remonter
-  include_once('../classes/DBi.php');
-  include_once('../classes/shotgun_event.php');
-  include_once('../utils.php'); */
 
 if(file_exists($filesDepuisContent[0]))
 {
@@ -38,7 +30,7 @@ else
     $iid = $_GET['idShotgun'];
     $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, strval($iid));
 
-    // Maintenant on claque une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
+    // Maintenant on lance une petite requête pour savoir combien il y a d'inscriptions à ce shotgun pour l'instant.
     $k = shotgun_event::getNumInscriptions(DBi::$mysqli, $iid);
     $n = $shotgun->nb_places;
 

@@ -16,7 +16,7 @@ function labelFromPercentage($r)
     return "progress-bar-danger";
 }
 
-// TODO: cette fonction, mieux écrite, nous fera gagner en sécurité
+// vérifie que l'adresse est en @polytechnique.edu
 function isValidPolytechniqueEmail($mail)
 {
     return preg_match("/.+@polytechnique\.edu/", $mail);
@@ -113,6 +113,7 @@ function displayShotgunList($mysqli, $shotguns, $mailUser)
     }
 }
 
+// Affiche la liste des shotguns dont la date d'ouverture n'est pas encore passée (s'affiche dans la page d'accueil
 function displayShotgunAVenir($mysqli, $shotguns)
 {
     echo'<div class="container fiftycent">
@@ -157,6 +158,7 @@ function displayShotgunAVenir($mysqli, $shotguns)
     }
 }
 
+// Affiche la liste des shotguns sécurisés par l'utilisateur (s'affiche dans la page d'accueil
 function displayMonAgenda($mysqli, $mailUser)
 { // Affiche les 5 plus proches évènements sur la page d'accueil
     $shotguns = shotgun_event::getMyShotgunsReservesNonPerimes($mysqli, $mailUser);
@@ -211,11 +213,13 @@ function displayMonAgenda($mysqli, $mailUser)
     }
 }
 
+// vérifie que needle est la fin de haystack
 function endsWith($haystack, $needle)
 {
     return (substr($haystack, -strlen($needle)) === $needle);
 }
 
+// vérifie que l'url pointe bien vers un fichier jpeg png ou gif
 function isLinkToPicture($url)
 {
     $extensionList = array('gif', 'png', 'jpg', 'jpeg');
@@ -223,7 +227,7 @@ function isLinkToPicture($url)
     $fineAsExt = false;
 
     foreach($extensionList as $ext)
-        $fineAsExt = $fineAsExt || endsWith($url, $ext);
+        $fineAsExt = $fineAsExt || endsWith($url, $ext) || endsWith($url, strtoupper($ext));
 
     return $fineAsUrl && $fineAsExt;
 }

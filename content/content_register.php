@@ -1,6 +1,7 @@
 <?php
+// Cette page permet à l'utilisateur de s'enregistrer
 
-
+// Traitement le formulaire d'inscription
 if(isset($_POST['submittedRegister']))
 {
     if(!isset($_POST['inputPasswordRegister']) || !isset($_POST["inputPasswordConfirmRegister"]) || !isset($_POST['inputEmailRegister']) || ($_POST["inputPasswordRegister"] != $_POST["inputPasswordConfirmRegister"]) || !isValidPolytechniqueEmail($_POST["inputEmailRegister"]) || (strlen($_POST['inputPasswordRegister']) < 6) || (strlen($_POST['inputPasswordConfirmRegister']) < 6))
@@ -10,7 +11,7 @@ if(isset($_POST['submittedRegister']))
         $password = $_POST['inputPasswordRegister'];
         $email = $_POST['inputEmailRegister'];
 
-        // Clé secrète de l'utilisateur, en théorie pour vérifier l'adresse mail
+        // Clé secrète de l'utilisateur, en théorie pour vérifier l'adresse mail, non utilisé dans la version actuelle
         $key = md5($password . $email . date('mY'));
 
         if(utilisateur::insererUtilisateur(DBi::$mysqli, $email, 0, $key, $password, 0))
@@ -21,7 +22,8 @@ if(isset($_POST['submittedRegister']))
 }
 else
 {
-    echo <<<END
+// Affichage du formulaire d'inscription
+?>
     <div class ='container-fluid titlepage' > <h1>S'enregistrer</h1> </div><br/><br/>
        <div class="container center-block" style="width:100%; background-color: #ffffff">
           <div class="container center-block" style="padding:15px">
@@ -64,6 +66,5 @@ else
 
     </div>
     </div>
-END;
-}
-?>
+    <?php
+};

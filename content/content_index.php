@@ -1,3 +1,4 @@
+<!-- Page d'accueil du site-->
 
 <div class ='container-fluid titlepage' >
     <div class="col-sm-4 col-md-4 ">
@@ -9,7 +10,7 @@
     </div>
 </div>
 <?php
-//Page d'accueil pour les non inscrits
+//Page d'accueil pour les non inscrits ou les administrateurs
 if(!isset($_SESSION['mailUser']) || $_SESSION['isAdmin'])
 {
     echo'

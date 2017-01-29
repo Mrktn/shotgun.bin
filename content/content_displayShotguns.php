@@ -1,4 +1,5 @@
 <?php
+// Affichage de tous les shotguns en cours
 
 if(!isset($_SESSION['loggedIn']) || !isset($_SESSION['mailUser']))
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => 'Accès interdit !'));

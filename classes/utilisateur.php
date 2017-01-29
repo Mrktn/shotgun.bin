@@ -21,7 +21,7 @@ class utilisateur
         $row = $result->fetch_object('utilisateur');
         return $row;
     }
-
+    
     public static function insererUtilisateur($mysqli, $mail, $active, $code_secret, $mdp, $admin)
     {
         if(!utilisateur::getUtilisateur($mysqli, $mail))

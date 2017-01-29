@@ -1,4 +1,5 @@
 <?php
+// Cette page contient en outre le HTML générant la fiche des shotguns
 
 // Ici on est chargé de vérifier que l'argument shotgunId qu'on nous fournit dans le get est bien exploitable.
 
@@ -11,12 +12,10 @@
 require_once('classes/inscription.php');
 
 if(!isset($_GET['idShotgun']))
-//header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Identifiant invalide !"));
 
 
 if(!isset($_SESSION['mailUser']))
-//header('Location: index.php?activePage=error&msg=Utilisateur non enregistré !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il faut se connecter pour voir les shotguns !"));
 
 // À ce stade on sait que le shotgun est dans la database.
@@ -81,7 +80,7 @@ elseif(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'])
     }
 }
 
-// Sinon je suis l'user random
+// Sinon je suis l'utilisateur lambda
 else
 {
     // Si je suis inscrit, on me propose de me désinscrire
@@ -111,7 +110,7 @@ else
 
 echo "<div class ='container-fluid titlepage' > <h1>" . htmlspecialchars($shotgun->titre) . '</h1> </div><br/><br/>';
 
-
+// HTML de la fiche de shotgun
 echo '
 <div class="container">
 <div class="row"><div class="text-center">
@@ -134,12 +133,12 @@ echo '
                 <li class="list-group-item"><strong>Date:</strong> le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_event))) . '</li>
                 <li class="list-group-item">' . '<div class="row"> 
                 <span class="col-sm-3"><strong >Effectifs:</strong> </span>';
-echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">';
+echo '<div class="progress progress-shotgun" idShotgun="' . $shotgun->id . '">'; // sécurisé car codé sous forme d'entier dans la base de donnée
 include('api/progressbar.php');
 echo '</div>';
 
 echo '</div></li>
-                <li class="list-group-item"><strong>Prix: </strong>' . $shotgun->prix . '€ </li>
+                <li class="list-group-item"><strong>Prix: </strong>' . $shotgun->prix . '€ </li> 
               </ul>
             </div>
           </div>

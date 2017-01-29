@@ -1,5 +1,5 @@
 <?php
-
+// Connexion à la base de donnée
 class DBi
 {
     public static $mysqli;
