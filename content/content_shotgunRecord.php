@@ -110,7 +110,6 @@ echo "<div class ='container-fluid titlepage' > <h1>" . htmlspecialchars($shotgu
 
 echo '
 <div class="container">
-   </header>
 <div class="row"><div class="text-center">
    '.$button.'</div><br/>
   <div class="container" style="width:85%">
@@ -256,5 +255,5 @@ echo '</div></div></div>';
 if($_SESSION['mailUser'] == $shotgun->mail_crea || $_SESSION['isAdmin'] == true)
     echo '<div class="text-center"> <a href="index.php?activePage=index&todoShotgunIt=deleteShotgun&idShotgun=' . $shotgun->id . '" class="btn btn-danger"  delete-confirm="Êtes-vous certain de vouloir supprimer ce shotgun ? :-O" role="button">Supprimer</a></div>';
 
-echo '</div></div></div>';
+echo '</div></div>';
 ?>
