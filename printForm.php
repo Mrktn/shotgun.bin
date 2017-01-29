@@ -170,7 +170,7 @@ function generateHTMLHeader($title)
         <link href="css/dynatable.css" rel="stylesheet">
         <link href="css/animate.css" rel="stylesheet">
 
-        <script type="text/javascript" src="js/jquery191.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
         <script type="text/javascript" src="js/validator.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/javascriptPerso.js"></script>
