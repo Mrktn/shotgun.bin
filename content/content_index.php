@@ -36,7 +36,7 @@ else
         <div class=" col-sm-5 col-md-5 control-label fontgrisContour">
 ';
 
-    displayMonAgenda(DBi::$mysqli, shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUser']));
+    displayMonAgenda(DBi::$mysqli, $_SESSION['mailUser']);
     echo'       </div>
 </div> ';
 };

@@ -12,7 +12,7 @@ echo "<div class ='container-fluid titlepage' > <h1>Mes shotguns</h1> </div><br/
 echo '<div class="container center-block" style="width:100%; background-color: #ffffff">';
 echo '<div class="container center-block" style="padding:15px">';
 
-$shotguns = shotgun_event::getMyShotgunsReserves(DBi::$mysqli, $_SESSION['mailUser']);
+$shotguns = shotgun_event::getMyShotgunsReservesNonPerimes(DBi::$mysqli, $_SESSION['mailUser']);
 
 if(count($shotguns) != 0)
     displayShotgunList(DBi::$mysqli, $shotguns, $_SESSION['mailUser']);

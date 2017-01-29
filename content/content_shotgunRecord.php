@@ -11,29 +11,33 @@
 require_once('classes/inscription.php');
 
 if(!isset($_GET['idShotgun']))
-    //header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
+//header('Location: index.php?activePage=error&msg=Donnez le numéro du shotgun !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Identifiant invalide !"));
-        
+
 
 if(!isset($_SESSION['mailUser']))
-    //header('Location: index.php?activePage=error&msg=Utilisateur non enregistré !');
+//header('Location: index.php?activePage=error&msg=Utilisateur non enregistré !');
     redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Il faut se connecter pour voir les shotguns !"));
-    
 
-if(!shotgun_event::userMayViewShotgunRecord(DBi::$mysqli, $_SESSION['mailUser'], $_GET['idShotgun'], $_SESSION['isAdmin']))
-    //header('Location: index.php?activePage=error&msg=Accès interdit !');
-    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Accès interdit, privilèges insuffisants !"));
-    
 // À ce stade on sait que le shotgun est dans la database.
 $id = $_GET['idShotgun'];
 $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $id);
 
+if(!$shotgun)
+    redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Accès interdit, shotgun inconnu !"));
+
+if(!shotgun_event::userMayViewShotgunRecord(DBi::$mysqli, $_SESSION['mailUser'], $_GET['idShotgun'], $_SESSION['isAdmin']))
+{
+    if(!$shotgun->ouvert)
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Ce shotgun est pour l'instant fermé, contactez le créateur (<a href='mailto:". htmlspecialchars($shotgun->mail_crea)."'>".htmlspecialchars($shotgun->mail_crea)."</a>)."));
+    else
+        redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Accès interdit, privilèges insuffisants !"));
+}
+
 // Est-ce que l'utilisateur courant est le créateur du shotgun considéré ?
 $isCreateur = isset($_SESSION['mailUser']) && ($shotgun->mail_crea == $_SESSION['mailUser']);
 
-/* if((!shotgun_event::shotgunIsVisible(DBi::$mysqli, $id) || shotgun_event::shotgunIsPerime(DBi::$mysqli, $id)) && !$isCreateur)
-  header('Location: index.php?activePage=error&msg=Vous n\'avez pas les permissions pour voir ce shotgun !');
- */
+
 $k = shotgun_event::getNumInscriptions(DBi::$mysqli, $id);
 $n = $shotgun->nb_places;
 // À ce stade on sait que l'utilisateur peut consulter le shotgun.
@@ -90,17 +94,17 @@ else
         // Si c'est illimité, on écrit "s'inscrire" plutôt que "shotgun"
         if($n == 0)
             $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" value="S\'inscrire" class="btn btn-danger"></form>';
-        
+
         // Sinon si c'est limité mais qu'il y a de la place
         elseif($k < $n)
         {
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" type="submit" idShotgun="' . $id . '" id="buttonShotgun" type="submit" value="Shoootgun !" class="btn btn-danger"></form>';
         }
-        
+
         // En revanche, s'il n'y a pas de place...
         else
         {
-            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" idShotgun="'. $id .'" id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger" disabled></form>';
+            $button = '<form action="index.php" method="get"><input type="hidden" name="todoShotgunIt" value="suscribe"><input type="hidden" name="activePage" value="shotgunIt"><input type="hidden" name="idShotgun" value="' . $id . '"><input style="width:121px;height:75px" idShotgun="' . $id . '" id="buttonShotgun" type="submit" value="Pas de place :(" class="btn btn-danger" disabled></form>';
         }
     }
 }
@@ -111,7 +115,7 @@ echo "<div class ='container-fluid titlepage' > <h1>" . htmlspecialchars($shotgu
 echo '
 <div class="container">
 <div class="row"><div class="text-center">
-   '.$button.'</div><br/>
+   ' . $button . '</div><br/>
   <div class="container" style="width:85%">
    <small> <i class="fa fa-clock-o"></i> Ajouté le ' . utf8_encode(strftime("%d %B %Y &agrave; %H:%M", strtotime($shotgun->date_crea))) . ' par ' . stripTheMail($shotgun->mail_crea) . '</small>
     <div class="panel panel-default">
@@ -189,7 +193,7 @@ if($shotgun->anonymous && !($_SESSION['mailUser'] == $shotgun->mail_crea))
 else
 {
     $arrayInscriptions = inscription::getInscriptionsIn(DBi::$mysqli, $shotgun->id);
-    
+
     if(is_null($arrayInscriptions))
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur inconnue, veuillez contacter un administrateur !"));
 
