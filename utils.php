@@ -252,4 +252,11 @@ function redirectWithPost($url, $arrpost, $preheader = false)
         echo '</body></html>';
     exit();
 }
+
+// Vérifie que la chaîne est vide
+function stringIsBlank($str)
+{
+    // Plus jamais ça ! c'est vraiment du chinois...
+    return preg_match("/^[\s]*$/", $str);
+}
 ?>

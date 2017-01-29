@@ -13,11 +13,6 @@ if(!isset($_SESSION['initiated']))
     $_SESSION['initiated'] = true;
 }
 
-// Décommenter la ligne suivante pour afficher le tableau $_SESSION pour le debuggage
-//print_r($_SESSION);
-//print_r($_POST);
-//print_r($_GET);
-
 require('classes/DBi.php');
 DBi::connect();
 
@@ -197,7 +192,10 @@ else
 
 if(isset($_POST['tip']))
 {
-    $titleNotif = $_POST['tip'] == 'success' ? "Succès !" : "Erreur !";
+    $headerNotif = array("success" => "Succès !", "error" => "Erreur !", "warning" => "Attention !");
+    $titleNotif = array_key_exists($_POST['tip'], $headerNotif) ? $headerNotif[$_POST['tip']] : "Erreur !";
+    $typeNotif  = array("success" => "success", "error" => "danger", "warning" => "warning");
+
     $msgNotif = "";
 
     if(!isset($_POST['msg']))
@@ -209,9 +207,8 @@ if(isset($_POST['tip']))
 	title: "<strong>' . $titleNotif . '</strong>",
 	message: "<br/>' . $msgNotif . '"
 },{
-	type: "' . ($_POST['tip'] == 'success' ? 'success' : 'danger') . '"
+	type: "' . (array_key_exists($_POST['tip'], $typeNotif) ? ($typeNotif[$_POST['tip']]) : 'danger') . '"
 });</script>';
-    //echo 'omg on a une tip: ' . $_POST['tip'] . ' <br/>';
 }
 
 
