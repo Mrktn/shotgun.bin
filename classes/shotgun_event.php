@@ -173,12 +173,12 @@ class shotgun_event
     }
 
     // Renvoie la liste des shotguns auxquels l'utilisateur s'est inscrit
-    public static function getMyShotgunsReserves($mysqli, $mailCrea)
+    public static function getMyShotgunsReservesNonPerimes($mysqli, $mailCrea)
     {
         $a = array();
 
         // On sélectionne ceux qui ne sont pas encore périmés, qui sont inactifs
-        $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user = ? AND inscription.id_shotgun = shotgun_event.id ORDER BY shotgun_event.date_event ASC;";
+        $query = "SELECT shotgun_event.* FROM shotgun_event,inscription WHERE inscription.mail_user = ? AND inscription.id_shotgun = shotgun_event.id AND NOW() <= date_event ORDER BY shotgun_event.date_event ASC;";
 
         $stmt = $mysqli->prepare($query);
 
@@ -300,6 +300,6 @@ class shotgun_event
 
     public static function traiteShotgunForm($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail)
     {
-        return shotgun_event::insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, 0, 0);
+        return shotgun_event::insererShotgun($mysqli, $titre, $description, $date_event, $date_publi, $nb_places, $prix, $mail_crea, $au_nom_de, $anonymous, $link_thumbnail, 1, 0);
     }
 }

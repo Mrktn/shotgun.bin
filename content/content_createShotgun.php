@@ -47,7 +47,7 @@ function doCreateShotgun($mysqli, $titre, $description, $au_nom_de, $date_event,
         if ($failedFlag)
             redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Erreur innatendue, contactez un administrateur."));
         else
-            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que vous l'ayez <b>ouvert</b> et que l'administrateur l'ait <b>autorisé</b> !"));
+            redirectWithPost("index.php?activePage=shotgunRecord&idShotgun=$idShotgun", array('tip' => 'success', 'msg' => "Shotgun créé avec succès ! Lorsque la date de publication sera passée, votre shotgun sera visible des utilisateurs à condition que l'administrateur l'ait <b>autorisé</b> !"));
     } else
         redirectWithPost("index.php?activePage=index", array('tip' => 'error', 'msg' => "Formulaire invalide !"));
 }
@@ -108,14 +108,14 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
             <div class="form-group">
                 <label for="inputDate_event3" class="col-sm-2 control-label">Date de l'évènement</label>
                 <div class="col-sm-6 date input-group">
-                    <input id="inputDate_event3" type='datetime' name ='date_event' required="true" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
+                    <input id="inputDate_event3" type='text' name ='date_event' class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="inputDate_shotgun3" class="col-sm-2 control-label">Ouverture du shotgun</label>
                 <div class='col-sm-6 date input-group'>
-                    <input id="inputDate_shotgun3" type='datetime' class="form-control" name ='date_publi' placeholder="Vide pour une ouverture immédiate (modulo approbation de l'administrateur)"/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
+                    <input id="inputDate_shotgun3" type='text' class="form-control" name ='date_publi' placeholder="Vide pour une ouverture immédiate (modulo approbation de l'administrateur)"/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
                 </div>
             </div>
 
@@ -190,7 +190,6 @@ if (isset($_GET["todoCreate"]) && $_GET["todoCreate"] == "createShotgun")
                 locale: 'fr'
             });
         });
-
 
     </script>
     <?php

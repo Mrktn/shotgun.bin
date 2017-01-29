@@ -94,8 +94,10 @@ function displayShotgunList($mysqli, $shotguns, $mailUser)
         if (!$currShotgun->active)
             echo '<span title="Shotgun en attente de révision par l\'administrateur" style="font-size:18px" class="glyphicon glyphicon-minus-sign"></span>   ';
 
-        if (!$currShotgun->ouvert)
+        if (!$currShotgun->ouvert && $isCreateur)
             echo '<span title="Vous devez ouvrir ce shotgun pour qu\'il puisse apparaître dans la liste publique" style="font-size:18px" class="glyphicon glyphicon-lock"></span>   ';
+        elseif(!$currShotgun->ouvert)
+            echo '<span title="Ce shotgun a été fermé temporairement par son créateur" style="font-size:18px" class="glyphicon glyphicon-lock"></span>   ';
 
         echo'</p><h3 class="panel-title pull-left" style="text-align:center"><strong>' . htmlspecialchars($currShotgun->titre) . '</strong> par <i>' . htmlspecialchars($currShotgun->au_nom_de) . '</i></h3>
   <a href="index.php?activePage=shotgunRecord&idShotgun=' . $currShotgun->id . '" class="btn btn-info pull-right" role="button">Fiche</a><div class="clearfix"></div>
@@ -155,8 +157,9 @@ function displayShotgunAVenir($mysqli, $shotguns)
     }
 }
 
-function displayMonAgenda($mysqli, $shotguns)
+function displayMonAgenda($mysqli, $mailUser)
 { // Affiche les 5 plus proches évènements sur la page d'accueil
+    $shotguns = shotgun_event::getMyShotgunsReservesNonPerimes($mysqli, $mailUser);
     echo'<div class="container fiftycent">
   <h2>Mon agenda</h2>';
     if (count($shotguns) == 0)
@@ -179,7 +182,7 @@ function displayMonAgenda($mysqli, $shotguns)
     <tbody style="text-align:center">';
         $compteur = 0;
         foreach ($shotguns as $currShotgun)
-        { // Faire le truc du ? de pro
+        {
             if ($compteur < 5)
             {
                 $n = shotgun_event::getNumInscriptions($mysqli, $currShotgun->id);

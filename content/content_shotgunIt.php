@@ -50,11 +50,11 @@ if($_GET['todoShotgunIt'] == 'suscribe')
     {
         $shotgun = shotgun_event::shotgunGet(DBi::$mysqli, $idShot);
         $questions = question::getQuestions(DBi::$mysqli, $idShot);
-        $dateIntelligible = strftime('%A %d %B %Y à %H:%M', strtotime($shotgun->date_event));
-        echo '<div class="container">
+        $dateIntelligible = utf8_encode(strftime("%d %B %Y", strtotime($shotgun->date_event))). " à " . utf8_encode(strftime("%Hh%M", strtotime($shotgun->date_event)));
+        echo '<div class ="container-fluid titlepage" > <h1>Shotgun de l\'évènement</h1> </div><br/><br/> <div class="container">
 <div class="alert alert-warning center-block">
-  <strong>Attention !</strong> ' . "En vous inscrivant, vous vous engagez :<br/><ul>" . ($shotgun->prix != (-1) ? ("<li>À <b>régler la somme de {$shotgun->prix}€</b> à \"{$shotgun->au_nom_de}\"</li>") : ("")) . "<li>À participer à l'évènement, qui aura lieu le <b>$dateIntelligible</b></li></ul><br/>Vous conserverez le droit de vous désinscrire, mais les organisateurs garderont un historique détaillé des inscriptions. Conduisez-vous de manière responsable !<br/>Après inscription, vos informations ne seront plus modifiables. Si vous souhaitez modifier votre inscription, il vous faudra d'abord vous désinscrire et refaire un shotgun, <b>au risque de perdre votre place dans cet intervalle de temps</b> !" .
-    '</div>';
+  <strong>Attention !</strong> ' . "En vous inscrivant, vous vous engagez :<br/><ul>" . ($shotgun->prix != 0 ? ("<li>À <b>régler la somme de {$shotgun->prix}€</b> à \"{$shotgun->au_nom_de}\"</li>") : ("")) . "<li>À participer à l'évènement, qui aura lieu le <b>$dateIntelligible</b></li></ul><br/>Vous conserverez le droit de vous désinscrire, mais les organisateurs garderont un historique détaillé des inscriptions. Conduisez-vous de manière responsable !<br/>Après inscription, vos informations ne seront plus modifiables. Si vous souhaitez modifier votre inscription, il vous faudra d'abord vous désinscrire et refaire un shotgun, <b>au risque de perdre votre place dans cet intervalle de temps</b> !" .
+    '</div><br/><br/>';
 
         // On a donc submitted les réponses.
         if(isset($_POST['submitting']) && $_POST['submitting'] == "true")
