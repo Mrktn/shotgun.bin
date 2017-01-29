@@ -101,7 +101,7 @@ else
 {
     foreach($shotgunsAVenir as $s)
     {
-        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . htmlspecialchars($s->au_nom_de) . '] </strong>' . htmlspecialchars($s->titre) . ' (sera publié le : ' . strftime("%d %B %Y à %Hh%Mm%Ss)", strtotime($s->date_publi)). '</a>';
+        echo '<a style="cursor:pointer" href="index.php?activePage=shotgunRecord&idShotgun=' . $s->id .'" class="list-group-item small"><span class="glyphicon glyphicon-chevron-right"></span> <strong>[' . htmlspecialchars($s->au_nom_de) . '] </strong>' . htmlspecialchars($s->titre) . ' (sera publié le : ' . utf8_encode(strftime("%d %B %Y", strtotime($s->date_publi))). " à " . utf8_encode(strftime("%Hh%M", strtotime($s->date_publi))). ')</a>';
     }
 }
 
