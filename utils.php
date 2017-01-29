@@ -117,32 +117,33 @@ function displayShotgunAVenir($mysqli, $shotguns)
   <h2>Prochains shotguns à ne pas rater</h2>';
     if (count($shotguns) == 0)
     {
-        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.s";
+        echo"<p> Aucun évènement n'est prévu pour l'instant. N'hésite pas à en créer un.";
     } else
     {
         echo'
-  <p>Tiens-toi prêt!</p>            
+  <p>Tiens-toi prêt !</p>            
   <table class="table table-hover dynamic table-fill tableaccueil">
     <thead>
       <tr>
         <th class="thaccueil">Organisateur</th>
         <th class="thaccueil">Titre</th>
-        <th class="thaccueil">Date</th>
+        <th class="thaccueil">   Date   </th>
         <th class="thaccueil" >Shotgun</th>
                 <th class="thaccueil">Prix</th>
       </tr>
     </thead>
-    <tbody>';
+    <tbody style="text-align:center">';
         $compteur = 0;
         foreach ($shotguns as $currShotgun)
         {
             if ($compteur < 5)
             {
-                echo'<tr>
+                $desc = htmlspecialchars($currShotgun->description);
+                echo'<tr title="'.$desc.'">
         <td>' . htmlspecialchars($currShotgun->au_nom_de) . '</td>
         <td>' . htmlspecialchars($currShotgun->titre) . '</td>
-        <td>' . htmlspecialchars($currShotgun->date_event) . '</td>
-        <td>' . htmlspecialchars($currShotgun->date_publi) . '</td>
+        <td>' . date("d/m/Y H:i", strtotime($currShotgun->date_event)) . '</td>
+        <td>' . date("d/m/Y H:i", strtotime($currShotgun->date_publi)) . '</td>
         <td>' . $currShotgun->prix . '€</td>
       </tr>';
                 $compteur = $compteur + 1;
@@ -160,11 +161,11 @@ function displayMonAgenda($mysqli, $shotguns)
   <h2>Mon agenda</h2>';
     if (count($shotguns) == 0)
     {
-        echo"<p> Tu n'as actuellement rien shotgun. <br/> Inscris-toi vite!</p>";
+        echo"<p> Tu n'as actuellement rien shotgun. <br/> Inscris-toi vite !</p>";
     } else
     {
         echo'
-  <p>Voici la liste de tes prochains évènements. Sois présent!</p>            
+  <p>Voici la liste de tes prochains évènements. Sois présent !</p>            
   <table class="table table-hover dynamic table-fill tableaccueil">
     <thead>
       <tr>
@@ -175,7 +176,7 @@ function displayMonAgenda($mysqli, $shotguns)
         <th class="thaccueil">Inscrits</th>
       </tr>
     </thead>
-    <tbody>';
+    <tbody style="text-align:center">';
         $compteur = 0;
         foreach ($shotguns as $currShotgun)
         { // Faire le truc du ? de pro
@@ -183,10 +184,10 @@ function displayMonAgenda($mysqli, $shotguns)
             {
                 $n = shotgun_event::getNumInscriptions($mysqli, $currShotgun->id);
                 $nbplaces = $currShotgun->nb_places;
-                echo'<tr>
+                echo '<tr style="cursor:pointer" onclick="window.location.href ='."'index.php?activePage=shotgunRecord&idShotgun=" . $currShotgun->id . "'".'"> 
         <td>' . htmlspecialchars($currShotgun->au_nom_de) . '</td>
-        <td>' . htmlspecialchars($currShotgun->titre) . '</td>
-        <td>' . htmlspecialchars($currShotgun->date_event) . '</td>
+        <td>' . htmlspecialchars($currShotgun->titre) .' </td>
+        <td>' . date("d/m/Y H:i", strtotime($currShotgun->date_event)) . '</td>
         <td>' . $currShotgun->prix . '€</td>';
                 echo'<td>';
                 if ($nbplaces != 0)
