@@ -149,8 +149,8 @@ if($_GET['todoShotgunIt'] == 'suscribe')
                 foreach($questions as $q)
                 {
                     echo '<div class="panel panel-primary center-block" style="align:center">
-                            <div class="panel-heading">
-                              <h3 style="font-size: 1vw" class="panel-title"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
+                            <div class="panel-heading" style="height:auto">
+                              <h3 class="panel-title"><p title="'. addcslashes(htmlspecialchars($q->intitule), '"').'"><strong>' . htmlspecialchars($q->intitule) . '</strong></h3>
                             </div>
                             <div class="panel-body">';
 
