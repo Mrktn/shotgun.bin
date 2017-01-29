@@ -177,7 +177,7 @@ function generateHTMLHeader($title)
         <script type="text/javascript" src="js/refresher.js"></script>
         <script type="text/javascript" src="dynatable/jquery.dynatable.js"></script>
         <script type="text/javascript" src="js/shotgunForm.js"></script>
-        <script type="text/javascript" src="js/readmore.min.js"></script>
+        <script src="https://fastcdn.org/Readmore.js/2.1.0/readmore.min.js"></script>
         <script type="text/javascript" src="js/moment-with-locales.min.js"></script> 
         <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script> 
         <script type="text/javascript" src="js/bootstrap-notify.min.js"></script>
