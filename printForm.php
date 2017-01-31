@@ -123,8 +123,13 @@ END;
     <audio style="display:none" id="sound1" src="resources/thunder.mp3" preload="auto"></audio>
                     <span onclick="document.getElementById('sound1').play();" class="glyphicon glyphicon-flash" style="color:yellow"></span>
                 </a>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>      
+      </button>
     </div>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
 END;
 
