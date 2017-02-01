@@ -65,5 +65,6 @@ function download_csv(header, dat) {
     hiddenElement.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURI(csv);
     hiddenElement.target = '_blank';
     hiddenElement.download = 'people.csv';
+    document.body.appendChild(hiddenElement);
     hiddenElement.click();
 }
